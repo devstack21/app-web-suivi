@@ -6,7 +6,7 @@ export const PASSWORD_ENCRYPTED_KEY = 'mabanqueiccsoft1';
 export const API_URL = {
 	Login: '/login/',
 	ResetPassword: '/reset/password/',
-	UpdatePassword: '/accounts/password/change/',
+	UpdatePassword: '/change/password/',
 };
 
 
