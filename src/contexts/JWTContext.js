@@ -4,14 +4,18 @@ import { createContext, useEffect, useReducer } from 'react';
 // third-party
 import { Chance } from 'chance';
 import jwtDecode from 'jwt-decode';
+import CryptoJS from 'react-native-crypto-js';
 
 // reducer - state management
-import { LOGIN, LOGOUT } from 'store/reducers/actions';
+import { INIT_RESET_PASSWORD, LOGIN, LOGIN_ERROR, LOGOUT, RESET_PASSWORD, RESET_PASSWORD_ERROR } from 'store/reducers/actions';
 import authReducer from 'store/reducers/auth';
 
 // project import
 import Loader from 'components/Loader';
 import axios from 'utils/axios';
+import { BASE_URL } from 'config';
+import { API_URL, REQUEST_STATUS } from 'utils/apiConfig';
+import { REACT_APP_JWT_SECRET_KEY } from 'config';
 
 const chance = new Chance();
 
@@ -19,7 +23,8 @@ const chance = new Chance();
 const initialState = {
   isLoggedIn: false,
   isInitialized: false,
-  user: null
+  user: null,
+ // error: ''
 };
 
 const verifyToken = (serviceToken) => {
@@ -81,17 +86,48 @@ export const JWTProvider = ({ children }) => {
     init();
   }, []);
 
-  const login = async (email, password) => {
-    const response = await axios.post('/api/account/login', { email, password });
-    const { serviceToken, user } = response.data;
-    setSession(serviceToken);
-    dispatch({
-      type: LOGIN,
-      payload: {
-        isLoggedIn: true,
-        user
+  
+
+  const login = async (email, pwd) => {
+ 
+    dispatch({type: LOGOUT})
+    const password = CryptoJS.AES.encrypt(pwd, REACT_APP_JWT_SECRET_KEY).toString();
+
+    const response = await axios.post(BASE_URL + API_URL.Login, { email, password });
+    const { success, results, errors } = response.data[0];
+
+    if (success == 1) {
+      setSession(results[0].token);
+      const user = results[0]
+      dispatch({
+        type: LOGIN,
+        payload: {
+          isLoggedIn: true,
+          user
+        }
+      });
+    } else {
+      let error_msg
+
+      switch (errors[0].error_code) {
+        case "LO001":
+          error_msg = "user-not-found"
+          break;
+        case "LO003":
+          error_msg = "password-incorect"
+          break;
+        default:
+          error_msg = "password-incorect"
+          break;
       }
-    });
+      dispatch({
+        type: LOGIN_ERROR,
+        payload: {
+          isLoggedIn: false,
+          error_msg: error_msg
+        }
+      });
+    }
   };
 
   const register = async (email, password, firstName, lastName) => {
@@ -127,9 +163,42 @@ export const JWTProvider = ({ children }) => {
     dispatch({ type: LOGOUT });
   };
 
-  const resetPassword = async () => {};
+  const resetPassword = async (email, phone) => {
+    dispatch({type: INIT_RESET_PASSWORD, payload: {
+      resetStatus: REQUEST_STATUS.idle
+    }})
+    const response = await axios.post(BASE_URL + API_URL.ResetPassword, { email, phone });
+    const { success, errors } = response.data[0];
+    if (success) {
+      dispatch(
+        {
+          type: RESET_PASSWORD, 
+          payload:{
+            isReset: true, 
+            resetError: '',
+            resetStatus: REQUEST_STATUS.succeed}});
+    } else {
+      let error_msg
+      switch (errors[0].error_code) {
+        case "LO007":
+          error_msg = "user-not-found"
+          break;
+        default:
+          error_msg = "error-network"
+          break;
+      }
+      dispatch({
+        type: RESET_PASSWORD_ERROR,
+        payload:{
+          isReset: false, 
+          error:error_msg,
+          resetStatus: REQUEST_STATUS.error
+        }
+        });
+    }
+  };
 
-  const updateProfile = () => {};
+  const updateProfile = () => { };
 
   if (state.isInitialized !== undefined && !state.isInitialized) {
     return <Loader />;

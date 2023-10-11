@@ -1,12 +1,11 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import { useEffect } from 'react';
 
 // material-ui
 import {
   Button,
-  Checkbox,
-  FormControlLabel,
   FormHelperText,
   Grid,
   Link,
@@ -14,12 +13,12 @@ import {
   InputLabel,
   OutlinedInput,
   Stack,
-  Typography
 } from '@mui/material';
 
 // third party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
+import { FormattedMessage } from 'react-intl';
 
 // project import
 import useAuth from 'hooks/useAuth';
@@ -29,11 +28,31 @@ import AnimateButton from 'components/@extended/AnimateButton';
 
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
+import { dispatch } from 'store';
+import { INIT_RESET_PASSWORD } from 'store/reducers/actions';
+import { REQUEST_STATUS } from 'utils/apiConfig';
+
 
 // ============================|| JWT - LOGIN ||============================ //
 
-const AuthLogin = ({ isDemo = false }) => {
-  const [checked, setChecked] = React.useState(false);
+const EffectComponent = ({ setStatus, setSubmitting, setErrors }) => {
+  const { error } = useAuth();
+
+  useEffect(() => {
+
+     if (error) {
+        setStatus({ success: false });
+        setErrors({ submit: <FormattedMessage id={error} /> });
+        setSubmitting(false);
+      }
+  
+  }, [error]); // Empty dependency array means this effect runs once on mount
+
+  return null; // No need to render anything for this example
+};
+
+
+const AuthLogin = () => {
 
   const { login } = useAuth();
   const scriptedRef = useScriptRef();
@@ -43,6 +62,9 @@ const AuthLogin = ({ isDemo = false }) => {
     setShowPassword(!showPassword);
   };
 
+  const { isLoggedIn } = useAuth();
+
+
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
@@ -51,18 +73,18 @@ const AuthLogin = ({ isDemo = false }) => {
     <>
       <Formik
         initialValues={{
-          email: 'info@codedthemes.com',
+          email: 'test@minepia.com',
           password: '123456',
           submit: null
         }}
         validationSchema={Yup.object().shape({
-          email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-          password: Yup.string().max(255).required('Password is required')
+          email: Yup.string().email(<FormattedMessage id="email-invalid" />).max(255).required(<FormattedMessage id="email-required" />),
+          password: Yup.string().max(255).required(<FormattedMessage id="password-required" />)
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
             await login(values.email, values.password);
-            if (scriptedRef.current) {
+            if (scriptedRef.current && isLoggedIn) {
               setStatus({ success: true });
               setSubmitting(false);
             }
@@ -76,12 +98,13 @@ const AuthLogin = ({ isDemo = false }) => {
           }
         }}
       >
-        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+        {({ errors, handleBlur, handleChange, handleSubmit, 
+        isSubmitting, touched, values,setErrors, setStatus, setSubmitting }) => (
           <form noValidate onSubmit={handleSubmit}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="email-login">Email Address</InputLabel>
+                  <InputLabel htmlFor="email-login"><FormattedMessage id="email" /></InputLabel>
                   <OutlinedInput
                     id="email-login"
                     type="email"
@@ -89,7 +112,7 @@ const AuthLogin = ({ isDemo = false }) => {
                     name="email"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    placeholder="Enter email address"
+                    placeholder= {<FormattedMessage id="enter-email" />}
                     fullWidth
                     error={Boolean(touched.email && errors.email)}
                   />
@@ -102,7 +125,7 @@ const AuthLogin = ({ isDemo = false }) => {
               </Grid>
               <Grid item xs={12}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="password-login">Password</InputLabel>
+                  <InputLabel htmlFor="password-login"><FormattedMessage id="password" /></InputLabel>
                   <OutlinedInput
                     fullWidth
                     error={Boolean(touched.password && errors.password)}
@@ -125,7 +148,7 @@ const AuthLogin = ({ isDemo = false }) => {
                         </IconButton>
                       </InputAdornment>
                     }
-                    placeholder="Enter password"
+                    placeholder={<FormattedMessage id="enter-password" />}
                   />
                   {touched.password && errors.password && (
                     <FormHelperText error id="standard-weight-helper-text-password-login">
@@ -136,21 +159,12 @@ const AuthLogin = ({ isDemo = false }) => {
               </Grid>
 
               <Grid item xs={12} sx={{ mt: -1 }}>
-                <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-                  <FormControlLabel
-                    control={
-                      <Checkbox
-                        checked={checked}
-                        onChange={(event) => setChecked(event.target.checked)}
-                        name="checked"
-                        color="primary"
-                        size="small"
-                      />
-                    }
-                    label={<Typography variant="h6">Keep me sign in</Typography>}
-                  />
-                  <Link variant="h6" component={RouterLink} to={isDemo ? '/auth/forgot-password' : '/forgot-password'} color="text.primary">
-                    Forgot Password?
+                <Stack direction="row"  spacing={2}>
+                  <Link variant="h6"  
+                  component={RouterLink} 
+                  onClick={() => dispatch({type: INIT_RESET_PASSWORD, payload:{resetStatus: REQUEST_STATUS.idle}})}
+                  to={isLoggedIn ? '/auth/forgot-password' : '/forgot-password'} color="blue">
+                    <FormattedMessage id="forgot-password" />
                   </Link>
                 </Stack>
               </Grid>
@@ -162,11 +176,12 @@ const AuthLogin = ({ isDemo = false }) => {
               <Grid item xs={12}>
                 <AnimateButton>
                   <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="primary">
-                    Login
+                    <FormattedMessage id="login" />
                   </Button>
                 </AnimateButton>
               </Grid>
             </Grid>
+            <EffectComponent setSubmitting={setSubmitting} setErrors={setErrors} setStatus={setStatus} />
           </form>
         )}
       </Formik>

@@ -8,6 +8,10 @@ export const APP_DEFAULT_PATH = '/dashboard/analytics';
 export const HORIZONTAL_MAX_ITEM = 6;
 export const DRAWER_WIDTH = 260;
 
+export const BASE_URL = 'http://127.0.0.1:8000/ws/api/v1'
+
+export const REACT_APP_JWT_SECRET_KEY='mabanqueiccsoft1'
+
 export const ThemeMode = {
   LIGHT: 'light',
   DARK: 'dark'
@@ -44,7 +48,7 @@ const config = {
    * 'ro'
    * 'zh'
    */
-  i18n: 'en',
+  i18n: 'fr',
 
   /**
    * the props used for menu orientation (diffrent theme layout).
