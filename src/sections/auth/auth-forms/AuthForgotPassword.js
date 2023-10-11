@@ -23,39 +23,37 @@ import { REQUEST_STATUS } from 'utils/apiConfig';
 // ============================|| FORGOT PASSWORD ||============================ //
 
 const EffectComponent = ({ setStatus, setSubmitting, setErrors }) => {
-  const { isReset, resetError,resetStatus } = useAuth();
+  const { resetError, resetStatus, initResetPassword } = useAuth();
   const navigate = useNavigate();
 
 
   useEffect(() => {
-    if (resetStatus != REQUEST_STATUS.idle){
+    if (resetStatus == REQUEST_STATUS.succeed) {
+      setStatus({ success: true });
+      setSubmitting(false);
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: <FormattedMessage id="check-mail-reset-link" />,
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
+      initResetPassword()
+      setTimeout(() => {
+        navigate(resetStatus == REQUEST_STATUS.succeed ? '/auth/check-mail' : '/check-mail', { replace: true });
+      }, 500);
 
-      if (isReset) {
-        setStatus({ success: true });
-        setSubmitting(false);
-        dispatch(
-          openSnackbar({
-            open: true,
-            message: <FormattedMessage id="check-mail-reset-link" />,
-            variant: 'alert',
-            alert: {
-              color: 'success'
-            },
-            close: false
-          })
-        );
-        setTimeout(() => {
-          navigate(isReset ? '/auth/check-mail' : '/check-mail', { replace: true });
-        }, 500);
-  
-      } else if (resetError) {
-        setStatus({ success: false });
-        setErrors({ submit: <FormattedMessage id={resetError} /> });
-        setSubmitting(false);
-      }
-  
+    } else if (resetStatus == REQUEST_STATUS.error) {
+      setStatus({ success: false });
+      setErrors({ submit: <FormattedMessage id={resetError} /> });
+      setSubmitting(false);
     }
-  }, [isReset, resetStatus]); // Empty dependency array means this effect runs once on mount
+
+  }, [resetStatus]); // Empty dependency array means this effect runs once on mount
 
   return null; // No need to render anything for this example
 };
@@ -89,7 +87,7 @@ const AuthForgotPassword = () => {
           }
         }}
       >
-        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values,setErrors, setStatus, setSubmitting  }) => (
+        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values, setErrors, setStatus, setSubmitting }) => (
           <form noValidate onSubmit={handleSubmit}>
             <Grid container spacing={3}>
               <Grid item xs={12}>

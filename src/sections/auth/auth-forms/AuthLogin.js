@@ -29,7 +29,6 @@ import AnimateButton from 'components/@extended/AnimateButton';
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import { dispatch } from 'store';
-import { INIT_RESET_PASSWORD } from 'store/reducers/actions';
 import { REQUEST_STATUS } from 'utils/apiConfig';
 
 

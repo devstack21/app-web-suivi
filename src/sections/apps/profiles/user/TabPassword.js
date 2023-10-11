@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 // material-ui
 import {
@@ -21,7 +21,6 @@ import {
 import MainCard from 'components/MainCard';
 import IconButton from 'components/@extended/IconButton';
 
-import { dispatch } from 'store';
 import { openSnackbar } from 'store/reducers/snackbar';
 import { isNumber, isLowercaseChar, isUppercaseChar, isSpecialChar, minLength } from 'utils/password-validation';
 
@@ -31,6 +30,44 @@ import { Formik } from 'formik';
 
 // assets
 import { CheckOutlined, EyeOutlined, EyeInvisibleOutlined, LineOutlined } from '@ant-design/icons';
+import { FormattedMessage } from 'react-intl';
+import { REQUEST_STATUS } from 'utils/apiConfig';
+import useAuth from 'hooks/useAuth';
+import { dispatch } from 'store';
+
+
+const EffectComponent = ({ setStatus, setSubmitting, setErrors, resetForm}) => {
+  const { updateStatus, updateError,initUpdatePassword } = useAuth();
+
+  useEffect(() => {
+    if (updateStatus == REQUEST_STATUS.succeed ) {
+      dispatch(
+        openSnackbar({
+          open: true,
+          message: <FormattedMessage id='password-update-success' />,
+          variant: 'alert',
+          alert: {
+            color: 'success'
+          },
+          close: false
+        })
+      );
+
+      resetForm();
+      setStatus({ success: true });
+      setSubmitting(true);
+      initUpdatePassword()
+
+    } else if (updateStatus == REQUEST_STATUS.error) {
+      setStatus({ success: false });
+      setErrors({ submit: <FormattedMessage id={updateError} /> });
+      setSubmitting(false);
+    }
+
+  }, [updateStatus]); 
+
+  return null; 
+};
 
 // ==============================|| TAB - PASSWORD CHANGE ||============================== //
 
@@ -53,44 +90,33 @@ const TabPassword = () => {
     event.preventDefault();
   };
 
+  const { updatePassword } = useAuth();
+
   return (
-    <MainCard title="Change Password">
+    <MainCard title={<FormattedMessage id='change-password' />}>
       <Formik
         initialValues={{
           old: '',
           password: '',
           confirm: '',
-          submit: null
+          submit: null,
         }}
         validationSchema={Yup.object().shape({
-          old: Yup.string().required('Old Password is required'),
+          old: Yup.string().required(<FormattedMessage id='old-password-required' />),
           password: Yup.string()
-            .required('New Password is required')
+            .required(<FormattedMessage id='new-password-required' />)
             .matches(
               /^.*(?=.{8,})((?=.*[!@#$%^&*()\-_=+{};:,<.>]){1})(?=.*\d)((?=.*[a-z]){1})((?=.*[A-Z]){1}).*$/,
-              'Password must contain at least 8 characters, one uppercase, one number and one special case character'
+              <FormattedMessage id='password-criteria' />
             ),
           confirm: Yup.string()
-            .required('Confirm Password is required')
-            .test('confirm', `Passwords don't match.`, (confirm, yup) => yup.parent.password === confirm)
+            .required(<FormattedMessage id='confirmed-password-required' />)
+            .test('confirm', <FormattedMessage id='password-match' />, (confirm, yup) => yup.parent.password === confirm)
         })}
-        onSubmit={async (values, { resetForm, setErrors, setStatus, setSubmitting }) => {
-          try {
-            dispatch(
-              openSnackbar({
-                open: true,
-                message: 'Password changed successfully.',
-                variant: 'alert',
-                alert: {
-                  color: 'success'
-                },
-                close: false
-              })
-            );
+        onSubmit={async (values, {setErrors, setStatus, setSubmitting }) => {
 
-            resetForm();
-            setStatus({ success: false });
-            setSubmitting(false);
+          try {
+            await updatePassword(values.old, values.password)
           } catch (err) {
             setStatus({ success: false });
             setErrors({ submit: err.message });
@@ -98,15 +124,16 @@ const TabPassword = () => {
           }
         }}
       >
-        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+        {({ errors, handleBlur, handleChange, handleSubmit,
+        resetForm,setErrors, setStatus, setSubmitting,
+         isSubmitting, touched, values }) => (
           <form noValidate onSubmit={handleSubmit}>
             <Grid container spacing={3}>
               <Grid item container spacing={3} xs={12} sm={6}>
                 <Grid item xs={12}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="password-old">Old Password</InputLabel>
+                    <InputLabel htmlFor="password-old"><FormattedMessage id='old-password' /></InputLabel>
                     <OutlinedInput
-                      placeholder="Enter Old Password"
                       id="password-old"
                       type={showOldPassword ? 'text' : 'password'}
                       value={values.old}
@@ -138,9 +165,8 @@ const TabPassword = () => {
                 </Grid>
                 <Grid item xs={12}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="password-password">New Password</InputLabel>
+                    <InputLabel htmlFor="password-password"><FormattedMessage id='new-password' /></InputLabel>
                     <OutlinedInput
-                      placeholder="Enter New Password"
                       id="password-password"
                       type={showNewPassword ? 'text' : 'password'}
                       value={values.password}
@@ -172,9 +198,8 @@ const TabPassword = () => {
                 </Grid>
                 <Grid item xs={12}>
                   <Stack spacing={1.25}>
-                    <InputLabel htmlFor="password-confirm">Confirm Password</InputLabel>
+                    <InputLabel htmlFor="password-confirm"><FormattedMessage id='confirmed-password' /></InputLabel>
                     <OutlinedInput
-                      placeholder="Enter Confirm Password"
                       id="password-confirm"
                       type={showConfirmPassword ? 'text' : 'password'}
                       value={values.confirm}
@@ -207,52 +232,56 @@ const TabPassword = () => {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Box sx={{ p: { xs: 0, sm: 2, md: 4, lg: 5 } }}>
-                  <Typography variant="h5">New password must contain:</Typography>
+                  <Typography variant="h5"><FormattedMessage id='new-password-contains' /></Typography>
                   <List sx={{ p: 0, mt: 1 }}>
                     <ListItem divider>
                       <ListItemIcon sx={{ color: minLength(values.password) ? 'success.main' : 'inherit' }}>
                         {minLength(values.password) ? <CheckOutlined /> : <LineOutlined />}
                       </ListItemIcon>
-                      <ListItemText primary="At least 8 characters" />
+                      <ListItemText primary={<FormattedMessage id='criteria-caracter-number' />} />
                     </ListItem>
                     <ListItem divider>
                       <ListItemIcon sx={{ color: isLowercaseChar(values.password) ? 'success.main' : 'inherit' }}>
                         {isLowercaseChar(values.password) ? <CheckOutlined /> : <LineOutlined />}
                       </ListItemIcon>
-                      <ListItemText primary="At least 1 lower letter (a-z)" />
+                      <ListItemText primary={<FormattedMessage id='criteria-lower-caracter' />} />
                     </ListItem>
                     <ListItem divider>
                       <ListItemIcon sx={{ color: isUppercaseChar(values.password) ? 'success.main' : 'inherit' }}>
                         {isUppercaseChar(values.password) ? <CheckOutlined /> : <LineOutlined />}
                       </ListItemIcon>
-                      <ListItemText primary="At least 1 uppercase letter (A-Z)" />
+                      <ListItemText primary={<FormattedMessage id='criteria-upper-caracter' />} />
                     </ListItem>
                     <ListItem divider>
                       <ListItemIcon sx={{ color: isNumber(values.password) ? 'success.main' : 'inherit' }}>
                         {isNumber(values.password) ? <CheckOutlined /> : <LineOutlined />}
                       </ListItemIcon>
-                      <ListItemText primary="At least 1 number (0-9)" />
+                      <ListItemText primary={<FormattedMessage id='criteria-number' />} />
                     </ListItem>
                     <ListItem>
                       <ListItemIcon sx={{ color: isSpecialChar(values.password) ? 'success.main' : 'inherit' }}>
                         {isSpecialChar(values.password) ? <CheckOutlined /> : <LineOutlined />}
                       </ListItemIcon>
-                      <ListItemText primary="At least 1 special characters" />
+                      <ListItemText primary={<FormattedMessage id='criteria-special-caracter' />} />
                     </ListItem>
                   </List>
                 </Box>
               </Grid>
+              {errors.submit && (
+                <Grid item xs={12}>
+                  <FormHelperText error>{errors.submit}</FormHelperText>
+                </Grid>
+              )}
               <Grid item xs={12}>
                 <Stack direction="row" justifyContent="flex-end" alignItems="center" spacing={2}>
-                  <Button variant="outlined" color="secondary">
-                    Cancel
-                  </Button>
                   <Button disabled={isSubmitting || Object.keys(errors).length !== 0} type="submit" variant="contained">
-                    Save
+                    <FormattedMessage id='save' />
                   </Button>
                 </Stack>
               </Grid>
             </Grid>
+            <EffectComponent 
+             setSubmitting={setSubmitting} setErrors={setErrors} setStatus={setStatus} resetForm={resetForm}/>
           </form>
         )}
       </Formik>

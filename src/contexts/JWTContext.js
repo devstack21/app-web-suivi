@@ -7,7 +7,7 @@ import jwtDecode from 'jwt-decode';
 import CryptoJS from 'react-native-crypto-js';
 
 // reducer - state management
-import { INIT_RESET_PASSWORD, LOGIN, LOGIN_ERROR, LOGOUT, RESET_PASSWORD, RESET_PASSWORD_ERROR } from 'store/reducers/actions';
+import { LOGIN, LOGIN_ERROR, LOGOUT, RESET_PASSWORD, UPDATE_PASSWORD } from 'store/reducers/actions';
 import authReducer from 'store/reducers/auth';
 
 // project import
@@ -24,7 +24,7 @@ const initialState = {
   isLoggedIn: false,
   isInitialized: false,
   user: null,
- // error: ''
+  // error: ''
 };
 
 const verifyToken = (serviceToken) => {
@@ -39,9 +39,10 @@ const verifyToken = (serviceToken) => {
 };
 
 const setSession = (serviceToken) => {
+  console.log(serviceToken)
   if (serviceToken) {
     localStorage.setItem('serviceToken', serviceToken);
-    axios.defaults.headers.common.Authorization = `Bearer ${serviceToken}`;
+    axios.defaults.headers.common.Authorization = `Token ${serviceToken}`;
   } else {
     localStorage.removeItem('serviceToken');
     delete axios.defaults.headers.common.Authorization;
@@ -61,15 +62,15 @@ export const JWTProvider = ({ children }) => {
         const serviceToken = window.localStorage.getItem('serviceToken');
         if (serviceToken && verifyToken(serviceToken)) {
           setSession(serviceToken);
-          const response = await axios.get('/api/account/me');
-          const { user } = response.data;
-          dispatch({
-            type: LOGIN,
-            payload: {
-              isLoggedIn: true,
-              user
-            }
-          });
+          /*   const response = await axios.get('/api/account/me');
+             const { user } = response.data;
+             dispatch({
+               type: LOGIN,
+               payload: {
+                 isLoggedIn: true,
+                 user
+               }
+             });*/
         } else {
           dispatch({
             type: LOGOUT
@@ -86,11 +87,11 @@ export const JWTProvider = ({ children }) => {
     init();
   }, []);
 
-  
+
 
   const login = async (email, pwd) => {
- 
-    dispatch({type: LOGOUT})
+
+    dispatch({ type: LOGOUT })
     const password = CryptoJS.AES.encrypt(pwd, REACT_APP_JWT_SECRET_KEY).toString();
 
     const response = await axios.post(BASE_URL + API_URL.Login, { email, password });
@@ -99,11 +100,12 @@ export const JWTProvider = ({ children }) => {
     if (success == 1) {
       setSession(results[0].token);
       const user = results[0]
+      setSession(user.token)
       dispatch({
         type: LOGIN,
         payload: {
           isLoggedIn: true,
-          user
+          user: user
         }
       });
     } else {
@@ -163,20 +165,29 @@ export const JWTProvider = ({ children }) => {
     dispatch({ type: LOGOUT });
   };
 
+  const initResetPassword = () => {
+    dispatch({
+      type: RESET_PASSWORD,
+      payload: {
+        status: REQUEST_STATUS.idle,
+        error: ''
+      }
+    })
+  };
+
   const resetPassword = async (email, phone) => {
-    dispatch({type: INIT_RESET_PASSWORD, payload: {
-      resetStatus: REQUEST_STATUS.idle
-    }})
+    dispatch({type: RESET_PASSWORD, payload: {status: REQUEST_STATUS.loading}})
     const response = await axios.post(BASE_URL + API_URL.ResetPassword, { email, phone });
     const { success, errors } = response.data[0];
     if (success) {
       dispatch(
         {
-          type: RESET_PASSWORD, 
-          payload:{
-            isReset: true, 
-            resetError: '',
-            resetStatus: REQUEST_STATUS.succeed}});
+          type: RESET_PASSWORD,
+          payload: {
+            error: '',
+            status: REQUEST_STATUS.succeed
+          }
+        });
     } else {
       let error_msg
       switch (errors[0].error_code) {
@@ -187,16 +198,43 @@ export const JWTProvider = ({ children }) => {
           error_msg = "error-network"
           break;
       }
-      dispatch({
-        type: RESET_PASSWORD_ERROR,
-        payload:{
-          isReset: false, 
-          error:error_msg,
-          resetStatus: REQUEST_STATUS.error
-        }
-        });
+      dispatch({type: RESET_PASSWORD,payload: {error: error_msg, status: REQUEST_STATUS.error}});
     }
   };
+
+
+  const initUpdatePassword = () => {
+    dispatch({
+      type: UPDATE_PASSWORD,
+      payload: {
+        status: REQUEST_STATUS.idle,
+        error: ''
+      }
+    })
+  };
+
+  const updatePassword = async (old, newPwd) => {
+
+    dispatch({ type: UPDATE_PASSWORD, payload: { status: REQUEST_STATUS.loading } })
+    const old_password = CryptoJS.AES.encrypt(old, REACT_APP_JWT_SECRET_KEY).toString();
+    const new_password = CryptoJS.AES.encrypt(newPwd, REACT_APP_JWT_SECRET_KEY).toString();
+
+    const response = await axios.post(BASE_URL + API_URL.UpdatePassword, { old_password, new_password });
+    const { success, errors } = response.data[0];
+    if (success) {
+      dispatch({ type: UPDATE_PASSWORD, payload: { status: REQUEST_STATUS.succeed, error: '' } })
+    } else {
+      switch (errors[0].error_code) {
+        case "LO004":
+          dispatch({ type: UPDATE_PASSWORD, payload: { status: REQUEST_STATUS.error, error: "old-password-incorrect" } })
+          break;
+        default:
+          dispatch({ type: UPDATE_PASSWORD, payload: { status: REQUEST_STATUS.error, error: "password-update-error" } })
+          break;
+      }
+    }
+  };
+
 
   const updateProfile = () => { };
 
@@ -204,7 +242,10 @@ export const JWTProvider = ({ children }) => {
     return <Loader />;
   }
 
-  return <JWTContext.Provider value={{ ...state, login, logout, register, resetPassword, updateProfile }}>{children}</JWTContext.Provider>;
+  return <JWTContext.Provider value={{
+    ...state, login, logout, initUpdatePassword,initResetPassword,
+    register, resetPassword, updateProfile, updatePassword
+  }}>{children}</JWTContext.Provider>;
 };
 
 JWTProvider.propTypes = {

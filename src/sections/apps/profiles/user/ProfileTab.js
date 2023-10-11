@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
+
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import { List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 
 // assets
-import { CreditCardOutlined, LockOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
+import {  LockOutlined, UserOutlined, SettingOutlined } from '@ant-design/icons';
+import { FormattedMessage } from 'react-intl';
 
 function getPathIndex(pathname) {
   let selectedTab = 0;
@@ -16,9 +18,6 @@ function getPathIndex(pathname) {
       break;
     case '/apps/profiles/user/password':
       selectedTab = 2;
-      break;
-    case '/apps/profiles/user/settings':
-      selectedTab = 3;
       break;
     case '/apps/profiles/user/personal':
     default:
@@ -50,25 +49,19 @@ const ProfileTab = () => {
         <ListItemIcon>
           <UserOutlined />
         </ListItemIcon>
-        <ListItemText primary="Personal Information" />
+        <ListItemText primary={<FormattedMessage id='personnal-information' />} />
       </ListItemButton>
-      <ListItemButton selected={selectedIndex === 1} onClick={() => handleListItemClick(1, '/apps/profiles/user/payment')}>
+      <ListItemButton selected={selectedIndex === 1} onClick={() => handleListItemClick(2, '/apps/profiles/user/payment')}>
         <ListItemIcon>
-          <CreditCardOutlined />
+          <SettingOutlined />
         </ListItemIcon>
-        <ListItemText primary="Payment" />
+        <ListItemText primary={<FormattedMessage id='habilitations' />} />
       </ListItemButton>
       <ListItemButton selected={selectedIndex === 2} onClick={() => handleListItemClick(2, '/apps/profiles/user/password')}>
         <ListItemIcon>
           <LockOutlined />
         </ListItemIcon>
-        <ListItemText primary="Change Password" />
-      </ListItemButton>
-      <ListItemButton selected={selectedIndex === 3} onClick={() => handleListItemClick(3, '/apps/profiles/user/settings')}>
-        <ListItemIcon>
-          <SettingOutlined />
-        </ListItemIcon>
-        <ListItemText primary="Settings" />
+        <ListItemText primary={<FormattedMessage id='change-password' />} />
       </ListItemButton>
     </List>
   );
