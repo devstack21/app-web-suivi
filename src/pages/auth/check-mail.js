@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
 
+import { FormattedMessage } from 'react-intl';
+
+
 // material-ui
-import { useTheme } from '@mui/material/styles';
-import { Box, Button, Grid, Divider, Typography, useMediaQuery } from '@mui/material';
+import { Box, Button, Grid, Typography } from '@mui/material';
 
 // project import
 import useAuth from 'hooks/useAuth';
@@ -12,8 +14,6 @@ import AuthWrapper from 'sections/auth/AuthWrapper';
 // ================================|| CHECK MAIL ||================================ //
 
 const CheckMail = () => {
-  const theme = useTheme();
-  const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
   const { isLoggedIn } = useAuth();
 
@@ -22,9 +22,9 @@ const CheckMail = () => {
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Box sx={{ mb: { xs: -0.5, sm: 0.5 } }}>
-            <Typography variant="h3">Hi, Check Your Mail</Typography>
+            <Typography variant="h3"><FormattedMessage id="check-email-pwd" /></Typography>
             <Typography color="secondary" sx={{ mb: 0.5, mt: 1.25 }}>
-              We have sent a password recover instructions to your email.
+              <FormattedMessage id="password-recovered" />
             </Typography>
           </Box>
         </Grid>
@@ -40,14 +40,9 @@ const CheckMail = () => {
               variant="contained"
               color="primary"
             >
-              Sign in
+                <FormattedMessage id="login" />
             </Button>
           </AnimateButton>
-        </Grid>
-        <Grid item xs={12}>
-          <Divider>
-            <Typography variant={matchDownSM ? 'subtitle1' : 'h5'}>Sign up with</Typography>
-          </Divider>
         </Grid>
       </Grid>
     </AuthWrapper>

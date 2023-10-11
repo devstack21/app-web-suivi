@@ -6,6 +6,8 @@ import { Button, FormHelperText, Grid, InputLabel, OutlinedInput, Stack, Typogra
 // third party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
+import { FormattedMessage } from 'react-intl';
+
 
 // project import
 import useAuth from 'hooks/useAuth';
@@ -14,57 +16,69 @@ import AnimateButton from 'components/@extended/AnimateButton';
 
 import { dispatch } from 'store';
 import { openSnackbar } from 'store/reducers/snackbar';
+import { useEffect } from 'react';
+import { REQUEST_STATUS } from 'utils/apiConfig';
 
-// ============================|| FIREBASE - FORGOT PASSWORD ||============================ //
+
+// ============================|| FORGOT PASSWORD ||============================ //
+
+const EffectComponent = ({ setStatus, setSubmitting, setErrors }) => {
+  const { isReset, resetError,resetStatus } = useAuth();
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    if (resetStatus != REQUEST_STATUS.idle){
+
+      if (isReset) {
+        setStatus({ success: true });
+        setSubmitting(false);
+        dispatch(
+          openSnackbar({
+            open: true,
+            message: <FormattedMessage id="check-mail-reset-link" />,
+            variant: 'alert',
+            alert: {
+              color: 'success'
+            },
+            close: false
+          })
+        );
+        setTimeout(() => {
+          navigate(isReset ? '/auth/check-mail' : '/check-mail', { replace: true });
+        }, 500);
+  
+      } else if (resetError) {
+        setStatus({ success: false });
+        setErrors({ submit: <FormattedMessage id={resetError} /> });
+        setSubmitting(false);
+      }
+  
+    }
+  }, [isReset, resetStatus]); // Empty dependency array means this effect runs once on mount
+
+  return null; // No need to render anything for this example
+};
 
 const AuthForgotPassword = () => {
   const scriptedRef = useScriptRef();
-  const navigate = useNavigate();
 
-  const { isLoggedIn, resetPassword } = useAuth();
+  const { resetPassword } = useAuth();
 
   return (
     <>
       <Formik
         initialValues={{
           email: '',
-          submit: null
+          submit: null,
+          resetSucced: "idle"
         }}
         validationSchema={Yup.object().shape({
-          email: Yup.string().email('Must be a valid email').max(255).required('Email is required')
+          email: Yup.string().email(<FormattedMessage id="email-invalid" />).max(255).required(<FormattedMessage id="email-required" />)
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            await resetPassword(values.email).then(
-              () => {
-                setStatus({ success: true });
-                setSubmitting(false);
-                dispatch(
-                  openSnackbar({
-                    open: true,
-                    message: 'Check mail for reset password link',
-                    variant: 'alert',
-                    alert: {
-                      color: 'success'
-                    },
-                    close: false
-                  })
-                );
-                setTimeout(() => {
-                  navigate(isLoggedIn ? '/auth/check-mail' : '/check-mail', { replace: true });
-                }, 1500);
-
-                // WARNING: do not set any formik state here as formik might be already destroyed here. You may get following error by doing so.
-                // Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application.
-                // To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.
-                // github issue: https://github.com/formium/formik/issues/2430
-              },
-              (err) => {
-                setStatus({ success: false });
-                setErrors({ submit: err.message });
-                setSubmitting(false);
-              }
-            );
+            await resetPassword(values.email)
           } catch (err) {
             console.error(err);
             if (scriptedRef.current) {
@@ -75,12 +89,12 @@ const AuthForgotPassword = () => {
           }
         }}
       >
-        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
+        {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values,setErrors, setStatus, setSubmitting  }) => (
           <form noValidate onSubmit={handleSubmit}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="email-forgot">Email Address</InputLabel>
+                  <InputLabel htmlFor="email-forgot"><FormattedMessage id="email" /></InputLabel>
                   <OutlinedInput
                     fullWidth
                     error={Boolean(touched.email && errors.email)}
@@ -90,7 +104,7 @@ const AuthForgotPassword = () => {
                     name="email"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    placeholder="Enter email address"
+                    placeholder={<FormattedMessage id="enter-email" />}
                     inputProps={{}}
                   />
                   {touched.email && errors.email && (
@@ -106,16 +120,17 @@ const AuthForgotPassword = () => {
                 </Grid>
               )}
               <Grid item xs={12} sx={{ mb: -2 }}>
-                <Typography variant="caption">Do not forgot to check SPAM box.</Typography>
+                <Typography variant="caption"><FormattedMessage id="check-spam" /></Typography>
               </Grid>
               <Grid item xs={12}>
                 <AnimateButton>
                   <Button disableElevation disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained" color="primary">
-                    Send Password Reset Email
+                    <FormattedMessage id="password-reset" />
                   </Button>
                 </AnimateButton>
               </Grid>
             </Grid>
+            <EffectComponent setSubmitting={setSubmitting} setErrors={setErrors} setStatus={setStatus} />
           </form>
         )}
       </Formik>
