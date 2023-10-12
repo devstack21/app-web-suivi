@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
 
 // material-ui
@@ -34,18 +34,22 @@ import { REQUEST_STATUS } from 'utils/apiConfig';
 
 // ============================|| JWT - LOGIN ||============================ //
 
-const EffectComponent = ({ setStatus, setSubmitting, setErrors }) => {
-  const { error } = useAuth();
+const EffectComponent = ({ setStatus, setSubmitting, setErrors, pwd }) => {
+  const { loginStatus, error, isLoggedIn } = useAuth();
+
+  const navigate = useNavigate()
 
   useEffect(() => {
-
-     if (error) {
+    console.log(loginStatus, isLoggedIn)
+     if (loginStatus == REQUEST_STATUS.error) {
         setStatus({ success: false });
         setErrors({ submit: <FormattedMessage id={error} /> });
         setSubmitting(false);
       }
-  
-  }, [error]); // Empty dependency array means this effect runs once on mount
+      if (loginStatus == REQUEST_STATUS.succeed && !isLoggedIn) {
+        navigate("/auth/reset-password", { state : { pwd : pwd}})
+      }
+  }, [loginStatus, isLoggedIn]); // Empty dependency array means this effect runs once on mount
 
   return null; // No need to render anything for this example
 };
@@ -180,7 +184,7 @@ const AuthLogin = () => {
                 </AnimateButton>
               </Grid>
             </Grid>
-            <EffectComponent setSubmitting={setSubmitting} setErrors={setErrors} setStatus={setStatus} />
+            <EffectComponent  pwd={values.password} setSubmitting={setSubmitting} setErrors={setErrors} setStatus={setStatus} />
           </form>
         )}
       </Formik>

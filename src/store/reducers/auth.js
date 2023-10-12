@@ -1,7 +1,7 @@
 // action - state management
 import { REQUEST_STATUS } from 'utils/apiConfig';
-import {  REGISTER, LOGIN, LOGOUT, LOGIN_ERROR, 
-          RESET_PASSWORD,  UPDATE_PASSWORD } from './actions';
+import {  REGISTER, LOGIN, LOGOUT, 
+          RESET_PASSWORD,  UPDATE_PASSWORD } from './authActions';
 
 // initial state
 export const initialState = {
@@ -9,6 +9,7 @@ export const initialState = {
   isInitialized: false,
   user: null,
   error: '',
+  loginStatus: REQUEST_STATUS.idle,
 
   resetStatus: REQUEST_STATUS.idle,
   resetError: '',
@@ -30,30 +31,25 @@ const auth = (state = initialState, action) => {
     }
 
     case LOGIN: {
-      const { user } = action.payload;
+      const { user, error, status, isLoggedIn } = action.payload;
       return {
         ...state,
-        isLoggedIn: true,
+        isLoggedIn: isLoggedIn,
         isInitialized: true,
-        user
+        user,
+        loginStatus: status,
+        error: error
       };
     }
-    case LOGIN_ERROR: {
-      const { error_msg } = action.payload;
-      return {
-        ...state,
-        isLoggedIn: false,
-        isInitialized: true,
-        error: error_msg
-      };
-    }
+
     case LOGOUT: {
       return {
         ...state,
         isInitialized: true,
         isLoggedIn: false,
         user: null,
-        error: ''
+        error: '',
+        loginStatus: 'idle'
       };
     }
 

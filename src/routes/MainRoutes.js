@@ -97,11 +97,9 @@ const MuiTableCollapse = Loadable(lazy(() => import('pages/tables/mui-table/coll
 
 // pages routing
 const AuthLogin = Loadable(lazy(() => import('pages/auth/login')));
-const AuthRegister = Loadable(lazy(() => import('pages/auth/register')));
 const AuthForgotPassword = Loadable(lazy(() => import('pages/auth/forgot-password')));
 const AuthResetPassword = Loadable(lazy(() => import('pages/auth/reset-password')));
 const AuthCheckMail = Loadable(lazy(() => import('pages/auth/check-mail')));
-const AuthCodeVerification = Loadable(lazy(() => import('pages/auth/code-verification')));
 
 const MaintenanceError = Loadable(lazy(() => import('pages/maintenance/404')));
 const MaintenanceError500 = Loadable(lazy(() => import('pages/maintenance/500')));
@@ -520,10 +518,6 @@ const MainRoutes = {
           element: <AuthLogin />
         },
         {
-          path: 'register',
-          element: <AuthRegister />
-        },
-        {
           path: 'forgot-password',
           element: <AuthForgotPassword />
         },
@@ -534,10 +528,6 @@ const MainRoutes = {
         {
           path: 'check-mail',
           element: <AuthCheckMail />
-        },
-        {
-          path: 'code-verification',
-          element: <AuthCodeVerification />
         }
       ]
     },
