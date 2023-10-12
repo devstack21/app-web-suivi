@@ -2,12 +2,11 @@ import PropTypes from 'prop-types';
 import { createContext, useEffect, useReducer } from 'react';
 
 // third-party
-import { Chance } from 'chance';
 import jwtDecode from 'jwt-decode';
 import CryptoJS from 'react-native-crypto-js';
 
 // reducer - state management
-import { LOGIN, LOGIN_ERROR, LOGOUT, RESET_PASSWORD, UPDATE_PASSWORD } from 'store/reducers/actions';
+import { LOGIN, LOGOUT, RESET_PASSWORD, UPDATE_PASSWORD } from 'store/reducers/authActions';
 import authReducer from 'store/reducers/auth';
 
 // project import
@@ -16,8 +15,6 @@ import axios from 'utils/axios';
 import { BASE_URL } from 'config';
 import { API_URL, REQUEST_STATUS } from 'utils/apiConfig';
 import { REACT_APP_JWT_SECRET_KEY } from 'config';
-
-const chance = new Chance();
 
 // constant
 const initialState = {
@@ -39,7 +36,6 @@ const verifyToken = (serviceToken) => {
 };
 
 const setSession = (serviceToken) => {
-  console.log(serviceToken)
   if (serviceToken) {
     localStorage.setItem('serviceToken', serviceToken);
     axios.defaults.headers.common.Authorization = `Token ${serviceToken}`;
@@ -104,8 +100,10 @@ export const JWTProvider = ({ children }) => {
       dispatch({
         type: LOGIN,
         payload: {
-          isLoggedIn: true,
-          user: user
+          isLoggedIn: user.reset_password ? false : true,
+          user: user,
+          error:"",
+          status: REQUEST_STATUS.succeed
         }
       });
     } else {
@@ -123,41 +121,14 @@ export const JWTProvider = ({ children }) => {
           break;
       }
       dispatch({
-        type: LOGIN_ERROR,
+        type: LOGIN,
         payload: {
           isLoggedIn: false,
-          error_msg: error_msg
+          error: error_msg,
+          status: REQUEST_STATUS.error
         }
       });
     }
-  };
-
-  const register = async (email, password, firstName, lastName) => {
-    // todo: this flow need to be recode as it not verified
-    const id = chance.bb_pin();
-    const response = await axios.post('/api/account/register', {
-      id,
-      email,
-      password,
-      firstName,
-      lastName
-    });
-    let users = response.data;
-
-    if (window.localStorage.getItem('users') !== undefined && window.localStorage.getItem('users') !== null) {
-      const localUsers = window.localStorage.getItem('users');
-      users = [
-        ...JSON.parse(localUsers),
-        {
-          id,
-          email,
-          password,
-          name: `${firstName} ${lastName}`
-        }
-      ];
-    }
-
-    window.localStorage.setItem('users', JSON.stringify(users));
   };
 
   const logout = () => {
@@ -244,7 +215,7 @@ export const JWTProvider = ({ children }) => {
 
   return <JWTContext.Provider value={{
     ...state, login, logout, initUpdatePassword,initResetPassword,
-    register, resetPassword, updateProfile, updatePassword
+    resetPassword, updateProfile, updatePassword
   }}>{children}</JWTContext.Provider>;
 };
 
