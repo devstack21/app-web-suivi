@@ -7,13 +7,14 @@ import { useTheme } from '@mui/material/styles';
 import { List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 
 // assets
-import {  LockOutlined, UserOutlined, SettingOutlined } from '@ant-design/icons';
+import {  LockOutlined, UserOutlined, TeamOutlined } from '@ant-design/icons';
+
 import { FormattedMessage } from 'react-intl';
 
 function getPathIndex(pathname) {
   let selectedTab = 0;
   switch (pathname) {
-    case '/apps/profiles/user/payment':
+    case '/apps/profiles/user/habilitations':
       selectedTab = 1;
       break;
     case '/apps/profiles/user/password':
@@ -51,9 +52,9 @@ const ProfileTab = () => {
         </ListItemIcon>
         <ListItemText primary={<FormattedMessage id='personnal-information' />} />
       </ListItemButton>
-      <ListItemButton selected={selectedIndex === 1} onClick={() => handleListItemClick(2, '/apps/profiles/user/payment')}>
+      <ListItemButton selected={selectedIndex === 1} onClick={() => handleListItemClick(2, '/apps/profiles/user/habilitations')}>
         <ListItemIcon>
-          <SettingOutlined />
+          <TeamOutlined />
         </ListItemIcon>
         <ListItemText primary={<FormattedMessage id='habilitations' />} />
       </ListItemButton>

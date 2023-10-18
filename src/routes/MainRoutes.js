@@ -25,25 +25,23 @@ const AppKanban = Loadable(lazy(() => import('pages/apps/kanban')));
 const AppKanbanBacklogs = Loadable(lazy(() => import('sections/apps/kanban/Backlogs')));
 const AppKanbanBoard = Loadable(lazy(() => import('sections/apps/kanban/Board')));
 
-const AppInvoiceCreate = Loadable(lazy(() => import('pages/apps/invoice/create')));
-const AppInvoiceDashboard = Loadable(lazy(() => import('pages/apps/invoice/dashboard')));
-const AppInvoiceList = Loadable(lazy(() => import('pages/apps/invoice/list')));
-const AppInvoiceDetails = Loadable(lazy(() => import('pages/apps/invoice/details')));
-const AppInvoiceEdit = Loadable(lazy(() => import('pages/apps/invoice/edit')));
+const AppCheckpointCreate = Loadable(lazy(() => import('pages/apps/checkpoint/create')));
+const AppInvoiceDashboard = Loadable(lazy(() => import('pages/apps/checkpoint/dashboard')));
+const AppCheckpointList = Loadable(lazy(() => import('pages/apps/checkpoint/list')));
+const AppCheckpointDetails = Loadable(lazy(() => import('pages/apps/checkpoint/details')));
+const AppCheckpointEdit = Loadable(lazy(() => import('pages/apps/checkpoint/edit')));
 
-const UserProfile = Loadable(lazy(() => import('pages/apps/profiles/user')));
-const UserTabPersonal = Loadable(lazy(() => import('sections/apps/profiles/user/TabPersonal')));
-const UserTabPayment = Loadable(lazy(() => import('sections/apps/profiles/user/TabPayment')));
-const UserTabPassword = Loadable(lazy(() => import('sections/apps/profiles/user/TabPassword')));
-const AccountTabRole = Loadable(lazy(() => import('sections/apps/profiles/account/TabRole')));
-const UserTabSettings = Loadable(lazy(() => import('sections/apps/profiles/user/TabSettings')));
 
-const AccountProfile = Loadable(lazy(() => import('pages/apps/profiles/account')));
-const AccountTabProfile = Loadable(lazy(() => import('sections/apps/profiles/account/TabProfile')));
-const AccountTabPersonal = Loadable(lazy(() => import('sections/apps/profiles/account/TabPersonal')));
-const AccountTabAccount = Loadable(lazy(() => import('sections/apps/profiles/account/TabAccount')));
-const AccountTabPassword = Loadable(lazy(() => import('sections/apps/profiles/account/TabPassword')));
-const AccountTabSettings = Loadable(lazy(() => import('sections/apps/profiles/account/TabSettings')));
+const UserRoleCardPage = Loadable(lazy(() => import('pages/apps/users/userRoles')));
+const UserAccounts = Loadable(lazy(() => import('pages/apps/accounts/list')));
+
+
+// view user profile
+const Profile = Loadable(lazy(() => import('pages/apps/profiles/user')));
+const ProfileTabPersonal = Loadable(lazy(() => import('sections/apps/profiles/user/TabPersonal')));
+const ProfileTabUserHabilitations = Loadable(lazy(() => import('sections/apps/profiles/user/TabHabilitations')));
+const ProfileTabPassword = Loadable(lazy(() => import('sections/apps/profiles/user/TabPassword')));
+
 
 const AppECommProducts = Loadable(lazy(() => import('pages/apps/e-commerce/product')));
 const AppECommProductDetails = Loadable(lazy(() => import('pages/apps/e-commerce/product-details')));
@@ -194,7 +192,7 @@ const MainRoutes = {
               ]
             },
             {
-              path: 'invoice',
+              path: 'checkpoints',
               children: [
                 {
                   path: 'dashboard',
@@ -202,19 +200,32 @@ const MainRoutes = {
                 },
                 {
                   path: 'create',
-                  element: <AppInvoiceCreate />
+                  element: <AppCheckpointCreate />
                 },
                 {
                   path: 'details/:id',
-                  element: <AppInvoiceDetails />
+                  element: <AppCheckpointDetails />
                 },
                 {
                   path: 'edit/:id',
-                  element: <AppInvoiceEdit />
+                  element: <AppCheckpointEdit />
                 },
                 {
                   path: 'list',
-                  element: <AppInvoiceList />
+                  element: <AppCheckpointList />
+                }
+              ]
+            },
+            {
+              path: 'users',
+              children: [
+                {
+                  path: 'accounts',
+                  element: <UserAccounts />,
+                },
+                {
+                  path: 'roles',
+                  element: <UserRoleCardPage />,
                 }
               ]
             },
@@ -222,55 +233,21 @@ const MainRoutes = {
               path: 'profiles',
               children: [
                 {
-                  path: 'account',
-                  element: <AccountProfile />,
-                  children: [
-                    {
-                      path: 'basic',
-                      element: <AccountTabProfile />
-                    },
-                    {
-                      path: 'personal',
-                      element: <AccountTabPersonal />
-                    },
-                    {
-                      path: 'my-account',
-                      element: <AccountTabAccount />
-                    },
-                    {
-                      path: 'password',
-                      element: <AccountTabPassword />
-                    },
-                    {
-                      path: 'role',
-                      element: <AccountTabRole />
-                    },
-                    {
-                      path: 'settings',
-                      element: <AccountTabSettings />
-                    }
-                  ]
-                },
-                {
                   path: 'user',
-                  element: <UserProfile />,
+                  element: <Profile />,
                   children: [
                     {
                       path: 'personal',
-                      element: <UserTabPersonal />
+                      element: <ProfileTabPersonal />
                     },
                     {
-                      path: 'payment',
-                      element: <UserTabPayment />
+                      path: 'habilitations',
+                      element: <ProfileTabUserHabilitations />
                     },
                     {
                       path: 'password',
-                      element: <UserTabPassword />
+                      element: <ProfileTabPassword />
                     },
-                    {
-                      path: 'settings',
-                      element: <UserTabSettings />
-                    }
                   ]
                 }
               ]
@@ -528,7 +505,7 @@ const MainRoutes = {
         {
           path: 'check-mail',
           element: <AuthCheckMail />
-        }
+        },
       ]
     },
     {

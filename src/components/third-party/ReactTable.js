@@ -17,7 +17,6 @@ import {
   Stack,
   TableCell,
   TableRow,
-  TextField,
   Tooltip,
   Typography
 } from '@mui/material';
@@ -68,7 +67,7 @@ HeaderSort.propTypes = {
 
 // ==============================|| TABLE PAGINATION ||============================== //
 
-export const TablePagination = ({ gotoPage, rows, setPageSize, pageSize, pageIndex }) => {
+export const TablePagination = ({ gotoPage, setPageSize,nbPages, pageSize, pageIndex }) => {
   const [open, setOpen] = useState(false);
 
   const handleClose = () => {
@@ -80,6 +79,7 @@ export const TablePagination = ({ gotoPage, rows, setPageSize, pageSize, pageInd
   };
 
   const handleChangePagination = (event, value) => {
+    console.log(value)
     gotoPage(value - 1);
   };
 
@@ -106,32 +106,16 @@ export const TablePagination = ({ gotoPage, rows, setPageSize, pageSize, pageInd
                 size="small"
                 sx={{ '& .MuiSelect-select': { py: 0.75, px: 1.25 } }}
               >
-                <MenuItem value={5}>5</MenuItem>
                 <MenuItem value={10}>10</MenuItem>
-                <MenuItem value={25}>25</MenuItem>
-                <MenuItem value={50}>50</MenuItem>
-                <MenuItem value={100}>100</MenuItem>
               </Select>
             </FormControl>
           </Stack>
-          <Typography variant="caption" color="secondary">
-            Go to
-          </Typography>
-          <TextField
-            size="small"
-            type="number"
-            value={pageIndex + 1}
-            onChange={(e) => {
-              const page = e.target.value ? Number(e.target.value) : 0;
-              gotoPage(page - 1);
-            }}
-            sx={{ '& .MuiOutlinedInput-input': { py: 0.75, px: 1.25, width: 36 } }}
-          />
+         
         </Stack>
       </Grid>
       <Grid item sx={{ mt: { xs: 2, sm: 0 } }}>
         <Pagination
-          count={Math.ceil(rows.length / pageSize)}
+          count={nbPages}
           page={pageIndex + 1}
           onChange={handleChangePagination}
           color="primary"

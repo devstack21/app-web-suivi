@@ -7,6 +7,7 @@ export const linkedInColor = '#0e76a8';
 export const APP_DEFAULT_PATH = '/dashboard/analytics';
 export const HORIZONTAL_MAX_ITEM = 6;
 export const DRAWER_WIDTH = 260;
+export const PAGE_ROWS = 10;
 
 export const BASE_URL = 'http://127.0.0.1:8000/ws/api/v1'
 
