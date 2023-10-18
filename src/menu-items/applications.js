@@ -32,27 +32,13 @@ const applications = {
   icon: icons.AppstoreAddOutlined,
   type: 'group',
   children: [
-    {
-      id: 'chat',
-      title: <FormattedMessage id="chat" />,
-      type: 'item',
-      url: '/apps/chat',
-      icon: icons.MessageOutlined,
-      breadcrumbs: false
-    },
+   
     {
       id: 'calendar',
       title: <FormattedMessage id="calendar" />,
       type: 'item',
       url: '/apps/calendar',
       icon: icons.CalendarOutlined
-    },
-    {
-      id: 'kanban',
-      title: <FormattedMessage id="kanban" />,
-      type: 'item',
-      icon: BuildOutlined,
-      url: '/apps/kanban/board'
     },
     {
       id: 'customer',
@@ -75,9 +61,9 @@ const applications = {
       ]
     },
     {
-      id: 'invoice',
-      title: <FormattedMessage id="invoice" />,
-      url: '/apps/invoice/dashboard',
+      id: 'checkpoints',
+      title: <FormattedMessage id="checkpoints" />,
+      url: '/apps/checkpoints/list',
       type: 'collapse',
       icon: icons.FileTextOutlined,
       breadcrumbs: true,
@@ -86,46 +72,46 @@ const applications = {
           id: 'create',
           title: <FormattedMessage id="create" />,
           type: 'item',
-          url: '/apps/invoice/create'
+          url: '/apps/checkpoints/create'
         },
         {
           id: 'details',
           title: <FormattedMessage id="details" />,
           type: 'item',
-          url: '/apps/invoice/details/1'
+          url: '/apps/checkpoints/details/1'
         },
         {
           id: 'list',
           title: <FormattedMessage id="list" />,
           type: 'item',
-          url: '/apps/invoice/list'
+          url: '/apps/checkpoints/list'
         },
         {
           id: 'edit',
           title: <FormattedMessage id="edit" />,
           type: 'item',
-          url: '/apps/invoice/edit/1'
+          url: '/apps/checkpoints/edit/1'
         }
       ]
     },
     {
-      id: 'profile',
-      title: <FormattedMessage id="profile" />,
+      id: 'users',
+      title: <FormattedMessage id="user-menu" />,
       type: 'collapse',
       icon: icons.UserOutlined,
       children: [
         {
-          id: 'user-profile',
-          title: <FormattedMessage id="user-profile" />,
+          id: 'users-roles',
+          title: <FormattedMessage id="user-group" />,
           type: 'item',
-          url: '/apps/profiles/user/personal',
+          url: '/apps/users/roles',
           breadcrumbs: false
         },
         {
-          id: 'account-profile',
-          title: <FormattedMessage id="account-profile" />,
+          id: 'users-accounts',
+          title: <FormattedMessage id="user-account" />,
           type: 'item',
-          url: '/apps/profiles/account/basic',
+          url: '/apps/users/accounts',
           breadcrumbs: false
         }
       ]

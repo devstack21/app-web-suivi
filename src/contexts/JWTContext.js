@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { createContext, useEffect, useReducer } from 'react';
 
 // third-party
-import jwtDecode from 'jwt-decode';
+//import jwtDecode from 'jwt-decode';
 import CryptoJS from 'react-native-crypto-js';
 
 // reducer - state management
@@ -28,11 +28,12 @@ const verifyToken = (serviceToken) => {
   if (!serviceToken) {
     return false;
   }
-  const decoded = jwtDecode(serviceToken);
+ // const decoded = jwtDecode(serviceToken);
   /**
    * Property 'exp' does not exist on type '<T = unknown>(token: string, options?: JwtDecodeOptions | undefined) => T'.
    */
-  return decoded.exp > Date.now() / 1000;
+ // return decoded.exp > Date.now() / 1000;
+ return true
 };
 
 const setSession = (serviceToken) => {
@@ -58,6 +59,12 @@ export const JWTProvider = ({ children }) => {
         const serviceToken = window.localStorage.getItem('serviceToken');
         if (serviceToken && verifyToken(serviceToken)) {
           setSession(serviceToken);
+          dispatch({
+            type: LOGIN,
+            payload: {
+              isLoggedIn: true,
+             // user
+            }})
           /*   const response = await axios.get('/api/account/me');
              const { user } = response.data;
              dispatch({
@@ -87,48 +94,61 @@ export const JWTProvider = ({ children }) => {
 
   const login = async (email, pwd) => {
 
-    dispatch({ type: LOGOUT })
-    const password = CryptoJS.AES.encrypt(pwd, REACT_APP_JWT_SECRET_KEY).toString();
-
-    const response = await axios.post(BASE_URL + API_URL.Login, { email, password });
-    const { success, results, errors } = response.data[0];
-
-    if (success == 1) {
-      setSession(results[0].token);
-      const user = results[0]
-      setSession(user.token)
-      dispatch({
-        type: LOGIN,
-        payload: {
-          isLoggedIn: user.reset_password ? false : true,
-          user: user,
-          error:"",
-          status: REQUEST_STATUS.succeed
+   
+    try {
+      dispatch({ type: LOGOUT })
+      const password = CryptoJS.AES.encrypt(pwd, REACT_APP_JWT_SECRET_KEY).toString();
+  
+      const response = await axios.post(BASE_URL + API_URL.Login, { email, password });
+      const { success, results, errors } = response.data[0];
+  
+      if (success == 1) {
+        setSession(results[0].token);
+        const user = results[0]
+        setSession(user.token)
+        dispatch({
+          type: LOGIN,
+          payload: {
+            isLoggedIn: user.reset_password ? false : true,
+            user: user,
+            error:"",
+            status: REQUEST_STATUS.succeed
+          }
+        });
+      } else {
+        let error_msg
+  
+        switch (errors[0].error_code) {
+          case "LO001":
+            error_msg = "user-not-found"
+            break;
+          case "LO003":
+            error_msg = "password-incorect"
+            break;
+          default:
+            error_msg = "password-incorect"
+            break;
         }
-      });
-    } else {
-      let error_msg
-
-      switch (errors[0].error_code) {
-        case "LO001":
-          error_msg = "user-not-found"
-          break;
-        case "LO003":
-          error_msg = "password-incorect"
-          break;
-        default:
-          error_msg = "password-incorect"
-          break;
+        dispatch({
+          type: LOGIN,
+          payload: {
+            isLoggedIn: false,
+            error: error_msg,
+            status: REQUEST_STATUS.error
+          }
+        });
       }
+    } catch (err) {
       dispatch({
         type: LOGIN,
         payload: {
           isLoggedIn: false,
-          error: error_msg,
+          error: 'error-network',
           status: REQUEST_STATUS.error
         }
       });
     }
+   
   };
 
   const logout = () => {
@@ -147,30 +167,35 @@ export const JWTProvider = ({ children }) => {
   };
 
   const resetPassword = async (email, phone) => {
-    dispatch({type: RESET_PASSWORD, payload: {status: REQUEST_STATUS.loading}})
-    const response = await axios.post(BASE_URL + API_URL.ResetPassword, { email, phone });
-    const { success, errors } = response.data[0];
-    if (success) {
-      dispatch(
-        {
-          type: RESET_PASSWORD,
-          payload: {
-            error: '',
-            status: REQUEST_STATUS.succeed
-          }
-        });
-    } else {
-      let error_msg
-      switch (errors[0].error_code) {
-        case "LO007":
-          error_msg = "user-not-found"
-          break;
-        default:
-          error_msg = "error-network"
-          break;
+    try {
+      dispatch({type: RESET_PASSWORD, payload: {status: REQUEST_STATUS.loading}})
+      const response = await axios.post(BASE_URL + API_URL.ResetPassword, { email, phone });
+      const { success, errors } = response.data[0];
+      if (success) {
+        dispatch(
+          {
+            type: RESET_PASSWORD,
+            payload: {
+              error: '',
+              status: REQUEST_STATUS.succeed
+            }
+          });
+      } else {
+        let error_msg
+        switch (errors[0].error_code) {
+          case "LO007":
+            error_msg = "user-not-found"
+            break;
+          default:
+            error_msg = "error-network"
+            break;
+        }
+        dispatch({type: RESET_PASSWORD,payload: {error: error_msg, status: REQUEST_STATUS.error}});
       }
-      dispatch({type: RESET_PASSWORD,payload: {error: error_msg, status: REQUEST_STATUS.error}});
+    } catch (err) {
+      dispatch({type: RESET_PASSWORD,payload: {error: 'error-network', status: REQUEST_STATUS.error}});
     }
+    
   };
 
 
@@ -186,23 +211,28 @@ export const JWTProvider = ({ children }) => {
 
   const updatePassword = async (old, newPwd) => {
 
-    dispatch({ type: UPDATE_PASSWORD, payload: { status: REQUEST_STATUS.loading } })
-    const old_password = CryptoJS.AES.encrypt(old, REACT_APP_JWT_SECRET_KEY).toString();
-    const new_password = CryptoJS.AES.encrypt(newPwd, REACT_APP_JWT_SECRET_KEY).toString();
-
-    const response = await axios.post(BASE_URL + API_URL.UpdatePassword, { old_password, new_password });
-    const { success, errors } = response.data[0];
-    if (success) {
-      dispatch({ type: UPDATE_PASSWORD, payload: { status: REQUEST_STATUS.succeed, error: '' } })
-    } else {
-      switch (errors[0].error_code) {
-        case "LO004":
-          dispatch({ type: UPDATE_PASSWORD, payload: { status: REQUEST_STATUS.error, error: "old-password-incorrect" } })
-          break;
-        default:
-          dispatch({ type: UPDATE_PASSWORD, payload: { status: REQUEST_STATUS.error, error: "password-update-error" } })
-          break;
+    try {
+      dispatch({ type: UPDATE_PASSWORD, payload: { status: REQUEST_STATUS.loading } })
+      const old_password = CryptoJS.AES.encrypt(old, REACT_APP_JWT_SECRET_KEY).toString();
+      const new_password = CryptoJS.AES.encrypt(newPwd, REACT_APP_JWT_SECRET_KEY).toString();
+  
+      const response = await axios.post(BASE_URL + API_URL.UpdatePassword, { old_password, new_password });
+      const { success, errors } = response.data[0];
+      if (success) {
+        dispatch({ type: UPDATE_PASSWORD, payload: { status: REQUEST_STATUS.succeed, error: '' } })
+      } else {
+        switch (errors[0].error_code) {
+          case "LO004":
+            dispatch({ type: UPDATE_PASSWORD, payload: { status: REQUEST_STATUS.error, error: "old-password-incorrect" } })
+            break;
+          default:
+            dispatch({ type: UPDATE_PASSWORD, payload: { status: REQUEST_STATUS.error, error: "password-update-error" } })
+            break;
+        }
       }
+    } catch (err) {
+      dispatch({ type: UPDATE_PASSWORD, payload: { status: REQUEST_STATUS.error, error: "error-network" } })
+
     }
   };
 

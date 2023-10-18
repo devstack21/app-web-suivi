@@ -12,6 +12,8 @@ import productReducer from './product';
 import cartReducer from './cart';
 import kanban from './kanban';
 import invoice from './invoice';
+import roleReducer from './Roles/roleReducer';
+import checkpointsReducer from './Accounts/accountsReducer';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -27,6 +29,20 @@ const reducers = combineReducers({
       keyPrefix: 'mantis-js-'
     },
     cartReducer
+  ),
+  role: persistReducer(
+    {
+      key: 'role',
+      storage
+    },
+    roleReducer
+  ),
+  account: persistReducer(
+    {
+      key: 'accounts',
+      storage
+    },
+    checkpointsReducer
   ),
   product: productReducer,
   kanban,
