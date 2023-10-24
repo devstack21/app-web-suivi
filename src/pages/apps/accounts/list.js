@@ -322,6 +322,7 @@ const AccountListPage = () => {
   useEffect(() => {
     dispatch(getListAccounts({ page: currentPage, nb: PAGE_ROWS }))
   }, [currentPage])
+  
   useEffect(() => {}, [listStatus])
 
   useEffect(() => {

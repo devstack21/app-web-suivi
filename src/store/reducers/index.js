@@ -11,9 +11,10 @@ import snackbar from './snackbar';
 import productReducer from './product';
 import cartReducer from './cart';
 import kanban from './kanban';
-import invoice from './invoice';
 import roleReducer from './Roles/roleReducer';
-import checkpointsReducer from './Accounts/accountsReducer';
+import accountsReducer from './Accounts/accountsReducer';
+import checkpointsReducer from './checkpoints/checkpointsReducer';
+import betailReducer from './Betail/betailReducer';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -30,6 +31,28 @@ const reducers = combineReducers({
     },
     cartReducer
   ),
+  account: persistReducer(
+    {
+      key: 'accounts',
+      storage
+    },
+    accountsReducer
+  ),
+  
+  betail: persistReducer(
+    {
+      key: 'betail',
+      storage
+    },
+    betailReducer
+  ),
+  checkpoint: persistReducer(
+    {
+      key: 'checkpoint',
+      storage
+    },
+    checkpointsReducer
+  ),
   role: persistReducer(
     {
       key: 'role',
@@ -37,16 +60,8 @@ const reducers = combineReducers({
     },
     roleReducer
   ),
-  account: persistReducer(
-    {
-      key: 'accounts',
-      storage
-    },
-    checkpointsReducer
-  ),
   product: productReducer,
   kanban,
-  invoice
 });
 
 export default reducers;

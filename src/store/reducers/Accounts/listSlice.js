@@ -19,7 +19,9 @@ const initialState = {
 export const getListAccounts = createAsyncThunk(
     "accounts/list",
     async (args) => {
-        const { data } = await axios.get(`${BASE_URL}${API_URL.ListAccounts}?page=${args.page}&nbre_line=${args.nb}`);
+        let filter = ''
+        if (args.role) filter = `&role=${args.role}`
+        const { data } = await axios.get(`${BASE_URL}${API_URL.ListAccounts}?page=${args.page}&nbre_line=${args.nb}${filter}`);
         return data[0]
     }
 

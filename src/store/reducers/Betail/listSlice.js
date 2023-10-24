@@ -12,52 +12,60 @@ const initialState = {
 
     listStatus: REQUEST_STATUS.idle,
     listError: '',
-    checkpointsTab: [],
+    betailTab: [],
     nbPages: ''
 };
 
-export const getListCheckpoints = createAsyncThunk(
-    "checkpoints/list",
+export const getListBetail = createAsyncThunk(
+    "betail/list",
     async (args) => {
-        const { data } = await axios.get(`${BASE_URL}${API_URL.ListCheckpoints}?page=${args.page}`);
+        const { data } = await axios.get(`${BASE_URL}${API_URL.ListBetail}?page=${args.page}`);
         return data[0]
     }
 
 )
 
-const ListAccountslice = createSlice({
-    name: 'checkpoints',
+const ListBetailslice = createSlice({
+    name: 'betail',
     initialState: initialState,
+    reducers: {
+        initListBetail: (state) => {
+            state.listStatus = REQUEST_STATUS.idle
+            state.betailTab = []
+        }
+    }
+    ,
     extraReducers: (builder) => {
         builder
-            .addCase(getListCheckpoints.pending, (state) => {
+            .addCase(getListBetail.pending, (state) => {
                 state.listStatus = REQUEST_STATUS.loading
                 state.listError = ''
-                state.checkpointsTab = []
+                state.betailTab = []
             })
 
-            .addCase(getListCheckpoints.fulfilled, (state, action) => {
+            .addCase(getListBetail.fulfilled, (state, action) => {
                 const { success, results,nombre_page } = action.payload;
                 if (success) {
                     state.listStatus = REQUEST_STATUS.succeed,
                     state.listError = ''
-                    state.checkpointsTab = results
+                    state.betailTab = results
                     state.nbPages = nombre_page
                 } else {
                     state.listStatus = REQUEST_STATUS.error,
-                    state.listError = 'error-list-accounts'
-                    state.checkpointsTab = []
+                    state.listError = 'error-list-betails'
+                    state.betailTab = []
                 }
             })
 
-            .addCase(getListCheckpoints.rejected, (state) => {
+            .addCase(getListBetail.rejected, (state) => {
                 state.listStatus = REQUEST_STATUS.error,
                 state.listError = 'error-network'
-                state.checkpointsTab = []
+                state.betailTab = []
             })
     }
 });
 
 // Reducer
-export default ListAccountslice.reducer;
+export default ListBetailslice.reducer;
 
+export const { initListBetail } = ListBetailslice.actions

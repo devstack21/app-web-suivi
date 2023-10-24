@@ -3,12 +3,14 @@ import { combineReducers } from 'redux';
 import listReducer from './listSlice';
 import createSlice from './createSlice';
 import editSlice from './editSlice';
+import districtsSlice from './districtsSlice';
 // Import other reducers...
 
-const accountsReducer = combineReducers({
+const checkpointsReducer = combineReducers({
   create: createSlice,
+  disctricts: districtsSlice,
   edit: editSlice,
-  list: listReducer
+  list: listReducer,
 });
 
-export default accountsReducer;
+export default checkpointsReducer;
