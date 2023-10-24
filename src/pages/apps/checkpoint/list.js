@@ -5,7 +5,6 @@ import { useNavigate } from 'react-router';
 // material-ui
 import {
   Box,
-  Chip,
   LinearProgress,
   Typography,
   Stack,
@@ -15,40 +14,45 @@ import {
   TableHead,
   TableRow,
   useMediaQuery,
-  Tooltip
+  Tooltip,
+  Pagination,
+  Grid,
+  Button
 } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
 
 // third-party
 import { useExpanded, useFilters, useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } from 'react-table';
-import { DeleteTwoTone, EditTwoTone, EyeTwoTone } from '@ant-design/icons';
+import { DeleteTwoTone, EditTwoTone, EyeTwoTone,PlusOutlined } from '@ant-design/icons';
 
 // project import
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
-import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
-import { CSVExport, HeaderSort, IndeterminateCheckbox, TablePagination, TableRowSelection } from 'components/third-party/ReactTable';
+import { CSVExport, HeaderSort, IndeterminateCheckbox, TableRowSelection } from 'components/third-party/ReactTable';
 import AlertColumnDelete from 'sections/apps/kanban/Board/AlertColumnDelete';
 
 import { dispatch, useSelector } from 'store';
 import { openSnackbar } from 'store/reducers/snackbar';
-import { alertPopupToggle, getInvoiceDelete, getInvoiceList } from 'store/reducers/invoice';
+import { alertPopupToggle, getInvoiceDelete } from 'store/reducers/invoice';
 import { renderFilterTypes, GlobalFilter, DateColumnFilter } from 'utils/react-table';
-
-const avatarImage = require.context('assets/images/users', true);
+import { getListCheckpoints } from 'store/reducers/checkpoints/listSlice';
+import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
+import { FormattedMessage } from 'react-intl';
+import { REQUEST_STATUS } from 'utils/apiConfig';
+import { format } from 'date-fns';
 
 // ==============================|| REACT TABLE ||============================== //
 
 function ReactTable({ columns, data }) {
   const theme = useTheme();
+  const navigate = useNavigate()
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
   const defaultColumn = useMemo(() => ({ Filter: DateColumnFilter }), []);
   const filterTypes = useMemo(() => renderFilterTypes, []);
   const initialState = useMemo(
     () => ({
       filters: [{ id: 'status', value: '' }],
-      hiddenColumns: ['avatar', 'email'],
       pageIndex: 0,
       pageSize: 5
     }),
@@ -59,11 +63,8 @@ function ReactTable({ columns, data }) {
     getTableBodyProps,
     headerGroups,
     prepareRow,
-    rows,
     page,
-    gotoPage,
-    setPageSize,
-    state: { globalFilter, selectedRowIds, pageIndex, pageSize },
+    state: { globalFilter, selectedRowIds },
     preGlobalFilteredRows,
     setGlobalFilter,
   } = useTable(
@@ -85,11 +86,10 @@ function ReactTable({ columns, data }) {
   const componentRef = useRef(null);
 
   // ================ Tab ================
- 
 
   return (
     <>
-      
+
       <Stack direction={matchDownSM ? 'column' : 'row'} spacing={1} justifyContent="space-between" alignItems="center" sx={{ p: 3, pb: 3 }}>
         <Stack direction={matchDownSM ? 'column' : 'row'} spacing={2}>
           <GlobalFilter
@@ -101,16 +101,11 @@ function ReactTable({ columns, data }) {
         </Stack>
         <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={matchDownSM ? 1 : 0}>
           <TableRowSelection selected={Object.keys(selectedRowIds).length} />
-          {headerGroups.map((group, index) => (
-            <Stack key={index} direction={matchDownSM ? 'column' : 'row'} spacing={1} {...group.getHeaderGroupProps()}>
-              {group.headers.map((column, i) => (
-                <Box key={i} {...column.getHeaderProps([{ className: column.className }])}>
-                  {column.canFilter ? column.render('Filter') : null}
-                </Box>
-              ))}
-            </Stack>
-          ))}
-          <CSVExport data={data} filename={'invoice-list.csv'} />
+          
+          <Button variant="contained" startIcon={<PlusOutlined />} onClick={() => navigate("/apps/checkpoints/create")}  size="small">
+            <FormattedMessage id="add-checkpoint" />
+          </Button>
+          <CSVExport data={data} filename={'checkpoints-list.csv'} />
         </Stack>
       </Stack>
       <Box ref={componentRef}>
@@ -147,11 +142,6 @@ function ReactTable({ columns, data }) {
                 </Fragment>
               );
             })}
-            <TableRow sx={{ '&:hover': { bgcolor: 'transparent !important' } }}>
-              <TableCell sx={{ p: 2, py: 3 }} colSpan={9}>
-                <TablePagination gotoPage={gotoPage} rows={rows} setPageSize={setPageSize} pageSize={pageSize} pageIndex={pageIndex} />
-              </TableCell>
-            </TableRow>
           </TableBody>
         </Table>
       </Box>
@@ -166,43 +156,9 @@ ReactTable.propTypes = {
 
 // ==============================|| INVOICE - LIST ||============================== //
 
-const CustomerCell = ({ row }) => {
-  const { values } = row;
-  return (
-    <Stack direction="row" spacing={1.5} alignItems="center">
-      <Avatar alt="Avatar" size="sm" src={avatarImage(`./avatar-${!values.avatar ? 1 : values.avatar}.png`)} />
-      <Stack spacing={0}>
-        <Typography variant="subtitle1">{values.customer_name}</Typography>
-        <Typography variant="caption" color="textSecondary">
-          {values.email}
-        </Typography>
-      </Stack>
-    </Stack>
-  );
-};
 
-CustomerCell.propTypes = {
-  row: PropTypes.object
-};
-
-// Status
-const StatusCell = ({ value }) => {
-  switch (value) {
-    case 'Cancelled':
-      return <Chip color="error" label="Cancelled" size="small" variant="light" />;
-    case 'Paid':
-      return <Chip color="success" label="Paid" size="small" variant="light" />;
-    case 'Unpaid':
-    default:
-      return <Chip color="info" label="Unpaid" size="small" variant="light" />;
-  }
-};
-
-StatusCell.propTypes = {
-  value: PropTypes.string
-};
-
-// Action Cell
+const UserCell = ({ value }) => { return (<Typography variant="subtitle1">{value.length}</Typography>) };
+const DateCell = ({ value }) => {return (<Typography variant="subtitle1">{format(new Date(value), 'dd/MM/yyyy')}</Typography>)};
 const ActionCell = (row, setGetInvoiceId, setInvoiceId, navigation, theme) => {
   return (
     <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
@@ -249,6 +205,13 @@ const ActionCell = (row, setGetInvoiceId, setInvoiceId, navigation, theme) => {
   );
 };
 
+
+UserCell.propTypes = { value: PropTypes.array };
+DateCell.propTypes = { value: PropTypes.string };
+
+
+// Action Cell
+
 ActionCell.propTypes = {
   row: PropTypes.array,
   setInvoiceId: PropTypes.func,
@@ -272,25 +235,28 @@ SelectionHeader.propTypes = {
 };
 
 const List = () => {
-  const { lists, alertPopup } = useSelector((state) => state.invoice);
-  useEffect(() => {
-    if (lists.length === 0) {
-      dispatch(getInvoiceList());
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
-  const [list, setList] = useState([]);
-  const [invoiceId, setInvoiceId] = useState(0);
-  const [getInvoiceId, setGetInvoiceId] = useState(0);
-  useEffect(() => {
-    setList(lists);
-  }, [lists]);
   const navigation = useNavigate();
+  const theme = useTheme();
+
+  const [checkpointId, setCheckpointId] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [getCheckpointId, setGetCheckpointId] = useState(0);
+
+  const { listStatus, checkpointsTab, nbPages, listError } = useSelector((state) => state.checkpoint.list)
+
+
+  useEffect(() => {
+    dispatch(getListCheckpoints({ page: currentPage }))
+  }, [currentPage])
+
+  useEffect(() => { }, [listStatus])
+
+  const handleChangePage = (event, newPage) => { setCurrentPage(newPage); };
 
   const handleClose = (status) => {
     if (status) {
-      dispatch(getInvoiceDelete(invoiceId));
+      dispatch(getInvoiceDelete(checkpointId));
       dispatch(
         openSnackbar({
           open: true,
@@ -310,6 +276,7 @@ const List = () => {
       })
     );
   };
+
   const columns = useMemo(
     () => [
       {
@@ -321,69 +288,84 @@ const List = () => {
         disableFilters: true
       },
       {
-        Header: 'Invoice Id',
-        accessor: 'id',
+        Header: ' Id',
+        accessor: 'code',
         className: 'cell-center',
         disableFilters: true
       },
       {
-        Header: 'User Name',
-        accessor: 'customer_name',
+        Header: <FormattedMessage id='name' />,
+        accessor: 'libelle',
         disableFilters: true,
-        Cell: CustomerCell
       },
       {
-        Header: 'Avatar',
-        accessor: 'avatar',
-        disableSortBy: true,
-        disableFilters: true
-      },
-      {
-        Header: 'Email',
-        accessor: 'email',
-        disableFilters: true
-      },
-      {
-        Header: 'Create Date',
-        accessor: 'date'
-      },
-      {
-        Header: 'Due Date',
-        accessor: 'due_date'
-      },
-      {
-        Header: 'Quantity',
-        accessor: 'quantity',
-        disableFilters: true
-      },
-      {
-        Header: 'Status',
-        accessor: 'status',
+        Header: <FormattedMessage id='city' />,
+        accessor: 'district[0].ville',
         disableFilters: true,
-        filter: 'includes',
-        Cell: StatusCell
+      },
+      {
+        Header: <FormattedMessage id='created-at' />,
+        accessor: 'createat',
+        Cell: DateCell
+      },
+      {
+        Header: <FormattedMessage id='user' />,
+        accessor: 'users',
+        disableFilters: true,
+        Cell: UserCell
       },
       {
         Header: 'Actions',
         className: 'cell-center',
         disableSortBy: true,
-        Cell: ({ row }) => ActionCell(row, setGetInvoiceId, setInvoiceId, navigation, theme)
+        Cell: ({ row }) => ActionCell(row, setGetCheckpointId, setCheckpointId, navigation, theme)
       }
     ],
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   );
 
-  const theme = useTheme();
+  if (listStatus == REQUEST_STATUS.loading) {
+    return (
+      <EmptyUserCard title={<FormattedMessage id='loading' />} />
+    )
+  }
+
+  if (listStatus == REQUEST_STATUS.error) {
+    return (
+      <EmptyUserCard title={<FormattedMessage id={listError} />} />
+    )
+  }
+
+
 
   return (
     <>
       <MainCard content={false}>
-        <ScrollX>
-          <ReactTable columns={columns} data={list} />
-        </ScrollX>
+        {
+          checkpointsTab?.length > 0 ?
+            <>
+              <ScrollX>
+                <ReactTable columns={columns} data={checkpointsTab} />
+              </ScrollX>
+              <Grid sx={{ p: 2, py: 3 }} colSpan={9} >
+                <Grid item sx={{ mt: { xs: 2, sm: 0 } }}>
+                  <Pagination
+                    count={nbPages}
+                    page={currentPage}
+                    onChange={handleChangePage}
+                    color="primary"
+                    variant="combined"
+                  />
+                </Grid>
+              </Grid>
+            </>
+            :
+            <EmptyUserCard title={<FormattedMessage id='no-checkpoint' />} />
+
+        }
       </MainCard>
-      <AlertColumnDelete title={`${getInvoiceId}`} open={alertPopup} handleClose={handleClose} />
+      <AlertColumnDelete title={`${getCheckpointId}`} open={false} handleClose={handleClose} />
     </>
   );
 };

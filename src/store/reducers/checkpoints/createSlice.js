@@ -14,20 +14,20 @@ const initialState = {
     createError: '',
 };
 
-export const createAccounts = createAsyncThunk(
-    "accounts/create",
+export const createCheckpoints = createAsyncThunk(
+    "checkpoints/create",
     async (args) => {
-        const { data } = await axios.post(`${BASE_URL}${API_URL.CreateAccount}`, args);
+        const { data } = await axios.post(`${BASE_URL}${API_URL.CreateCheckpoint}`, args);
         return data[0]
     }
 
 )
 
-const CreateAccountslice = createSlice({
-    name: 'account',
+const CreateCheckpointlice = createSlice({
+    name: 'checkpoints',
     initialState: initialState,
     reducers: {
-        initCreateUser: (state) => {
+        initCreateCheckpoint: (state) => {
             state.createStatus = REQUEST_STATUS.idle
             state.createError = ''
         }
@@ -35,12 +35,12 @@ const CreateAccountslice = createSlice({
     ,
     extraReducers: (builder) => {
         builder
-            .addCase(createAccounts.pending, (state) => {
+            .addCase(createCheckpoints.pending, (state) => {
                 state.createStatus = REQUEST_STATUS.loading
                 state.createError = ''
             })
 
-            .addCase(createAccounts.fulfilled, (state, action) => {
+            .addCase(createCheckpoints.fulfilled, (state, action) => {
                 const { success, errors } = action.payload;
                 if (success) {
                     state.createStatus = REQUEST_STATUS.succeed,
@@ -48,14 +48,14 @@ const CreateAccountslice = createSlice({
                 } else {
                     let error_msg
                     switch (errors[0].error_code) {
-                        case "US002":
-                            error_msg = 'user-email-exist'
+                        case "CCHP008":
+                            error_msg = 'checkpoint-exist'
                             break;
-                        case "US003":
-                            error_msg = 'user-number-exist'
+                        case 'CCHP007':
+                            error_msg = 'checkpoint-user-exist'
                             break;
                         default:
-                            error_msg = 'error-create-account'
+                            error_msg = 'error-create-checkpoint'
                             break;
                     }
                     state.createStatus = REQUEST_STATUS.error,
@@ -64,7 +64,7 @@ const CreateAccountslice = createSlice({
                 }
             })
 
-            .addCase(createAccounts.rejected, (state) => {
+            .addCase(createCheckpoints.rejected, (state) => {
                 state.createStatus = REQUEST_STATUS.error,
                     state.createError = 'error-network'
                 state.accountsTab = []
@@ -73,8 +73,8 @@ const CreateAccountslice = createSlice({
 });
 
 // Reducer
-export default CreateAccountslice.reducer;
+export default CreateCheckpointlice.reducer;
 
-export const { initCreateUser } = CreateAccountslice.actions
+export const { initCreateCheckpoint } = CreateCheckpointlice.actions
 
 

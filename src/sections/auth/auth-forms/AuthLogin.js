@@ -40,7 +40,6 @@ const EffectComponent = ({ setStatus, setSubmitting, setErrors, pwd }) => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    console.log(loginStatus, isLoggedIn)
      if (loginStatus == REQUEST_STATUS.error) {
         setStatus({ success: false });
         setErrors({ submit: <FormattedMessage id={error} /> });

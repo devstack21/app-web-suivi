@@ -5,10 +5,10 @@ import createSlice from './createSlice';
 import editSlice from './editSlice';
 // Import other reducers...
 
-const checkpointsReducer = combineReducers({
+const accountsReducer = combineReducers({
   create: createSlice,
   edit: editSlice,
   list: listReducer
 });
 
-export default checkpointsReducer;
+export default accountsReducer;

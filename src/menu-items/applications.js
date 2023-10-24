@@ -68,23 +68,26 @@ const applications = {
       icon: icons.FileTextOutlined,
       breadcrumbs: true,
       children: [
+        
+        
+        {
+          id: 'list',
+          title: <FormattedMessage id="list" />,
+          type: 'item',
+          url: '/apps/checkpoints/list'
+        },
         {
           id: 'create',
           title: <FormattedMessage id="create" />,
           type: 'item',
-          url: '/apps/checkpoints/create'
+          url: '/apps/checkpoints/create',
+          visible: false
         },
         {
           id: 'details',
           title: <FormattedMessage id="details" />,
           type: 'item',
           url: '/apps/checkpoints/details/1'
-        },
-        {
-          id: 'list',
-          title: <FormattedMessage id="list" />,
-          type: 'item',
-          url: '/apps/checkpoints/list'
         },
         {
           id: 'edit',

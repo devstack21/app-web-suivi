@@ -12,52 +12,50 @@ const initialState = {
 
     listStatus: REQUEST_STATUS.idle,
     listError: '',
-    checkpointsTab: [],
-    nbPages: ''
+    districtsTab: [],
 };
 
-export const getListCheckpoints = createAsyncThunk(
-    "checkpoints/list",
-    async (args) => {
-        const { data } = await axios.get(`${BASE_URL}${API_URL.ListCheckpoints}?page=${args.page}`);
+export const getListDistricts = createAsyncThunk(
+    "districts/list",
+    async () => {
+        const { data } = await axios.get(`${BASE_URL}${API_URL.ListDistrcits}`);
         return data[0]
     }
 
 )
 
-const ListAccountslice = createSlice({
-    name: 'checkpoints',
+const ListDistrictslice = createSlice({
+    name: 'districts',
     initialState: initialState,
     extraReducers: (builder) => {
         builder
-            .addCase(getListCheckpoints.pending, (state) => {
+            .addCase(getListDistricts.pending, (state) => {
                 state.listStatus = REQUEST_STATUS.loading
                 state.listError = ''
-                state.checkpointsTab = []
+                state.districtsTab = []
             })
 
-            .addCase(getListCheckpoints.fulfilled, (state, action) => {
-                const { success, results,nombre_page } = action.payload;
+            .addCase(getListDistricts.fulfilled, (state, action) => {
+                const { success, results } = action.payload;
                 if (success) {
                     state.listStatus = REQUEST_STATUS.succeed,
                     state.listError = ''
-                    state.checkpointsTab = results
-                    state.nbPages = nombre_page
+                    state.districtsTab = results
                 } else {
                     state.listStatus = REQUEST_STATUS.error,
                     state.listError = 'error-list-accounts'
-                    state.checkpointsTab = []
+                    state.districtsTab = []
                 }
             })
 
-            .addCase(getListCheckpoints.rejected, (state) => {
+            .addCase(getListDistricts.rejected, (state) => {
                 state.listStatus = REQUEST_STATUS.error,
                 state.listError = 'error-network'
-                state.checkpointsTab = []
+                state.districtsTab = []
             })
     }
 });
 
 // Reducer
-export default ListAccountslice.reducer;
+export default ListDistrictslice.reducer;
 
