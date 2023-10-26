@@ -20,6 +20,8 @@ export const API_URL = {
 	ResetPassword: '/reset/password/',
 	UpdatePassword: '/change/password/',
 	UpdateRole: '/role/update/',
+
+	TendanceVilleDashboard: '/alertVilleStat/',
 };
 
 

@@ -16,6 +16,8 @@ import accountsReducer from './Accounts/accountsReducer';
 import checkpointsReducer from './checkpoints/checkpointsReducer';
 import betailReducer from './Betail/betailReducer';
 
+import tendanceVilleReducer from './minepia/dashboard/tendanceVilleReducer';
+
 // ==============================|| COMBINE REDUCERS ||============================== //
 
 const reducers = combineReducers({
@@ -62,6 +64,18 @@ const reducers = combineReducers({
   ),
   product: productReducer,
   kanban,
+
+
+
+  tendanceVille: persistReducer(
+    {
+      key: 'tendanceVille',
+      storage
+    },
+    tendanceVilleReducer
+  ),
+
+  
 });
 
 export default reducers;
