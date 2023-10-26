@@ -32,75 +32,32 @@ const applications = {
   icon: icons.AppstoreAddOutlined,
   type: 'group',
   children: [
-   
-    {
-      id: 'calendar',
-      title: <FormattedMessage id="calendar" />,
-      type: 'item',
-      url: '/apps/calendar',
-      icon: icons.CalendarOutlined
-    },
-    {
-      id: 'customer',
-      title: <FormattedMessage id="customer" />,
-      type: 'collapse',
-      icon: icons.CustomerServiceOutlined,
-      children: [
-        {
-          id: 'customer-list',
-          title: <FormattedMessage id="list" />,
-          type: 'item',
-          url: '/apps/customer/customer-list'
-        },
-        {
-          id: 'customer-card',
-          title: <FormattedMessage id="cards" />,
-          type: 'item',
-          url: '/apps/customer/customer-card'
-        }
-      ]
-    },
     {
       id: 'checkpoints',
       title: <FormattedMessage id="checkpoints" />,
-      url: '/apps/checkpoints/list',
       type: 'collapse',
       icon: icons.FileTextOutlined,
       breadcrumbs: true,
       children: [
-        
-        
         {
           id: 'list',
-          title: <FormattedMessage id="list" />,
+          title: <FormattedMessage id="checkpoint-list" />,
           type: 'item',
           url: '/apps/checkpoints/list'
         },
         {
-          id: 'create',
-          title: <FormattedMessage id="create" />,
+          id: 'agents',
+          title: <FormattedMessage id="agent-list" />,
           type: 'item',
-          url: '/apps/checkpoints/create',
-          visible: false
+          url: '/apps/checkpoints/agents'
         },
-        {
-          id: 'details',
-          title: <FormattedMessage id="details" />,
-          type: 'item',
-          url: '/apps/checkpoints/details/1'
-        },
-        {
-          id: 'edit',
-          title: <FormattedMessage id="edit" />,
-          type: 'item',
-          url: '/apps/checkpoints/edit/1'
-        }
       ]
     },
     {
       id: 'users',
       title: <FormattedMessage id="user-menu" />,
       type: 'collapse',
+      url: '/apps/users/accounts',
       icon: icons.UserOutlined,
       children: [
         {
@@ -119,46 +76,6 @@ const applications = {
         }
       ]
     },
-    {
-      id: 'e-commerce',
-      title: <FormattedMessage id="e-commerce" />,
-      type: 'collapse',
-      icon: icons.ShoppingCartOutlined,
-      children: [
-        {
-          id: 'products',
-          title: <FormattedMessage id="products" />,
-          type: 'item',
-          url: '/apps/e-commerce/products'
-        },
-        {
-          id: 'product-details',
-          title: <FormattedMessage id="product-details" />,
-          type: 'item',
-          url: '/apps/e-commerce/product-details/1',
-          breadcrumbs: false
-        },
-        {
-          id: 'product-list',
-          title: <FormattedMessage id="product-list" />,
-          type: 'item',
-          url: '/apps/e-commerce/product-list',
-          breadcrumbs: false
-        },
-        {
-          id: 'add-new-product',
-          title: <FormattedMessage id="add-new-product" />,
-          type: 'item',
-          url: '/apps/e-commerce/add-new-product'
-        },
-        {
-          id: 'checkout',
-          title: <FormattedMessage id="checkout" />,
-          type: 'item',
-          url: '/apps/e-commerce/checkout'
-        }
-      ]
-    }
   ]
 };
 

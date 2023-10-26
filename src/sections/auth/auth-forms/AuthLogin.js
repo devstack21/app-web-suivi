@@ -30,6 +30,7 @@ import AnimateButton from 'components/@extended/AnimateButton';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import { dispatch } from 'store';
 import { REQUEST_STATUS } from 'utils/apiConfig';
+import { RESET_PASSWORD } from 'store/reducers/authActions';
 
 
 // ============================|| JWT - LOGIN ||============================ //
@@ -164,7 +165,7 @@ const AuthLogin = () => {
                 <Stack direction="row"  spacing={2}>
                   <Link variant="h6"  
                   component={RouterLink} 
-                  onClick={() => dispatch({type: INIT_RESET_PASSWORD, payload:{resetStatus: REQUEST_STATUS.idle}})}
+                  onClick={() => dispatch({type: RESET_PASSWORD, payload:{resetStatus: REQUEST_STATUS.idle}})}
                   to={isLoggedIn ? '/auth/forgot-password' : '/forgot-password'} color="blue">
                     <FormattedMessage id="forgot-password" />
                   </Link>

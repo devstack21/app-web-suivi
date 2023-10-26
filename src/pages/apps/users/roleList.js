@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router';
 // material-ui
 import {
   Box,
+  Chip,
   Typography,
   Stack,
   Table,
@@ -33,7 +34,6 @@ import AlertColumnDelete from 'sections/apps/kanban/Board/AlertColumnDelete';
 
 import { dispatch, useSelector } from 'store';
 import { renderFilterTypes, GlobalFilter, DateColumnFilter } from 'utils/react-table';
-import { getListCheckpoints } from 'store/reducers/checkpoints/listSlice';
 import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
 import { FormattedMessage } from 'react-intl';
 import { REQUEST_STATUS } from 'utils/apiConfig';
@@ -41,6 +41,7 @@ import { format } from 'date-fns';
 import { getDetailCheckpoint } from 'store/reducers/checkpoints/detailSlice';
 import { initEditCheckpoint } from 'store/reducers/checkpoints/editSlice';
 import { initCreateCheckpoint } from 'store/reducers/checkpoints/createSlice';
+import { getListRole } from 'store/reducers/Roles/listSlice';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -186,7 +187,7 @@ const ActionCell = (row, setGetInvoiceId, navigation, theme) => {
           color="primary"
           onClick={(e) => {
             e.stopPropagation();
-
+            
             dispatch(initEditCheckpoint())
             dispatch(initCreateCheckpoint())
             dispatch(getDetailCheckpoint({ id: row.values.id }))
@@ -244,20 +245,32 @@ SelectionHeader.propTypes = {
   getToggleAllPageRowsSelectedProps: PropTypes.func
 };
 
-const List = () => {
+const StatusCell = ({ value }) => {
+  switch (value) {
+    case false:
+      return <Chip color="error" label={<FormattedMessage id='inactive' />} size="small" variant="light" />;
+    case true:
+      return <Chip color="success" label={<FormattedMessage id='active' />} size="small" variant="light" />;
+  }
+};
+
+StatusCell.propTypes = {
+  value: PropTypes.number
+};
+
+const RoleList = () => {
 
   const navigation = useNavigate();
   const theme = useTheme();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [getCheckpointId, setGetCheckpointId] = useState(0);
+  const [getRoleId, setGetRoleId] = useState(0);
 
-  const { listStatus, checkpointsTab, nbPages, listError } = useSelector((state) => state.checkpoint.list)
+  const { listStatus, roleTab, nbPages, listError } = useSelector((state) => state.role.list)
 
 
-  useEffect(() => { dispatch(getListCheckpoints({ page: currentPage })) }, [currentPage])
+  useEffect(() => { dispatch(getListRole({ page: currentPage })) }, [currentPage])
 
-  useEffect(() => { }, [listStatus])
 
   const handleChangePage = (event, newPage) => { setCurrentPage(newPage); };
 
@@ -284,31 +297,19 @@ const List = () => {
         disableFilters: true,
       },
       {
-        Header: <FormattedMessage id='city' />,
-        accessor: 'district[0].ville',
+        Header: <FormattedMessage id='code' />,
+        accessor: 'code_role',
         disableFilters: true,
-      },
-      {
-        Header: <FormattedMessage id='code-checkpoint' />,
-        accessor: 'code',
-        disableFilters: true,
-      },
-      {
-        Header: <FormattedMessage id='created-on' />,
-        accessor: 'createat',
-        Cell: DateCell
-      },
-      {
-        Header: <FormattedMessage id='responsable' />,
-        accessor: 'users',
-        disableFilters: true,
-        Cell: UserCell
+      },{
+        Header: 'Status',
+        accessor: 'active',
+        Cell: StatusCell
       },
       {
         Header: 'Actions',
         className: 'cell-center',
         disableSortBy: true,
-        Cell: ({ row }) => ActionCell(row, setGetCheckpointId, navigation, theme)
+        Cell: ({ row }) => ActionCell(row, setGetRoleId, navigation, theme)
       }
     ],
     []
@@ -320,7 +321,7 @@ const List = () => {
     )
   }
 
-  if (listStatus == REQUEST_STATUS.error) {
+  if (listStatus == REQUEST_STATUS.error || roleTab.length == 0) {
     return (
       <EmptyUserCard title={<FormattedMessage id={listError} />} />
     )
@@ -331,10 +332,10 @@ const List = () => {
     <>
       <MainCard content={false}>
         {
-          checkpointsTab?.length > 0 ?
+          roleTab?.length > 0 ?
             <>
               <ScrollX>
-                <ReactTable columns={columns} data={checkpointsTab} />
+                <ReactTable columns={columns} data={roleTab} />
               </ScrollX>
               <Grid sx={{ p: 2, py: 3 }} colSpan={9} >
                 <Grid item sx={{ mt: { xs: 2, sm: 0 } }}>
@@ -349,24 +350,14 @@ const List = () => {
               </Grid>
             </>
             :
-            <>
-
-              <Stack direction="row" justifyContent="flex-end" spacing={1} sx={{ p: 2, }}>
-
-                <Button variant="contained" startIcon={<PlusOutlined />} onClick={() => navigation("/apps/checkpoints/create")} size="small">
-                  <FormattedMessage id="add-checkpoint" />
-                </Button>
-              </Stack>
-              <EmptyUserCard title={<FormattedMessage id='no-checkpoint' />} />
-
-            </>
+            <EmptyUserCard title={<FormattedMessage id='no-checkpoint' />} />
 
         }
       </MainCard>
-      <AlertColumnDelete title={`${getCheckpointId}`} open={false} />
+      <AlertColumnDelete title={`${getRoleId}`} open={false} />
     </>
   );
 };
 
 
-export default List;
+export default RoleList;

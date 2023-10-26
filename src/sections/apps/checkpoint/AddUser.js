@@ -3,21 +3,22 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Pagination from '@mui/material/Pagination';
-import { CODE_ROLE_COLLECTE, REQUEST_STATUS } from 'utils/apiConfig';
+import {  REQUEST_STATUS } from 'utils/apiConfig';
 import { Checkbox, FormControlLabel, Grid, CardContent, Button } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import MainCard from 'components/MainCard';
-import { getListAccounts } from 'store/reducers/Accounts/listSlice';
+import { getListAgentCheckpoints } from 'store/reducers/checkpoints/listAgentSlice';
 
 const AddUser = ({ setSelectedTab, selectedTab, hanldeModal }) => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { listStatus, accountsTab, nbPages } = useSelector((state) => state.account.list)
 
-  useEffect(() => {
-    dispatch(getListAccounts({ page: currentPage, nb: 5, role: CODE_ROLE_COLLECTE }))
-  }, [currentPage, dispatch])
+  const { listStatus, agentsTab, nbPages } = useSelector((state) => state.checkpoint.agentList)
+
+
+  useEffect(() => { dispatch(getListAgentCheckpoints({ page: currentPage, nb: 5, agt_chk: true})) }, [currentPage, dispatch])
+
 
   const handleChangePage = (event, newPage) => {
     setCurrentPage(newPage);
@@ -42,12 +43,12 @@ const AddUser = ({ setSelectedTab, selectedTab, hanldeModal }) => {
           <Grid item >
             {listStatus === REQUEST_STATUS.succeed && (
               <>
-                {accountsTab.map((item) => (
+                {agentsTab.map((item) => (
                   <FormControlLabel
                     key={item.id}
                     control={
                       <Checkbox
-                        checked={selectedTab.some((selectedItem) => selectedItem.id === item.id)}
+                        checked={selectedTab?.some((selectedItem) => selectedItem.id === item.id)}
                         onChange={() => handleCheckboxChange(item)}
                         color="primary"
                       />

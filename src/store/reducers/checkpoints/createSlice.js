@@ -31,8 +31,7 @@ const CreateCheckpointlice = createSlice({
             state.createStatus = REQUEST_STATUS.idle
             state.createError = ''
         }
-    }
-    ,
+    },
     extraReducers: (builder) => {
         builder
             .addCase(createCheckpoints.pending, (state) => {

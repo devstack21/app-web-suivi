@@ -8,37 +8,38 @@ import BetailCheckpoint from 'sections/apps/checkpoint/Betail';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { FormattedMessage } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
-import { getListDistricts } from 'store/reducers/checkpoints/districtsSlice';
-import { createCheckpoints, initCreateCheckpoint } from 'store/reducers/checkpoints/createSlice';
 import { REQUEST_STATUS } from 'utils/apiConfig';
 import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
 import CreateEffectComponent from 'sections/apps/checkpoint/CreateEffectComponent';
-import { transformAnimals, transformUser } from 'sections/apps/checkpoint/CreateFunctions';
+import {  transformAnimalsEdit, transformUserEdit } from 'sections/apps/checkpoint/CreateFunctions';
 import * as yup from 'yup';
+import { editCheckpoints } from 'store/reducers/checkpoints/editSlice';
 import { useNavigate } from 'react-router';
 
 
-const Create = () => {
+const EditCheckpoint = () => {
   const dispatch = useDispatch()
   const theme = useTheme()
   const navigation = useNavigate()
 
+  const { districtsTab } = useSelector((state) => state.checkpoint.disctricts)
+  const { checkpoint } = useSelector((state) => state.checkpoint.detail)
+  const { createStatus } = useSelector((state) => state.checkpoint.create)
+
+  
   const [userTab, setUserTab] = useState([]);
   const [animalTab, setAnimalTab] = useState([]);
 
-  const { listStatus, districtsTab } = useSelector((state) => state.checkpoint.disctricts)
-  const { createStatus } = useSelector((state) => state.checkpoint.create)
-
 
   useEffect(() => {
-    setUserTab([])
-    setAnimalTab([]); // Clear or initialize the selectedTab array
-    dispatch(getListDistricts())
-    dispatch(initCreateCheckpoint())
-  }, []);
+    console.log("njnjnjn",checkpoint.animals)
+    setUserTab(checkpoint.users)
+    setAnimalTab(checkpoint.animals)
+  },[checkpoint])
+
 
   const validationSchema = yup.object({
-    name: yup.string().required(<FormattedMessage id='checkpoint-name-required' />).matches(/^[a-zA-Z0-9\s]*[a-zA-Z][a-zA-Z0-9\s]*$/,<FormattedMessage id='checkpoint-name-characters' /> ),
+    name: yup.string().required(<FormattedMessage id='checkpoint-name-required' />).matches(/^[a-zA-Z0-9\s]*[a-zA-Z][a-zA-Z0-9\s]*$/, <FormattedMessage id='checkpoint-name-characters' />),
     district: yup.object().required(<FormattedMessage id='district-required' />),
     latitude: yup.number().positive(<FormattedMessage id='latitude-positive' />).required(<FormattedMessage id='latitude-required' />),
     longitude: yup.number().positive(<FormattedMessage id='longitude-positive' />).required(<FormattedMessage id='longitude-required' />),
@@ -50,13 +51,13 @@ const Create = () => {
 
   const formik = useFormik({
     initialValues: {
-      name: '', // Add other form fields here
-      district: null,
-      latitude: '',
-      longitude: '',
-      responsable: '',
-      animalTabs: [],
-      userTab: []
+      name: checkpoint?.libelle, // Add other form fields here
+      district: checkpoint?.district[0],
+      latitude: checkpoint?.latitude,
+      longitude: checkpoint?.longitude,
+      responsable: checkpoint.users.find((element) => element.responsable == true).username,
+      animalTabs: checkpoint?.animals,
+      userTab: checkpoint?.users
     },
     onSubmit: (values,/* { resetForm }*/) => {
 
@@ -90,10 +91,11 @@ const Create = () => {
       }
 
       // Handle form submission logic here
-      const transformedUsers = userTab.map(transformUser);
-      const transformedAnimals = animalTab.map(transformAnimals);
+      const transformedUsers = userTab.map(transformUserEdit);
+      const transformedAnimals = animalTab.map(transformAnimalsEdit);
 
-      dispatch(createCheckpoints({
+      dispatch(editCheckpoints({
+        pk:checkpoint.id,
         animals: transformedAnimals,
         libelle: values.name,
         latitude: values.latitude,
@@ -108,28 +110,20 @@ const Create = () => {
 
   });
 
-  const handleCancel = () => {
-    // Reset the form when the "Cancel" button is clicked
-    formik.resetForm();
-    setUserTab([])
-    setAnimalTab([]); // Clear or initialize the selectedTab array
-    navigation(`/apps/checkpoints/list/`);
-  };
+
 
   const resetSubmitError = () => { formik.setErrors({ submit: undefined }); };
 
   // Watch for changes in userTab, animalTab, or other relevant fields
   useEffect(() => { resetSubmitError(); }, [userTab, animalTab, /* other relevant fields */]);
 
-  if (createStatus == REQUEST_STATUS.loading || listStatus == REQUEST_STATUS.loading) {
+  if (createStatus == REQUEST_STATUS.loading ) {
     return (
-      <EmptyUserCard title={<FormattedMessage id='loading' />} />
+      <EmptyUserCard id={<FormattedMessage id='loading' />} />
     )
   }
 
-  if (listStatus == REQUEST_STATUS.error || districtsTab.length == 0) {
-    <EmptyUserCard title={<FormattedMessage id='error-loading-district' />} />
-  }
+
 
   const { handleSubmit, getFieldProps, setStatus, setSubmitting, errors, touched, setErrors, resetForm } = formik;
 
@@ -149,7 +143,7 @@ const Create = () => {
             <FormattedMessage id='new-checkpoint' />
           </Typography>
           <Stack direction="row" spacing={1} sx={{ px: 1.5, py: 0.75 }}>
-            <Button color="error" size="small" onClick={handleCancel} >
+            <Button color="error" size="small" onClick={() => navigation(`/apps/checkpoints/list/`)} >
               <FormattedMessage id='cancel' />
             </Button>
             <Button
@@ -286,7 +280,7 @@ const Create = () => {
             )}
 
             {
-              userTab.length > 0 &&
+              userTab?.length > 0 &&
 
               <Grid item xs={12} md={6}>
 
@@ -350,4 +344,4 @@ const Create = () => {
   );
 };
 
-export default Create;
+export default EditCheckpoint;

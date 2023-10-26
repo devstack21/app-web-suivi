@@ -1,15 +1,14 @@
-import { useEffect, useState, useRef } from 'react';
+import { useRef } from 'react';
 import { useNavigate, useParams } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
 import {
   Box,
+  FormControl,
   Grid,
   IconButton,
-  Chip,
-  FormControl,
-  Button,
   Stack,
   Table,
   TableBody,
@@ -18,24 +17,27 @@ import {
   TableHead,
   TableRow,
   Typography,
-  Divider
 } from '@mui/material';
 
 // third-party
 import ReactToPrint from 'react-to-print';
-import { PDFDownloadLink } from '@react-pdf/renderer';
 
 // project import
-import Loader from 'components/Loader';
+//import Loader from 'components/Loader';
 import MainCard from 'components/MainCard';
-import LogoSection from 'components/logo';
-import ExportPDFView from 'sections/apps/invoice/export-pdf';
 
-import { dispatch, useSelector } from 'store';
-import { getInvoiceSingleList } from 'store/reducers/invoice';
 
 // assets
-import { DownloadOutlined, EditOutlined, PrinterFilled, ShareAltOutlined } from '@ant-design/icons';
+import { EditOutlined, PrinterFilled } from '@ant-design/icons';
+import { REQUEST_STATUS } from 'utils/apiConfig';
+import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
+import LogoSection from 'components/logo';
+import Loader from 'components/Loader';
+import { format } from 'date-fns';
+import { FormattedMessage } from 'react-intl';
+import { PatternFormat } from 'react-number-format';
+import { initEditCheckpoint } from 'store/reducers/checkpoints/editSlice';
+import { initCreateCheckpoint } from 'store/reducers/checkpoints/createSlice';
 
 // ==============================|| INVOICE - DETAILS ||============================== //
 
@@ -43,38 +45,24 @@ const Details = () => {
   const theme = useTheme();
   const { id } = useParams();
   const navigation = useNavigate();
+  const dispatch = useDispatch()
 
-  const { country, list } = useSelector((state) => state.invoice);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    dispatch(getInvoiceSingleList(Number(id))).then(() => setLoading(false));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
-
-  const today = new Date(`${list?.date}`).toLocaleDateString('en-GB', {
-    month: 'numeric',
-    day: 'numeric',
-    year: 'numeric'
-  });
-
-  const due_dates = new Date(`${list?.due_date}`).toLocaleDateString('en-GB', {
-    month: 'numeric',
-    day: 'numeric',
-    year: 'numeric'
-  });
-
-  const subtotal = list?.invoice_detail?.reduce((prev, curr) => {
-    if (curr.name.trim().length > 0) return prev + Number(curr.price * Math.floor(curr.qty));
-    else return prev;
-  }, 0);
-
-  const taxRate = (Number(list?.tax) * subtotal) / 100;
-  const discountRate = (Number(list?.discount) * subtotal) / 100;
-  const total = subtotal - discountRate + taxRate;
   const componentRef = useRef(null);
 
-  if (loading) return <Loader />;
+  const { detailStatus, checkpoint, detailError } = useSelector((state) => state.checkpoint.detail)
+
+  const responsable = checkpoint.users?.find((element) => element.responsable == true)
+
+
+  if (detailStatus == REQUEST_STATUS.loading) return <Loader />;
+
+  if (detailStatus == REQUEST_STATUS.error) return <EmptyUserCard id={detailError} />;
+
+  const handleClick = () => {
+    dispatch(initEditCheckpoint())
+    dispatch(initCreateCheckpoint())
+    navigation(`/apps/checkpoints/edit/${id}`)
+  }
 
   return (
     <MainCard content={false}>
@@ -82,14 +70,9 @@ const Details = () => {
         <Box sx={{ p: 2.5, pb: 0 }}>
           <MainCard content={false} sx={{ p: 1.25, bgcolor: 'primary.lighter', borderColor: theme.palette.primary[100] }}>
             <Stack direction="row" justifyContent="flex-end" spacing={1}>
-              <IconButton onClick={() => navigation(`/apps/invoice/edit/${id}`)}>
+              <IconButton onClick={handleClick }>
                 <EditOutlined style={{ color: theme.palette.grey[900] }} />
               </IconButton>
-              <PDFDownloadLink document={<ExportPDFView list={list} />} fileName={`${list?.invoice_id}-${list?.customer_name}.pdf`}>
-                <IconButton>
-                  <DownloadOutlined style={{ color: theme.palette.grey[900] }} />
-                </IconButton>
-              </PDFDownloadLink>
               <ReactToPrint
                 trigger={() => (
                   <IconButton>
@@ -98,46 +81,37 @@ const Details = () => {
                 )}
                 content={() => componentRef.current}
               />
-              <IconButton>
-                <ShareAltOutlined style={{ color: theme.palette.grey[900] }} />
-              </IconButton>
             </Stack>
           </MainCard>
         </Box>
         <Box sx={{ p: 2.5 }} id="print" ref={componentRef}>
           <Grid container spacing={2.5}>
             <Grid item xs={12}>
-              <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="space-between">
+              <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="center">
+
                 <Box>
                   <Stack direction="row" spacing={2}>
                     <LogoSection />
-                    <Chip label="Paid" variant="light" color="success" size="small" />
                   </Stack>
-                  <Typography color="secondary">{list?.invoice_id}</Typography>
                 </Box>
+
+              </Stack>
+            </Grid>
+            <Grid item xs={12}>
+              <Stack direction={{ xs: 'column', sm: 'row' }} justifyContent="center">
                 <Box>
-                  <Stack direction="row" spacing={1} justifyContent="flex-end">
-                    <Typography variant="subtitle1">Date</Typography>
-                    <Typography color="secondary">{today}</Typography>
-                  </Stack>
-                  <Stack direction="row" spacing={1} justifyContent="flex-end">
-                    <Typography sx={{ overflow: 'hidden' }} variant="subtitle1">
-                      Due Date
-                    </Typography>
-                    <Typography color="secondary">{due_dates}</Typography>
-                  </Stack>
+                  <Typography variant="h1" align='center' >{checkpoint.libelle} #{checkpoint.code}</Typography>
                 </Box>
               </Stack>
             </Grid>
             <Grid item xs={12} sm={6}>
               <MainCard>
                 <Stack spacing={1}>
-                  <Typography variant="h5">From:</Typography>
+                  <Typography variant="h5"><FormattedMessage id='location' /></Typography>
                   <FormControl sx={{ width: '100%' }}>
-                    <Typography color="secondary">{list?.cashierInfo.name}</Typography>
-                    <Typography color="secondary">{list?.cashierInfo.address}</Typography>
-                    <Typography color="secondary">{list?.cashierInfo.phone}</Typography>
-                    <Typography color="secondary">{list?.cashierInfo.email}</Typography>
+                    <Typography color="secondary">{checkpoint.district[0].name} - {checkpoint.district[0].ville}</Typography>
+                    <Typography color="secondary">{checkpoint.district[0].departement} - {checkpoint.district[0].region}</Typography>
+                    <Typography color="secondary">Lon: {checkpoint.longitude} , Lat: {checkpoint.latitude}</Typography>
                   </FormControl>
                 </Stack>
               </MainCard>
@@ -145,93 +119,94 @@ const Details = () => {
             <Grid item xs={12} sm={6}>
               <MainCard>
                 <Stack spacing={1}>
-                  <Typography variant="h5">To:</Typography>
+                  <Typography variant="h5"><FormattedMessage id='responsable' /></Typography>
                   <FormControl sx={{ width: '100%' }}>
-                    <Typography color="secondary">{list?.customerInfo.name}</Typography>
-                    <Typography color="secondary">{list?.customerInfo.address}</Typography>
-                    <Typography color="secondary">{list?.customerInfo.phone}</Typography>
-                    <Typography color="secondary">{list?.customerInfo.email}</Typography>
+                    <Typography color="secondary">{responsable.username}</Typography>
+                    <Typography color="secondary">{responsable.email}</Typography>
+                    <Typography color="secondary">{responsable.phone}</Typography>
                   </FormControl>
                 </Stack>
               </MainCard>
             </Grid>
-            <Grid item xs={12}>
+            <Grid item xs={12}  >
+              <Typography variant="subtitle1"><FormattedMessage id='checkpoint-agents' /></Typography>
+
               <TableContainer>
                 <Table>
                   <TableHead>
                     <TableRow>
                       <TableCell>#</TableCell>
-                      <TableCell>Name</TableCell>
-                      <TableCell>Description</TableCell>
-                      <TableCell align="right">Qty</TableCell>
-                      <TableCell align="right">Price</TableCell>
-                      <TableCell align="right">Amount</TableCell>
+                      <TableCell align="center"><FormattedMessage id='name' /></TableCell>
+                      <TableCell align="center"><FormattedMessage id='email' /></TableCell>
+                      <TableCell align="right"><FormattedMessage id='phone' /></TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {list?.invoice_detail?.map((row, index) => (
-                      <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                        <TableCell>{index + 1}</TableCell>
-                        <TableCell>{row.name}</TableCell>
-                        <TableCell>{row.description}</TableCell>
-                        <TableCell align="right">{row.qty}</TableCell>
-                        <TableCell align="right">{country?.prefix + '' + Number(row.price).toFixed(2)}</TableCell>
-                        <TableCell align="right">{country?.prefix + '' + Number(row.price * row.qty).toFixed(2)}</TableCell>
+                    {checkpoint?.users?.map((row) => (
+                      <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                        <TableCell align="center">{row.id}</TableCell>
+                        <TableCell align="center">{row.username}</TableCell>
+                        <TableCell align="center">{row.email}</TableCell>
+                        <TableCell align="right"><PatternFormat displayType="text" format="+237 # ## ## ## ##" mask="_" defaultValue={row.phone} /></TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
               </TableContainer>
             </Grid>
-            <Grid item xs={12}>
-              <Divider sx={{ borderWidth: 1 }} />
-            </Grid>
-            <Grid item xs={12} sm={6} md={8}></Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <Stack spacing={2}>
-                <Stack direction="row" justifyContent="space-between">
-                  <Typography color={theme.palette.grey[500]}>Sub Total:</Typography>
-                  <Typography>{country?.prefix + '' + subtotal?.toFixed(2)}</Typography>
-                </Stack>
-                <Stack direction="row" justifyContent="space-between">
-                  <Typography color={theme.palette.grey[500]}>Discount:</Typography>
-                  <Typography variant="h6" color={theme.palette.success.main}>
-                    {country?.prefix + '' + discountRate?.toFixed(2)}
-                  </Typography>
-                </Stack>
-                <Stack direction="row" justifyContent="space-between">
-                  <Typography color={theme.palette.grey[500]}>Tax:</Typography>
-                  <Typography>{country?.prefix + '' + taxRate?.toFixed(2)}</Typography>
-                </Stack>
-                <Stack direction="row" justifyContent="space-between">
-                  <Typography variant="subtitle1">Grand Total:</Typography>
-                  <Typography variant="subtitle1">
-                    {total % 1 === 0 ? country?.prefix + '' + total : country?.prefix + '' + total?.toFixed(2)}
-                  </Typography>
-                </Stack>
-              </Stack>
-            </Grid>
-            <Grid item xs={12}>
-              <Stack direction="row" spacing={1}>
-                <Typography color="secondary">Notes: </Typography>
-                <Typography>
-                  It was a pleasure working with you and your team. We hope you will keep us in mind for future freelance projects. Thank
-                  You!
-                </Typography>
-              </Stack>
+            <Grid item xs={12} >
+              <Typography variant="subtitle1"><FormattedMessage id='checkpoint-animals' /></Typography>
+
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>#</TableCell>
+                      <TableCell align="center"><FormattedMessage id='name' /></TableCell>
+                      <TableCell align="center"><FormattedMessage id='type' /></TableCell>
+                      <TableCell align="right"><FormattedMessage id='code' /></TableCell>
+                      <TableCell align="center"><FormattedMessage id='limit' /></TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {checkpoint?.animals?.map((row) => (
+                      <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                        <TableCell>{row.id}</TableCell>
+                        <TableCell align="center">{row.name}</TableCell>
+                        <TableCell align="center">{row.type?.name}</TableCell>
+                        <TableCell align="right">{row.type?.code}</TableCell>
+                        <TableCell align="center">{row.max_animal}</TableCell>
+
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
             </Grid>
           </Grid>
         </Box>
         <Stack direction="row" justifyContent="flex-end" spacing={2} sx={{ p: 2.5, a: { textDecoration: 'none', color: 'inherit' } }}>
-          <PDFDownloadLink document={<ExportPDFView list={list} />} fileName={`${list?.invoice_id}-${list?.customer_name}.pdf`}>
-            <Button variant="contained" color="primary">
-              Download
-            </Button>
-          </PDFDownloadLink>
+          <Box>
+            <Stack direction="row" spacing={1} justifyContent="flex-end">
+              <Typography color="secondary"><FormattedMessage id='created-on' /></Typography>
+              <Typography variant="subtitle1">{format(new Date(checkpoint?.createat), 'dd/MM/yyyy')}</Typography>
+            </Stack>
+          </Box>
         </Stack>
+
       </Stack>
     </MainCard>
   );
 };
 
 export default Details;
+
+
+/*
+
+              <PDFDownloadLink document={<ExportPDFView checkpoint={checkpoint} />} fileName={`${checkpoint?.libelle}-${checkpoint?.code}.pdf`}>
+                <Button variant="contained" color="primary">
+                  <FormattedMessage id='download' />
+                </Button>
+              </PDFDownloadLink>
+              */

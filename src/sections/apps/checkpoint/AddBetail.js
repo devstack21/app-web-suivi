@@ -32,7 +32,7 @@ const AddBetail = ({ setSelectedTab, selectedTab, hanldeModal }) => {
       setSelectedTab((prevSelectedTab) => prevSelectedTab.filter((selectedItem) => selectedItem.id !== item.id));
     } else {
       // If not selected, add to the list
-      setSelectedTab((prevSelectedTab) => [...prevSelectedTab, { ...item, qte: 0 }]);
+      setSelectedTab((prevSelectedTab) => [...prevSelectedTab, { ...item, max_animal: 0 }]);
     }
   };
 
@@ -41,14 +41,14 @@ const AddBetail = ({ setSelectedTab, selectedTab, hanldeModal }) => {
       <CardContent>
         <Grid container spacing={2}>
           <Grid item >
-            {listStatus === REQUEST_STATUS.succeed && (
+            {listStatus === REQUEST_STATUS.succeed && selectedTab && (
               <>
                 {betailTab.map((item) => (
                   <FormControlLabel
                     key={item.id}
                     control={
                       <Checkbox
-                        checked={selectedTab.some((selectedItem) => selectedItem.id === item.id)}
+                        checked={selectedTab?.some((selectedItem) => selectedItem.id === item.id)}
                         onChange={() => handleCheckboxChange(item)}
                         color="primary"
                       />

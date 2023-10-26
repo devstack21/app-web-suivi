@@ -14,20 +14,21 @@ const initialState = {
     editError: '',
 };
 
-export const editAccounts = createAsyncThunk(
-    "accounts/edit",
+export const editCheckpoints = createAsyncThunk(
+    "checkpoints/edit",
     async (args) => {
-        const { data } = await axios.post(`${BASE_URL}${API_URL.EditAccount}`, args);
+        console.log("args", args)
+        const { data } = await axios.put(`${BASE_URL}${API_URL.EditCheckpoint}`, args);
         return data[0]
     }
 
 )
 
-const EditAccountslice = createSlice({
-    name: 'account',
+const EditCheckpointslice = createSlice({
+    name: 'checkpoints',
     initialState: initialState,
     reducers: {
-        initEditUser: (state) => {
+        initEditCheckpoint: (state) => {
             state.editStatus = REQUEST_STATUS.idle
             state.editError = ''
         }
@@ -35,12 +36,12 @@ const EditAccountslice = createSlice({
     ,
     extraReducers: (builder) => {
         builder
-            .addCase(editAccounts.pending, (state) => {
+            .addCase(editCheckpoints.pending, (state) => {
                 state.editStatus = REQUEST_STATUS.loading
                 state.editError = ''
             })
 
-            .addCase(editAccounts.fulfilled, (state, action) => {
+            .addCase(editCheckpoints.fulfilled, (state, action) => {
                 const { success, errors } = action.payload;
                 if (success) {
                     state.editStatus = REQUEST_STATUS.succeed,
@@ -48,33 +49,35 @@ const EditAccountslice = createSlice({
                 } else {
                     let error_msg
                     switch (errors[0].error_code) {
-                        case "US002":
-                            error_msg = 'user-email-exist'
+                        case "CCHP008":
+                            error_msg = 'checkpoint-exist'
                             break;
-                        case "US003":
-                            error_msg = 'user-number-exist'
+                        case "UCH009":
+                            error_msg = 'checkpoint-exist'
+                            break;
+
+                        case 'CCHP007':
+                            error_msg = 'checkpoint-user-exist'
                             break;
                         default:
-                            error_msg = 'error-create-account'
+                            error_msg = 'error-edit-checkpoint'
                             break;
                     }
                     state.editStatus = REQUEST_STATUS.error,
-                    state.editError = error_msg
-                    state.accountsTab = []
+                        state.editError = error_msg
                 }
             })
 
-            .addCase(editAccounts.rejected, (state) => {
+            .addCase(editCheckpoints.rejected, (state) => {
                 state.editStatus = REQUEST_STATUS.error,
                     state.editError = 'error-network'
-                state.accountsTab = []
             })
     }
 });
 
 // Reducer
-export default EditAccountslice.reducer;
+export default EditCheckpointslice.reducer;
 
-export const { initEditUser } = EditAccountslice.actions
+export const { initEditCheckpoint } = EditCheckpointslice.actions
 
 
