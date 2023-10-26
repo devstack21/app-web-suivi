@@ -44,6 +44,8 @@ const BetailCheckpoint = ({ selectedTab, setSelectedTab, setFormikAnimalTabs }) 
     setFormikAnimalTabs('animalTabs', newData);
   };
 
+  console.log(selectedTab)
+
   return (
     <MainCard title={<FormattedMessage id='handle-animals' />} content={false}  >
       <Grid sx={{ p: 2.5 }} container direction="row" justifyContent={"flex-end"} >
@@ -70,7 +72,7 @@ const BetailCheckpoint = ({ selectedTab, setSelectedTab, setFormikAnimalTabs }) 
             <TableBody>
 
               {
-                selectedTab.length > 0 ?
+                selectedTab?.length > 0 ?
                   <>
                     {selectedTab?.map((row, index) => (
                       <TableRow hover key={index}>
@@ -78,12 +80,12 @@ const BetailCheckpoint = ({ selectedTab, setSelectedTab, setFormikAnimalTabs }) 
                           <span className={row.colorClass}>{row.name}</span>
                         </TableCell>
                         <TableCell align="center" sx={{ pr: 3 }}>
-                          <span>{row.type}</span>
+                          <span>{row.type.name ? row.type.name : row.type}</span>
                         </TableCell>
                         <TableCell align="center">
                           <TextField
-                            value={row.qte || ''}
-                            onChange={(e) => handleInputChange(row.id, 'qte', e.target.value)}
+                            value={row.max_animal || ''}
+                            onChange={(e) => handleInputChange(row.id, 'max_animal', e.target.value)}
                           />
                         </TableCell>
                       </TableRow>

@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { useMemo, useEffect, Fragment, useState, useRef } from 'react';
-import { useNavigate } from 'react-router';
 
 // material-ui
 import {
@@ -16,29 +15,28 @@ import {
   Tooltip,
   Pagination,
   Grid,
-  Button
 } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
 
 // third-party
 import { useExpanded, useFilters, useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } from 'react-table';
-import { DeleteTwoTone, EditTwoTone, EyeTwoTone, PlusOutlined } from '@ant-design/icons';
+import {  EditTwoTone, EyeTwoTone } from '@ant-design/icons';
 
 // project import
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import IconButton from 'components/@extended/IconButton';
 import { CSVExport, HeaderSort, IndeterminateCheckbox, TableRowSelection } from 'components/third-party/ReactTable';
-import AlertColumnDelete from 'sections/apps/kanban/Board/AlertColumnDelete';
 
 import { dispatch, useSelector } from 'store';
 import { renderFilterTypes, GlobalFilter, DateColumnFilter } from 'utils/react-table';
-import { getListCheckpoints } from 'store/reducers/checkpoints/listSlice';
 import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
 import { FormattedMessage } from 'react-intl';
 import { REQUEST_STATUS } from 'utils/apiConfig';
 import { format } from 'date-fns';
 import { getDetailCheckpoint } from 'store/reducers/checkpoints/detailSlice';
+import { getListAgentCheckpoints } from 'store/reducers/checkpoints/listAgentSlice';
+import { useNavigate } from 'react-router';
 import { initEditCheckpoint } from 'store/reducers/checkpoints/editSlice';
 import { initCreateCheckpoint } from 'store/reducers/checkpoints/createSlice';
 
@@ -46,7 +44,6 @@ import { initCreateCheckpoint } from 'store/reducers/checkpoints/createSlice';
 
 function ReactTable({ columns, data }) {
   const theme = useTheme();
-  const navigate = useNavigate()
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
   const defaultColumn = useMemo(() => ({ Filter: DateColumnFilter }), []);
   const filterTypes = useMemo(() => renderFilterTypes, []);
@@ -101,10 +98,6 @@ function ReactTable({ columns, data }) {
         </Stack>
         <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={matchDownSM ? 1 : 0}>
           <TableRowSelection selected={Object.keys(selectedRowIds).length} />
-
-          <Button variant="contained" startIcon={<PlusOutlined />} onClick={() => navigate("/apps/checkpoints/create")} size="small">
-            <FormattedMessage id="add-checkpoint" />
-          </Button>
           <CSVExport data={data} filename={'checkpoints-list.csv'} />
         </Stack>
       </Stack>
@@ -160,11 +153,11 @@ ReactTable.propTypes = {
 const UserCell = ({ value }) => {
   return (
     <Typography variant="subtitle1">
-      {value.length > 0 ? (value.find((element) => element.responsable == true))?.username : ""}
+      {value.length > 0 ? (value.find((element) => element.responsable == true)).username : ""}
     </Typography>)
 };
 const DateCell = ({ value }) => { return (<Typography variant="subtitle1">{format(new Date(value), 'dd/MM/yyyy')}</Typography>) };
-const ActionCell = (row, setGetInvoiceId, navigation, theme) => {
+const ActionCell = (row,  navigation, theme) => {
   return (
     <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
       <Tooltip title={<FormattedMessage id='view' />}>
@@ -174,8 +167,8 @@ const ActionCell = (row, setGetInvoiceId, navigation, theme) => {
             e.stopPropagation();
             dispatch(initEditCheckpoint())
             dispatch(initCreateCheckpoint())
-            dispatch(getDetailCheckpoint({ id: row.values.id }))
-            navigation(`/apps/checkpoints/details/${row.values.id}`);
+            dispatch(getDetailCheckpoint({ id: row.values['checkpoint.id']}))
+            navigation(`/apps/checkpoints/details/${row.values['checkpoint.id']}`);
           }}
         >
           <EyeTwoTone twoToneColor={theme.palette.secondary.main} />
@@ -186,30 +179,12 @@ const ActionCell = (row, setGetInvoiceId, navigation, theme) => {
           color="primary"
           onClick={(e) => {
             e.stopPropagation();
-
             dispatch(initEditCheckpoint())
-            dispatch(initCreateCheckpoint())
-            dispatch(getDetailCheckpoint({ id: row.values.id }))
-            navigation(`/apps/checkpoints/edit/${row.values.id}`);
+            dispatch(initCreateCheckpoint({ id: row.values['checkpoint.id']}))
+            navigation(`/apps/checkpoints/edit/${row.values['checkpoint.id']}`);
           }}
         >
           <EditTwoTone twoToneColor={theme.palette.primary.main} />
-        </IconButton>
-      </Tooltip>
-      <Tooltip title={<FormattedMessage id='delete' />}>
-        <IconButton
-          color="error"
-          onClick={(e) => {
-            e.stopPropagation();
-            setGetInvoiceId(row.original.invoice_id);
-            dispatch(
-              alertPopupToggle({
-                alertToggle: true
-              })
-            );
-          }}
-        >
-          <DeleteTwoTone twoToneColor={theme.palette.error.main} />
         </IconButton>
       </Tooltip>
     </Stack>
@@ -225,7 +200,6 @@ DateCell.propTypes = { value: PropTypes.string };
 
 ActionCell.propTypes = {
   row: PropTypes.array,
-  setGetCheckpointId: PropTypes.func,
   navigation: PropTypes.func,
   theme: PropTypes.object
 };
@@ -244,18 +218,17 @@ SelectionHeader.propTypes = {
   getToggleAllPageRowsSelectedProps: PropTypes.func
 };
 
-const List = () => {
+const AgentList = () => {
 
   const navigation = useNavigate();
   const theme = useTheme();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [getCheckpointId, setGetCheckpointId] = useState(0);
 
-  const { listStatus, checkpointsTab, nbPages, listError } = useSelector((state) => state.checkpoint.list)
+  const { listStatus, agentsTab, nbPages, listError } = useSelector((state) => state.checkpoint.agentList)
 
 
-  useEffect(() => { dispatch(getListCheckpoints({ page: currentPage })) }, [currentPage])
+  useEffect(() => { dispatch(getListAgentCheckpoints({ page: currentPage, nb: 5 })) }, [currentPage])
 
   useEffect(() => { }, [listStatus])
 
@@ -273,42 +246,40 @@ const List = () => {
         disableFilters: true
       },
       {
-        Header: ' Id',
-        accessor: 'id',
+        Header: ' Id Checkpoint',
+        accessor: 'checkpoint.id',
         className: 'cell-center',
         disableFilters: true
       },
       {
         Header: <FormattedMessage id='name' />,
-        accessor: 'libelle',
-        disableFilters: true,
+        accessor: 'username',
+      },
+      {
+        Header: <FormattedMessage id='email' />,
+        accessor: 'email',
+      },
+      {
+        Header: <FormattedMessage id='phone' />,
+        accessor: 'phone',
+      },
+      {
+        Header: <FormattedMessage id='chekpoint' />,
+        accessor: 'checkpoint.libelle',
       },
       {
         Header: <FormattedMessage id='city' />,
-        accessor: 'district[0].ville',
-        disableFilters: true,
+        accessor: 'checkpoint.district[0].ville',
       },
       {
-        Header: <FormattedMessage id='code-checkpoint' />,
-        accessor: 'code',
-        disableFilters: true,
-      },
-      {
-        Header: <FormattedMessage id='created-on' />,
-        accessor: 'createat',
-        Cell: DateCell
-      },
-      {
-        Header: <FormattedMessage id='responsable' />,
-        accessor: 'users',
-        disableFilters: true,
-        Cell: UserCell
+        Header: <FormattedMessage id='region' />,
+        accessor: 'checkpoint.district[0].region',
       },
       {
         Header: 'Actions',
         className: 'cell-center',
         disableSortBy: true,
-        Cell: ({ row }) => ActionCell(row, setGetCheckpointId, navigation, theme)
+        Cell: ({ row }) => ActionCell(row, navigation, theme)
       }
     ],
     []
@@ -326,15 +297,14 @@ const List = () => {
     )
   }
 
-
   return (
     <>
       <MainCard content={false}>
         {
-          checkpointsTab?.length > 0 ?
+          agentsTab?.length > 0 ?
             <>
               <ScrollX>
-                <ReactTable columns={columns} data={checkpointsTab} />
+                <ReactTable columns={columns} data={agentsTab} />
               </ScrollX>
               <Grid sx={{ p: 2, py: 3 }} colSpan={9} >
                 <Grid item sx={{ mt: { xs: 2, sm: 0 } }}>
@@ -349,24 +319,13 @@ const List = () => {
               </Grid>
             </>
             :
-            <>
-
-              <Stack direction="row" justifyContent="flex-end" spacing={1} sx={{ p: 2, }}>
-
-                <Button variant="contained" startIcon={<PlusOutlined />} onClick={() => navigation("/apps/checkpoints/create")} size="small">
-                  <FormattedMessage id="add-checkpoint" />
-                </Button>
-              </Stack>
-              <EmptyUserCard title={<FormattedMessage id='no-checkpoint' />} />
-
-            </>
+            <EmptyUserCard title={<FormattedMessage id='no-checkpoint' />} />
 
         }
       </MainCard>
-      <AlertColumnDelete title={`${getCheckpointId}`} open={false} />
     </>
   );
 };
 
 
-export default List;
+export default AgentList;

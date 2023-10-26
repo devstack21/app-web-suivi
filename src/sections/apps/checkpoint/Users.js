@@ -52,7 +52,7 @@ const UserCheckpoint = ({ selectedTab, setSelectedTab }) => {
             <TableBody>
 
               {
-                selectedTab.length > 0 ?
+                selectedTab?.length > 0 ?
                   <>
                     {selectedTab?.map((row, index) => (
                       <TableRow hover key={index}>

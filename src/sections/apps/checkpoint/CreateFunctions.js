@@ -1,15 +1,32 @@
 
 export const transformUser = (user) => {
     return {
-        pk: user.id,
-        isR: user.isR,
+        id_user: user.id ,
+        isR: user.isR ? user.isR : user.responsable,
+    };
+};
+
+export const transformUserEdit = (user) => {
+    return {
+        id_user: user.id ,
+        isR: user.isR ? user.isR : user.responsable,
     };
 };
 
 export const transformAnimals = (animal) => {
     return {
-        pk: animal.id,
-        max_animal: animal.qte
+        id_animal: animal.id,
+        max_animal: animal.max_animal
     };
 };
+
+export const transformAnimalsEdit = (animal) => {
+    return {
+        id_animal: animal.id,
+        max_animal: animal.max_animal
+    };
+};
+
+
+
 

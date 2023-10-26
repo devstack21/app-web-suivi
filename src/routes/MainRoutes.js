@@ -25,14 +25,17 @@ const AppKanban = Loadable(lazy(() => import('pages/apps/kanban')));
 const AppKanbanBacklogs = Loadable(lazy(() => import('sections/apps/kanban/Backlogs')));
 const AppKanbanBoard = Loadable(lazy(() => import('sections/apps/kanban/Board')));
 
+
+//Checkpoint
 const AppCheckpointCreate = Loadable(lazy(() => import('pages/apps/checkpoint/create')));
-const AppInvoiceDashboard = Loadable(lazy(() => import('pages/apps/checkpoint/dashboard')));
 const AppCheckpointList = Loadable(lazy(() => import('pages/apps/checkpoint/list')));
 const AppCheckpointDetails = Loadable(lazy(() => import('pages/apps/checkpoint/details')));
 const AppCheckpointEdit = Loadable(lazy(() => import('pages/apps/checkpoint/edit')));
+const AppCheckpointAgentList = Loadable(lazy(() => import('pages/apps/checkpoint/agentList')));
 
 
-const UserRoleCardPage = Loadable(lazy(() => import('pages/apps/users/userRoles')));
+
+const UserRoleCardPage = Loadable(lazy(() => import('pages/apps/users/roleList')));
 const UserAccounts = Loadable(lazy(() => import('pages/apps/accounts/list')));
 
 
@@ -195,10 +198,6 @@ const MainRoutes = {
               path: 'checkpoints',
               children: [
                 {
-                  path: 'dashboard',
-                  element: <AppInvoiceDashboard />
-                },
-                {
                   path: 'create',
                   element: <AppCheckpointCreate />
                 },
@@ -213,6 +212,10 @@ const MainRoutes = {
                 {
                   path: 'list',
                   element: <AppCheckpointList />
+                },
+                {
+                  path: 'agents',
+                  element: <AppCheckpointAgentList />
                 }
               ]
             },
