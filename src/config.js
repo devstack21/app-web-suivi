@@ -109,3 +109,9 @@ const config = {
 };
 
 export default config;
+
+
+export const stringValues = {
+  cookiesToken: 'userToken',
+  userInfo: 'userInfo'
+}

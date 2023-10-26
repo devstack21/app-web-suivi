@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
@@ -26,7 +26,9 @@ import WelcomeBanner from 'sections/dashboard/analytics/WelcomeBanner';
 import IncomeChart from 'sections/dashboard/analytics/IncomeChart';
 import MarketingCardChart from 'sections/dashboard/analytics/MarketingCardChart';
 import OrdersCardChart from 'sections/dashboard/analytics/OrdersCardChart';
-import OrdersList from 'sections/dashboard/analytics/OrdersList';
+// import OrdersList from 'sections/dashboard/analytics/OrdersList';
+import OrdersList from 'sections/dashboard/analytics/minepia/OrdersList';
+
 import PageViews from 'sections/dashboard/analytics/PageViews';
 import ReportChart from 'sections/dashboard/analytics/ReportChart';
 import SalesCardChart from 'sections/dashboard/analytics/SalesCardChart';
@@ -39,6 +41,10 @@ import AcquisitionChannels from 'sections/dashboard/analytics/AcquisitionChannel
 
 // assets
 import { DownloadOutlined, CaretDownOutlined } from '@ant-design/icons';
+
+
+import { useSelector, useDispatch } from 'react-redux';
+import { listTendanceVille_req } from 'store/reducers/minepia/dashboard/tendanceVilleReducer';
 
 // sales report status
 const status = [
@@ -64,6 +70,9 @@ const DashboardAnalytics = () => {
   const [slot, setSlot] = useState('week');
   const [quantity, setQuantity] = useState('By volume');
 
+  const { loading:loadT, error:errT, ListTendanceVille } = useSelector((state) => state.tendanceVille);
+  const dispatch = useDispatch();
+
   const handleQuantity = (e) => {
     setQuantity(e.target.value);
   };
@@ -72,6 +81,14 @@ const DashboardAnalytics = () => {
     if (newAlignment) setSlot(newAlignment);
   };
 
+
+useEffect(() => {
+      dispatch(listTendanceVille_req());
+  }, []);
+
+console.log("ville des villes", ListTendanceVille)
+console.log("loadT", loadT)
+console.log("errT", errT)
   return (
     <>
       <Grid container rowSpacing={4.5} columnSpacing={3}>
@@ -107,12 +124,12 @@ const DashboardAnalytics = () => {
         <Grid item xs={12} md={7} lg={8}>
           <Grid container alignItems="center" justifyContent="space-between">
             <Grid item>
-              <Typography variant="h5">Recent Orders</Typography>
+              <Typography variant="h5">Tendance des alertes par ville</Typography>
             </Grid>
             <Grid item />
           </Grid>
           <MainCard sx={{ mt: 2 }} content={false}>
-            <OrdersList />
+            <OrdersList ListTendanceVille={ListTendanceVille} />
           </MainCard>
         </Grid>
         <Grid item xs={12} md={5} lg={4}>

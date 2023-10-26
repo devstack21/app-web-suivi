@@ -8,7 +8,8 @@ import AuthGuard from 'utils/route-guard/AuthGuard';
 
 // render - dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')));
-const DashboardAnalytics = Loadable(lazy(() => import('pages/dashboard/analytics')));
+// const DashboardAnalytics = Loadable(lazy(() => import('pages/dashboard/analytics')));
+const DashboardAnalytics = Loadable(lazy(() => import('pages/minepia/dashboard/analytics')));
 
 // render - widget
 const WidgetStatistics = Loadable(lazy(() => import('pages/widget/statistics')));
