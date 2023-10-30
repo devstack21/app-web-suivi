@@ -14,20 +14,20 @@ const initialState = {
     editError: '',
 };
 
-export const editAccounts = createAsyncThunk(
-    "accounts/edit",
+export const editRole = createAsyncThunk(
+    "role/edit",
     async (args) => {
-        const { data } = await axios.put(`${BASE_URL}${API_URL.EditAccount}`, args);
+        const { data } = await axios.put(`${BASE_URL}${API_URL.EditRole}`, args);
         return data[0]
     }
 
 )
 
-const EditAccountslice = createSlice({
-    name: 'account',
+const EditRoleslice = createSlice({
+    name: 'checkpoints',
     initialState: initialState,
     reducers: {
-        initEditUser: (state) => {
+        initEditRole: (state) => {
             state.editStatus = REQUEST_STATUS.idle
             state.editError = ''
         }
@@ -35,12 +35,12 @@ const EditAccountslice = createSlice({
     ,
     extraReducers: (builder) => {
         builder
-            .addCase(editAccounts.pending, (state) => {
+            .addCase(editRole.pending, (state) => {
                 state.editStatus = REQUEST_STATUS.loading
                 state.editError = ''
             })
 
-            .addCase(editAccounts.fulfilled, (state, action) => {
+            .addCase(editRole.fulfilled, (state, action) => {
                 const { success, errors } = action.payload;
                 if (success) {
                     state.editStatus = REQUEST_STATUS.succeed,
@@ -48,33 +48,28 @@ const EditAccountslice = createSlice({
                 } else {
                     let error_msg
                     switch (errors[0].error_code) {
-                        case "US002":
-                            error_msg = 'user-email-exist'
-                            break;
-                        case "US003":
-                            error_msg = 'user-number-exist'
+                        case "RL003":
+                            error_msg = 'role-exist'
                             break;
                         default:
-                            error_msg = 'error-edit-account'
+                            error_msg = 'error-edit-role'
                             break;
                     }
                     state.editStatus = REQUEST_STATUS.error,
-                    state.editError = error_msg
-                    state.accountsTab = []
+                        state.editError = error_msg
                 }
             })
 
-            .addCase(editAccounts.rejected, (state) => {
+            .addCase(editRole.rejected, (state) => {
                 state.editStatus = REQUEST_STATUS.error,
                     state.editError = 'error-network'
-                state.accountsTab = []
             })
     }
 });
 
 // Reducer
-export default EditAccountslice.reducer;
+export default EditRoleslice.reducer;
 
-export const { initEditUser } = EditAccountslice.actions
+export const { initEditRole } = EditRoleslice.actions
 
 

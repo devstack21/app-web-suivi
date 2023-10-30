@@ -123,12 +123,12 @@ const Create = () => {
 
   if (createStatus == REQUEST_STATUS.loading || listStatus == REQUEST_STATUS.loading) {
     return (
-      <EmptyUserCard title={<FormattedMessage id='loading' />} />
+      <EmptyUserCard id={<FormattedMessage id='loading' />} />
     )
   }
 
   if (listStatus == REQUEST_STATUS.error || districtsTab.length == 0) {
-    <EmptyUserCard title={<FormattedMessage id='error-loading-district' />} />
+    <EmptyUserCard id={<FormattedMessage id='error-loading-district' />} />
   }
 
   const { handleSubmit, getFieldProps, setStatus, setSubmitting, errors, touched, setErrors, resetForm } = formik;
