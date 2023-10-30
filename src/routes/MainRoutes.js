@@ -19,32 +19,27 @@ const WidgetChart = Loadable(lazy(() => import('pages/widget/chart')));
 // render - applications
 const AppChat = Loadable(lazy(() => import('pages/apps/chat')));
 const AppCalendar = Loadable(lazy(() => import('pages/apps/calendar')));
-const AppCustomerList = Loadable(lazy(() => import('pages/apps/customer/list')));
-const AppCustomerCard = Loadable(lazy(() => import('pages/apps/customer/card')));
-
-const AppKanban = Loadable(lazy(() => import('pages/apps/kanban')));
-const AppKanbanBacklogs = Loadable(lazy(() => import('sections/apps/kanban/Backlogs')));
-const AppKanbanBoard = Loadable(lazy(() => import('sections/apps/kanban/Board')));
 
 
 //Checkpoint
 const AppCheckpointCreate = Loadable(lazy(() => import('pages/apps/checkpoint/create')));
 const AppCheckpointList = Loadable(lazy(() => import('pages/apps/checkpoint/list')));
-const AppCheckpointDetails = Loadable(lazy(() => import('pages/apps/checkpoint/details')));
-const AppCheckpointEdit = Loadable(lazy(() => import('pages/apps/checkpoint/edit')));
 const AppCheckpointAgentList = Loadable(lazy(() => import('pages/apps/checkpoint/agentList')));
 
 
 
-const UserRoleCardPage = Loadable(lazy(() => import('pages/apps/users/roleList')));
-const UserAccounts = Loadable(lazy(() => import('pages/apps/accounts/list')));
+const RoleList = Loadable(lazy(() => import('pages/apps/users/roles/roleList')));
+const RoleCreate = Loadable(lazy(() => import('pages/apps/users/roles/create')));
+
+
+const UserAccounts = Loadable(lazy(() => import('pages/apps/users/accounts/list')));
 
 
 // view user profile
 const Profile = Loadable(lazy(() => import('pages/apps/profiles/user')));
-const ProfileTabPersonal = Loadable(lazy(() => import('sections/apps/profiles/user/TabPersonal')));
-const ProfileTabUserHabilitations = Loadable(lazy(() => import('sections/apps/profiles/user/TabHabilitations')));
-const ProfileTabPassword = Loadable(lazy(() => import('sections/apps/profiles/user/TabPassword')));
+const ProfileTabPersonal = Loadable(lazy(() => import('sections/apps/profiles/me/TabPersonal')));
+const ProfileTabUserHabilitations = Loadable(lazy(() => import('sections/apps/profiles/me/TabHabilitations')));
+const ProfileTabPassword = Loadable(lazy(() => import('sections/apps/profiles/me/TabPassword')));
 
 
 const AppECommProducts = Loadable(lazy(() => import('pages/apps/e-commerce/product')));
@@ -169,33 +164,6 @@ const MainRoutes = {
               element: <AppCalendar />
             },
             {
-              path: 'kanban',
-              element: <AppKanban />,
-              children: [
-                {
-                  path: 'backlogs',
-                  element: <AppKanbanBacklogs />
-                },
-                {
-                  path: 'board',
-                  element: <AppKanbanBoard />
-                }
-              ]
-            },
-            {
-              path: 'customer',
-              children: [
-                {
-                  path: 'customer-list',
-                  element: <AppCustomerList />
-                },
-                {
-                  path: 'customer-card',
-                  element: <AppCustomerCard />
-                }
-              ]
-            },
-            {
               path: 'checkpoints',
               children: [
                 {
@@ -203,12 +171,8 @@ const MainRoutes = {
                   element: <AppCheckpointCreate />
                 },
                 {
-                  path: 'details/:id',
-                  element: <AppCheckpointDetails />
-                },
-                {
                   path: 'edit/:id',
-                  element: <AppCheckpointEdit />
+                  element: <AppCheckpointCreate />
                 },
                 {
                   path: 'list',
@@ -229,7 +193,15 @@ const MainRoutes = {
                 },
                 {
                   path: 'roles',
-                  element: <UserRoleCardPage />,
+                  element: <RoleList />,
+                },
+                {
+                  path: 'role/create',
+                  element: <RoleCreate />,
+                },
+                {
+                  path: 'role/edit/:id',
+                  element: <RoleCreate />,
                 }
               ]
             },

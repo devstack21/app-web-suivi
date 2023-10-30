@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 // material-ui
 import {
@@ -20,7 +20,8 @@ import {
   Stack,
   TextField,
   Tooltip,
-  Typography
+  Typography,
+  Switch
 } from '@mui/material';
 
 import { LocalizationProvider } from '@mui/x-date-pickers';
@@ -35,47 +36,21 @@ import AlertAccountDelete from './AlertAccountDelete';
 import Avatar from 'components/@extended/Avatar';
 import IconButton from 'components/@extended/IconButton';
 
-import { openSnackbar } from 'store/reducers/snackbar';
-
 // assets
 import { DeleteFilled } from '@ant-design/icons';
 import { FormattedMessage } from 'react-intl';
-import { REQUEST_STATUS } from 'utils/apiConfig';
 import { useDispatch, useSelector } from 'react-redux';
-import { createAccounts, initCreateUser } from 'store/reducers/Accounts/createSlice';
-import { getListAccounts } from 'store/reducers/Accounts/listSlice';
-import { PAGE_ROWS } from 'config';
-import { editAccounts, initEditUser } from 'store/reducers/Accounts/editSlice';
+import { createAccounts } from 'store/reducers/Accounts/createSlice';
+import { editAccounts } from 'store/reducers/Accounts/editSlice';
+import EffectComponent from './EffectComponent';
+import Dot from 'components/@extended/Dot';
 
 const avatarImage = require.context('assets/images/users', true);
 
-// constant
-
-const getInitialValues = (customer) => {
-  const newCustomer = {
-    username: '',
-    email: '',
-    role: '',
-    phone: '',
-    active: true
-  };
-
-  if (customer) {
-    newCustomer.username = customer.username;
-    newCustomer.email = customer.email;
-    
-    newCustomer.phone = customer.phone;
-    newCustomer.role = customer.role;
-    console.log( _.merge({}, newCustomer, customer))
-    return _.merge({}, newCustomer, customer);
-  }
-
-  return newCustomer;
-};
 
 // ==============================|| CUSTOMER ADD / EDIT / DELETE ||============================== //
 
-const AddUser = ({ user, onCancel }) => {
+const AddUser = ({ user, onCancel, page }) => {
 
   const dispatch = useDispatch()
 
@@ -83,8 +58,6 @@ const AddUser = ({ user, onCancel }) => {
 
 
   const { roleTab } = useSelector((state) => state.role.list)
-  const { createStatus, createError } = useSelector((state) => state.account.create)
-  const { editStatus, editError } = useSelector((state) => state.account.edit)
 
 
   const handleAlertClose = () => {
@@ -94,91 +67,31 @@ const AddUser = ({ user, onCancel }) => {
 
   const isCreating = !user;
 
-  useEffect(() => {
-    if (createStatus == REQUEST_STATUS.succeed) {
-      dispatch(
-        openSnackbar({
-          open: true,
-          message: <FormattedMessage id='add-user-succeed' />,
-          variant: 'alert',
-          alert: {
-            color: 'success'
-          },
-          close: false
-        })
-      );
-      dispatch(initCreateUser())
-      dispatch(getListAccounts({ page: 1, nb: PAGE_ROWS }))
-    }
-    if (createStatus == REQUEST_STATUS.error) {
-      dispatch(
-        openSnackbar({
-          open: true,
-          message: <FormattedMessage id={createError} />,
-          variant: 'alert',
-          alert: {
-            color: 'error'
-          },
-          close: false
-        })
-      );
-      dispatch(initCreateUser())
-    }
-  }, [createStatus])
-
-  useEffect(() => {
-    if (editStatus == REQUEST_STATUS.succeed) {
-      dispatch(
-        openSnackbar({
-          open: true,
-          message: <FormattedMessage id='edit-user-succeed' />,
-          variant: 'alert',
-          alert: {
-            color: 'success'
-          },
-          close: false
-        })
-      );
-      dispatch(initEditUser())
-      dispatch(getListAccounts({ page: 1, nb: PAGE_ROWS }))
-    }
-    if (editStatus == REQUEST_STATUS.error) {
-      dispatch(
-        openSnackbar({
-          open: true,
-          message: <FormattedMessage id={editError} />,
-          variant: 'alert',
-          alert: {
-            color: 'error'
-          },
-          close: false
-        })
-      );
-      dispatch(initEditUser())
-    }
-  }, [editStatus])
-
   const UserSchema = Yup.object().shape({
     username: Yup.string().max(255).required(<FormattedMessage id='name-required' />),
     role: Yup.object().required(<FormattedMessage id='role-required' />),
     phone: Yup.number().required(<FormattedMessage id='phone-required' />),
+    active: Yup.boolean(),
     email: Yup.string().max(255).required(<FormattedMessage id='email-required' />).email(<FormattedMessage id='email-invalid' />),
   });
 
+
   const formik = useFormik({
-    initialValues: getInitialValues(user),
     validationSchema: UserSchema,
     onSubmit: (values, { setSubmitting }) => {
       try {
+        const newUser = {
+          username: values.username,
+          email: values.email,
+          phone: values.phone,
+          role_pk: values.role.id,
+          pk: user.id,
+          active: values.active
+        };
         if (user) {
-          dispatch(editAccounts(user))
+
+          dispatch(editAccounts(newUser))
         } else {
-          const newUser = {
-            username: values.username,
-            email: values.email,
-            phone: values.phone,
-            role_pk: values.role.id
-          };
           dispatch(createAccounts(newUser));
         }
 
@@ -190,8 +103,14 @@ const AddUser = ({ user, onCancel }) => {
     }
   });
 
+  const handleToggle = (field, formik) => () => {
+    formik.setFieldValue(field, !formik.values[field]);
+  };
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
+  const id_image = Math.floor(Math.random() * 10) + 1
+
+
+  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue, setValues } = formik;
 
   return (
     <>
@@ -203,7 +122,7 @@ const AddUser = ({ user, onCancel }) => {
             <DialogContent sx={{ p: 2.5 }}>
               <Grid container spacing={3}>
                 <Grid item xs={12} md={3}>
-                  <Stack direction="row" justifyContent="center" sx={{ mt: 3 }}>
+                  <Stack direction={'row'} justifyContent="center" sx={{ mt: 3 }}>
                     <FormLabel
                       htmlFor="change-avtar"
                       sx={{
@@ -214,10 +133,17 @@ const AddUser = ({ user, onCancel }) => {
                         cursor: 'pointer'
                       }}
                     >
-                      <Avatar alt="Avatar 1" src={avatarImage(`./avatar-${1}.png`)} sx={{ width: 72, height: 72, border: '1px dashed' }} />
+                      <Avatar alt="Avatar 1" src={avatarImage(`./avatar-${id_image}.png`)} sx={{ width: 72, height: 72, border: '1px dashed' }} />
+
                     </FormLabel>
 
                   </Stack>
+                  <Grid container alignItems="center" justifyContent="center">
+                    <Grid item sx={{ display: 'flex', marginRight: 1 }}>
+                      <Dot color="success" size={10} />
+                    </Grid>
+                    <Typography variant="subtitle1">{user?.role}</Typography>
+                  </Grid>
                 </Grid>
                 <Grid item xs={12} md={8}>
                   <Grid container spacing={3}>
@@ -255,11 +181,14 @@ const AddUser = ({ user, onCancel }) => {
                           type='number'
                           placeholder="Enter Customer Number"
                           {...getFieldProps('phone')}
+                          
                           error={Boolean(touched.phone && errors.phone)}
                           helperText={touched.phone && errors.phone}
                         />
                       </Stack>
                     </Grid>
+
+
                     <Grid item xs={12}>
                       <Stack spacing={1.25}>
                         <InputLabel htmlFor="role"><FormattedMessage id='role' /></InputLabel>
@@ -268,8 +197,10 @@ const AddUser = ({ user, onCancel }) => {
                             id="column-hiding"
                             displayEmpty
                             {...getFieldProps('role')}
-                            onChange={(event) => setFieldValue('role', event.target.value)}
-                            input={<OutlinedInput id="select-column-hiding" placeholder="Sort by" />}
+                            onChange={(event) => {
+                              console.log('Selected role:', event.target.value);
+                              setFieldValue('role', event.target.value);
+                            }} input={<OutlinedInput id="select-column-hiding" placeholder="Sort by" />}
                             renderValue={(selected) => {
                               if (!selected) {
                                 return <Typography variant="subtitle1"><FormattedMessage id='select-role' /></Typography>;
@@ -278,11 +209,12 @@ const AddUser = ({ user, onCancel }) => {
                             }}
                           >
                             {roleTab.map((role) => (
-                              <MenuItem key={role} value={role}>
+                              <MenuItem key={role.id} value={role}>
                                 <ListItemText primary={role.libelle} />
                               </MenuItem>
                             ))}
                           </Select>
+
                         </FormControl>
                         {touched.role && errors.role && (
                           <FormHelperText error id="standard-weight-helper-text-email-login" sx={{ pl: 1.75 }}>
@@ -291,6 +223,27 @@ const AddUser = ({ user, onCancel }) => {
                         )}
                       </Stack>
                     </Grid>
+                    {
+                      user &&
+                      <Grid item xs={12}>
+                        <Stack spacing={1.25}>
+                          <InputLabel htmlFor="active"><FormattedMessage id='status' /></InputLabel>
+                          <Grid container justifyContent="space-between"alignItems={"center"} >
+
+                            <Typography variant="subtitle2"><FormattedMessage id='active-account' /></Typography>
+                            <Switch
+                              edge="end"
+                              onChange={handleToggle('active', formik)}
+                              checked={formik.values?.active || false}
+                              inputProps={{
+                                'aria-labelledby': 'switch-list-label-sctp'
+                              }}
+                            />
+                          </Grid>
+
+                        </Stack>
+                      </Grid>
+                    }
 
                   </Grid>
                 </Grid>
@@ -302,7 +255,7 @@ const AddUser = ({ user, onCancel }) => {
                 <Grid item>
                   {!isCreating && (
                     <Tooltip title="Delete Customer" placement="top">
-                      <IconButton onClick={() => setOpenAlert(true)} size="large" color="error">
+                      <IconButton onClick={() => setOpenAlert(true)} size="large" color="error" disabled={true} >
                         <DeleteFilled />
                       </IconButton>
                     </Tooltip>
@@ -322,8 +275,9 @@ const AddUser = ({ user, onCancel }) => {
             </DialogActions>
           </Form>
         </LocalizationProvider>
+        <EffectComponent setValues={setValues} user={user} page={page} />
       </FormikProvider>
-      {!isCreating && <AlertAccountDelete title={user.usernmae} open={openAlert} handleClose={handleAlertClose} />}
+      {!isCreating && <AlertAccountDelete title={user.username} open={openAlert} handleClose={handleAlertClose} />}
     </>
   );
 };

@@ -5,7 +5,7 @@ import { Grid } from '@mui/material';
 import { Outlet } from 'react-router';
 
 // project import
-import ProfileTabs from 'sections/apps/profiles/user/ProfileTabs';
+import ProfileTabs from 'sections/apps/profiles/me/ProfileTabs';
 
 // ==============================|| PROFILE - USER ||============================== //
 

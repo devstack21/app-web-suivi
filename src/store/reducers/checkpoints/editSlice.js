@@ -17,7 +17,6 @@ const initialState = {
 export const editCheckpoints = createAsyncThunk(
     "checkpoints/edit",
     async (args) => {
-        console.log("args", args)
         const { data } = await axios.put(`${BASE_URL}${API_URL.EditCheckpoint}`, args);
         return data[0]
     }

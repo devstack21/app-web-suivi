@@ -57,7 +57,6 @@ const applications = {
       id: 'users',
       title: <FormattedMessage id="user-menu" />,
       type: 'collapse',
-      url: '/apps/users/accounts',
       icon: icons.UserOutlined,
       children: [
         {
