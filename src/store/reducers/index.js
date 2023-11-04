@@ -17,6 +17,13 @@ import checkpointsReducer from './checkpoints/checkpointsReducer';
 import betailReducer from './Betail/betailReducer';
 
 import tendanceVilleReducer from './minepia/dashboard/tendanceVilleReducer';
+import listeTypeBetailReducer from './minepia/listeTypeBetailReducer';
+import statTypeBetailReducer from './minepia/dashboard/statTypeBetailReducer';
+import listRegionReducer from './minepia/dashboard/listRegionReducer';
+import listDashboardReducer from './minepia/dashboard/listDashboardReducer';
+import statCheckpointReducer from './minepia/dashboard/statCheckpointReducer';
+import listeDesCamionsReducer from './minepia/itineraire/listeDesCamionsReducer';
+import listeItineraireReducer from './minepia/itineraire/listeItineraireReducer';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -74,8 +81,59 @@ const reducers = combineReducers({
     },
     tendanceVilleReducer
   ),
+  listeTypeBetail: persistReducer(
+    {
+      key: 'listeTypeBetail',
+      storage
+    },
+    listeTypeBetailReducer
+  ),
 
+  statTypeBetail: persistReducer(
+    {
+      key: 'statTypeBetail',
+      storage
+    },
+    statTypeBetailReducer
+  ),
   
+  listeRegion: persistReducer(
+    {
+      key: 'listeRegion',
+      storage
+    },
+    listRegionReducer
+  ),
+  listeHaut: persistReducer(
+    {
+      key: 'listeHaut',
+      storage
+    },
+    listDashboardReducer
+  ),
+  statCheckpoint: persistReducer(
+    {
+      key: 'statCheckpoint',
+      storage
+    },
+    statCheckpointReducer
+  ),
+
+  listeCamion: persistReducer(
+    {
+      key: 'listeCamion',
+      storage
+    },
+    listeDesCamionsReducer
+  ),
+  listeCamionItineraire: persistReducer(
+    {
+      key: 'listeCamionItineraire',
+      storage
+    },
+    listeItineraireReducer
+  ),
+
 });
 
 export default reducers;

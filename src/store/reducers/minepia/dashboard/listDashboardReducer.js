@@ -3,12 +3,16 @@ import { BASE_URL } from 'config';
 import { API_URL } from 'utils/apiConfig';
 // import { getToken } from "../manageToken";
 import axios from 'utils/axios';
+import moment from 'moment';
 
+const lastWeek = moment().subtract(1, 'weeks');
+const date_debut = lastWeek.startOf('week').format("YYYY-MM-DD HH:mm:ss");
+const date_fin = lastWeek.endOf('week').format("YYYY-MM-DD HH:mm:ss");
 
+const URL = BASE_URL + API_URL.listeDashboard + `?date_debut=${date_debut}&date_fin=${date_fin}`;
 
-const URL = BASE_URL + API_URL.TendanceVilleDashboard;
-export const listTendanceVille_req = createAsyncThunk(
-    "dashboard/tendanceVille", 
+export const listeHaut_req = createAsyncThunk(
+    "dashboard/haut", 
     async() =>{
     // const config = {
     //     headers: {
@@ -18,49 +22,46 @@ export const listTendanceVille_req = createAsyncThunk(
     // };
     
     let { data } = await axios.get(URL, { withCredentials: true })
-    
         return data[0];
     }
 
 )
 
 
-const tendanceVilleSlice = createSlice({
-    name: 'tendanceVille',
+const listeHautSlice = createSlice({
+    name: 'listeHaut',
     initialState:{
         loading: false,
-        ListTendanceVille: [],
+        ListHaut: [],
         error: null,
     },
+    
     reducers: {},
     extraReducers: (builder)=>{
         builder
-        .addCase(listTendanceVille_req.pending, (state)=>{
+        .addCase(listeHaut_req.pending, (state)=>{
             state.loading = true
-            state.ListTendanceVille = []
+            state.ListHaut = []
             state.error = null
         })
-        .addCase(listTendanceVille_req.fulfilled, (state, action)=>{
+        .addCase(listeHaut_req.fulfilled, (state, action)=>{
             state.loading = false
             if (action.payload.success === 0) {
               // invalid credentials
-              state.ListTendanceVille = []
+              state.ListHaut = []
               state.error = action.payload.errors[0].error_msg
             }else if (action.payload.success === 1){
-                console.log("success 1", action.payload.results)
-              // valid credentials
-              state.ListTendanceVille = [] 
-              state.ListTendanceVille = action.payload.results
+              state.ListHaut = [] 
+              state.ListHaut = action.payload.results[0]
               state.error = null
             }
         })
-        .addCase(listTendanceVille_req.rejected, (state, action)=>{
+        .addCase(listeHaut_req.rejected, (state, action)=>{
             state.loading = false
-            state.ListTendanceVille = []
-            // state.error = action.error.message
-            state.error = 'error-network'
+            state.ListHaut = []
+            state.error = action.error.message
         })
     }
 })
 
-export default tendanceVilleSlice.reducer;
+export default listeHautSlice.reducer;
