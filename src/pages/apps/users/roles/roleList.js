@@ -156,7 +156,6 @@ const RoleList = () => {
     )
   }
 
-
   return (
     <>
       <MainCard content={false}>

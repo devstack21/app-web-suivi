@@ -9,7 +9,7 @@ export const transformUser = (user) => {
 export const transformUserEdit = (user) => {
     return {
         id_user: user.id ,
-        isR: user.isR ? user.isR : user.responsable,
+        isR: user.isR !== undefined ? user.isR : user.responsable !== undefined ? user.responsable : false,
     };
 };
 

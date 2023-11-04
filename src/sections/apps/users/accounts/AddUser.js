@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import {  useState } from 'react';
 
 // material-ui
 import {
@@ -65,6 +65,7 @@ const AddUser = ({ user, onCancel, page }) => {
     onCancel();
   };
 
+
   const isCreating = !user;
 
   const UserSchema = Yup.object().shape({
@@ -86,7 +87,7 @@ const AddUser = ({ user, onCancel, page }) => {
           phone: values.phone,
           role_pk: values.role.id,
           pk: user.id,
-          active: values.active
+          is_block: values.active
         };
         if (user) {
 
@@ -103,11 +104,13 @@ const AddUser = ({ user, onCancel, page }) => {
     }
   });
 
+ 
+
   const handleToggle = (field, formik) => () => {
     formik.setFieldValue(field, !formik.values[field]);
   };
 
-  const id_image = Math.floor(Math.random() * 10) + 1
+  //const id_image = Math.floor(Math.random() * 10) + 1
 
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue, setValues } = formik;
@@ -133,7 +136,7 @@ const AddUser = ({ user, onCancel, page }) => {
                         cursor: 'pointer'
                       }}
                     >
-                      <Avatar alt="Avatar 1" src={avatarImage(`./avatar-${id_image}.png`)} sx={{ width: 72, height: 72, border: '1px dashed' }} />
+                      <Avatar alt="Avatar 1" src={avatarImage(`./avatar-${2}.png`)} sx={{ width: 72, height: 72, border: '1px dashed' }} />
 
                     </FormLabel>
 
@@ -181,7 +184,7 @@ const AddUser = ({ user, onCancel, page }) => {
                           type='number'
                           placeholder="Enter Customer Number"
                           {...getFieldProps('phone')}
-                          
+
                           error={Boolean(touched.phone && errors.phone)}
                           helperText={touched.phone && errors.phone}
                         />
@@ -228,13 +231,13 @@ const AddUser = ({ user, onCancel, page }) => {
                       <Grid item xs={12}>
                         <Stack spacing={1.25}>
                           <InputLabel htmlFor="active"><FormattedMessage id='status' /></InputLabel>
-                          <Grid container justifyContent="space-between"alignItems={"center"} >
+                          <Grid container justifyContent="space-between" alignItems={"center"} >
 
                             <Typography variant="subtitle2"><FormattedMessage id='active-account' /></Typography>
                             <Switch
                               edge="end"
                               onChange={handleToggle('active', formik)}
-                              checked={formik.values?.active || false}
+                              checked={!formik.values?.active}
                               inputProps={{
                                 'aria-labelledby': 'switch-list-label-sctp'
                               }}

@@ -7,6 +7,7 @@ import {
   CalendarOutlined,
   CustomerServiceOutlined,
   FileTextOutlined,
+  FileDoneOutlined,
   MessageOutlined,
   ShoppingCartOutlined,
   UserOutlined,
@@ -22,7 +23,8 @@ const icons = {
   ShoppingCartOutlined,
   UserOutlined,
   AppstoreAddOutlined,
-  FileTextOutlined
+  FileTextOutlined,
+  FileDoneOutlined
 };
 // ==============================|| MENU ITEMS - APPLICATIONS ||============================== //
 
@@ -74,6 +76,30 @@ const applications = {
           breadcrumbs: false
         }
       ]
+    },
+    {
+      id: 'reports',
+      title: <FormattedMessage id="reports" />,
+      type: 'collapse',
+      url: '/forms/validation',
+      icon: icons.FileDoneOutlined,
+      children: [
+        {
+          id: 'users-roles',
+          title: <FormattedMessage id="user-group" />,
+          type: 'item',
+          url: '/apps/users/roles',
+          breadcrumbs: false
+        },
+        {
+          id: 'users-accounts',
+          title: <FormattedMessage id="user-account" />,
+          type: 'item',
+          url: '/apps/users/accounts',
+          breadcrumbs: false
+        }
+      ]
+      
     },
   ]
 };

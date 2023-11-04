@@ -44,8 +44,6 @@ const BetailCheckpoint = ({ selectedTab, setSelectedTab, setFormikAnimalTabs }) 
     setFormikAnimalTabs('animalTabs', newData);
   };
 
-  console.log(selectedTab)
-
   return (
     <MainCard title={<FormattedMessage id='handle-animals' />} content={false}  >
       <Grid sx={{ p: 2.5 }} container direction="row" justifyContent={"flex-end"} >

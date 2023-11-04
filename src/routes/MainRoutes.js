@@ -23,6 +23,8 @@ const AppCalendar = Loadable(lazy(() => import('pages/apps/calendar')));
 
 //Checkpoint
 const AppCheckpointCreate = Loadable(lazy(() => import('pages/apps/checkpoint/create')));
+const AppCheckpointEdit = Loadable(lazy(() => import('pages/apps/checkpoint/edit')));
+const AppCheckpointDetail = Loadable(lazy(() => import('pages/apps/checkpoint/details')));
 const AppCheckpointList = Loadable(lazy(() => import('pages/apps/checkpoint/list')));
 const AppCheckpointAgentList = Loadable(lazy(() => import('pages/apps/checkpoint/agentList')));
 
@@ -172,7 +174,11 @@ const MainRoutes = {
                 },
                 {
                   path: 'edit/:id',
-                  element: <AppCheckpointCreate />
+                  element: <AppCheckpointEdit />
+                },
+                {
+                  path: 'details/:id',
+                  element: <AppCheckpointDetail />
                 },
                 {
                   path: 'list',

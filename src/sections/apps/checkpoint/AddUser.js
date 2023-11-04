@@ -17,7 +17,7 @@ const AddUser = ({ setSelectedTab, selectedTab, hanldeModal }) => {
   const { listStatus, agentsTab, nbPages } = useSelector((state) => state.checkpoint.agentList)
 
 
-  useEffect(() => { dispatch(getListAgentCheckpoints({ page: currentPage, nb: 5, agt_chk: true})) }, [currentPage, dispatch])
+  useEffect(() => { dispatch(getListAgentCheckpoints({ page: currentPage, nb: 5})) }, [currentPage, dispatch])
 
 
   const handleChangePage = (event, newPage) => {
@@ -35,6 +35,8 @@ const AddUser = ({ setSelectedTab, selectedTab, hanldeModal }) => {
       setSelectedTab((prevSelectedTab) => [...prevSelectedTab, { ...item, isR: false }]);
     }
   };
+
+  console.log(agentsTab)
 
   return (
     <MainCard title={<FormattedMessage id="add-agents" />} subheader={<FormattedMessage id="add-agents-description" />} content={false}>

@@ -13,6 +13,7 @@ const initialState = {
     listStatus: REQUEST_STATUS.idle,
     listError: '',
     roleTab: [],
+    nbPages: ''
 };
 
 export const getListRole = createAsyncThunk(
@@ -36,11 +37,12 @@ const ListRoleslice = createSlice({
             })
 
             .addCase(getListRole.fulfilled, (state, action) => {
-                const { success, results } = action.payload;
+                const { success, results,nombre_page } = action.payload;
                 if (success) {
                     state.listStatus = REQUEST_STATUS.succeed,
                     state.listError = ''
                     state.roleTab = results
+                    state.nbPages = nombre_page
                 } else {
                     state.listStatus = REQUEST_STATUS.error,
                     state.listError = 'error-list-roles'

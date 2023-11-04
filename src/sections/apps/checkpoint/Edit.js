@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { REQUEST_STATUS } from 'utils/apiConfig';
 import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
 import CreateEffectComponent from 'sections/apps/checkpoint/CreateEffectComponent';
-import {  transformAnimalsEdit, transformUserEdit } from 'sections/apps/checkpoint/CreateFunctions';
+import { transformAnimalsEdit, transformUserEdit } from 'sections/apps/checkpoint/CreateFunctions';
 import * as yup from 'yup';
 import { editCheckpoints } from 'store/reducers/checkpoints/editSlice';
 import { useNavigate } from 'react-router';
@@ -26,16 +26,15 @@ const EditCheckpoint = () => {
   const { checkpoint } = useSelector((state) => state.checkpoint.detail)
   const { createStatus } = useSelector((state) => state.checkpoint.create)
 
-  
+
   const [userTab, setUserTab] = useState([]);
   const [animalTab, setAnimalTab] = useState([]);
 
 
   useEffect(() => {
-    console.log("njnjnjn",checkpoint.animals)
     setUserTab(checkpoint.users)
     setAnimalTab(checkpoint.animals)
-  },[checkpoint])
+  }, [checkpoint])
 
 
   const validationSchema = yup.object({
@@ -95,7 +94,7 @@ const EditCheckpoint = () => {
       const transformedAnimals = animalTab.map(transformAnimalsEdit);
 
       dispatch(editCheckpoints({
-        pk:checkpoint.id,
+        pk: checkpoint.id,
         animals: transformedAnimals,
         libelle: values.name,
         latitude: values.latitude,
@@ -117,7 +116,7 @@ const EditCheckpoint = () => {
   // Watch for changes in userTab, animalTab, or other relevant fields
   useEffect(() => { resetSubmitError(); }, [userTab, animalTab, /* other relevant fields */]);
 
-  if (createStatus == REQUEST_STATUS.loading ) {
+  if (createStatus == REQUEST_STATUS.loading) {
     return (
       <EmptyUserCard id={<FormattedMessage id='loading' />} />
     )
@@ -294,13 +293,12 @@ const EditCheckpoint = () => {
                       id="responsable"
                       value={formik.values.responsable}
                       onChange={(event, newValue) => {
-                        formik.setFieldValue('responsable', newValue);
                         const updatedUserTab = userTab.map(user => ({
                           ...user,
                           isR: user.username === newValue,
                         }));
                         setUserTab(updatedUserTab);
-
+                        formik.setFieldValue('responsable', newValue);
                       }}
                       options={userTab.map((item) => item.username)}
                       getOptionLabel={(option) => option}
