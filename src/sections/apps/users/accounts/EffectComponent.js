@@ -22,8 +22,7 @@ const getInitialValues = (user, roleTab) => {
     newUser.username = user.username || '';
     newUser.email = user.email || '';
     newUser.phone = user.phone || '';
-    newUser.active = user.active || false;
-
+    newUser.active = user.is_block ;
 
     if (user.role) {
       // Find the role object based on libelle

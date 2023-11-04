@@ -19,7 +19,7 @@ const initialState = {
 export const getListCheckpoints = createAsyncThunk(
     "checkpoints/list",
     async (args) => {
-        const { data } = await axios.get(`${BASE_URL}${API_URL.ListCheckpoints}?page=${args.page}`);
+        const { data } = await axios.get(`${BASE_URL}${API_URL.ListCheckpoints}?page=${args.page}&nbr_ligne=10`);
         return data[0]
     }
 

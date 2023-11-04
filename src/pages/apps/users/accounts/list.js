@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import { useCallback, useEffect, useMemo } from 'react';
 
 // material-ui
-import {  useTheme } from '@mui/material/styles';
-import {Dialog,Grid,Pagination,} from '@mui/material';
+import { useTheme } from '@mui/material/styles';
+import { Button, Dialog, Grid, Pagination, Stack, } from '@mui/material';
 
 // third-party
 import { PatternFormat } from 'react-number-format';
@@ -12,7 +12,7 @@ import { PatternFormat } from 'react-number-format';
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import { PopupTransition } from 'components/@extended/Transitions';
-import { IndeterminateCheckbox,} from 'components/third-party/ReactTable';
+import { IndeterminateCheckbox, } from 'components/third-party/ReactTable';
 
 
 // assets
@@ -30,6 +30,7 @@ import AccountsTable from 'sections/apps/users/accounts/AccountsTable';
 import ActionCell from 'sections/apps/users/accounts/ActionCell';
 import StatusCell from 'sections/apps/users/accounts/StatusCell';
 import useAccountState from 'sections/apps/users/accounts/useAccountState';
+import { PlusOutlined } from '@ant-design/icons';
 
 
 
@@ -75,12 +76,12 @@ const AccountListPage = () => {
 
 
 
-  const { listStatus, accountsTab, nbPages } = useSelector((state) => state.account.list)
+  const { listStatus, accountsTab, nbPages , listError} = useSelector((state) => state.account.list)
   const { createStatus } = useSelector((state) => state.account.create)
 
   const { editStatus } = useSelector((state) => state.account.edit)
 
- 
+
   const columns = useMemo(
     () => [
       {
@@ -114,7 +115,7 @@ const AccountListPage = () => {
       },
       {
         Header: 'Status',
-        accessor: 'active',
+        accessor: 'is_block',
         Cell: StatusCell
       },
       {
@@ -156,18 +157,36 @@ const AccountListPage = () => {
     )
   }
 
+  if (listStatus == REQUEST_STATUS.error) {
+    return(
+      <EmptyUserCard title={<FormattedMessage id={listError} />} />
+    )
+  }
+
   return (
     <MainCard content={false}>
       <ScrollX>
         {
-          listStatus == REQUEST_STATUS.succeed &&
-          <AccountsTable
-            columns={columns}
-            data={accountsTab}
-            handleAdd={handleAdd}
-            getHeaderProps={(column) => column.getSortByToggleProps()}
-            renderRowSubComponent={renderRowSubComponent}
-          />
+          accountsTab.length > 0 ?
+            <AccountsTable
+              columns={columns}
+              data={accountsTab}
+              handleAdd={handleAdd}
+              getHeaderProps={(column) => column.getSortByToggleProps()}
+              renderRowSubComponent={renderRowSubComponent}
+            />
+            :
+            <>
+
+              <Stack direction="row" justifyContent="flex-end" spacing={1} sx={{ p: 2, }}>
+
+                <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd} size="small">
+                  <FormattedMessage id="add-user" />
+                </Button>
+              </Stack>
+              <EmptyUserCard title={<FormattedMessage id='no-user' />} />
+
+            </>
         }
 
       </ScrollX>

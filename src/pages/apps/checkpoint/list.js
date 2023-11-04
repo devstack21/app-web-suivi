@@ -102,7 +102,11 @@ function ReactTable({ columns, data }) {
         <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={matchDownSM ? 1 : 0}>
           <TableRowSelection selected={Object.keys(selectedRowIds).length} />
 
-          <Button variant="contained" startIcon={<PlusOutlined />} onClick={() => navigate("/apps/checkpoints/create")} size="small">
+          <Button variant="contained" startIcon={<PlusOutlined />} onClick={() => {
+            dispatch(initEditCheckpoint())
+            dispatch(initCreateCheckpoint())
+            navigate("/apps/checkpoints/create")
+          }} size="small">
             <FormattedMessage id="add-checkpoint" />
           </Button>
           <CSVExport data={data} filename={'checkpoints-list.csv'} />
@@ -186,7 +190,6 @@ const ActionCell = (row, setGetInvoiceId, navigation, theme) => {
           color="primary"
           onClick={(e) => {
             e.stopPropagation();
-
             dispatch(initEditCheckpoint())
             dispatch(initCreateCheckpoint())
             dispatch(getDetailCheckpoint({ id: row.values.id }))

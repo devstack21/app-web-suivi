@@ -7,8 +7,8 @@ import { FormattedMessage } from 'react-intl';
 
 const StatusCell = ({ value }) => (
   <Chip
-    color={value ? 'success' : 'error'}
-    label={<FormattedMessage id={value ? 'active' : 'inactive'} />}
+    color={value ? 'error' : 'success'}
+    label={<FormattedMessage id={value ? 'inactive' : 'active'} />}
     size="small"
     variant="light"
   />
