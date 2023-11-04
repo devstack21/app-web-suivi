@@ -6,9 +6,9 @@ import axios from 'utils/axios';
 
 
 
-const URL = BASE_URL + API_URL.TendanceVilleDashboard;
-export const listTendanceVille_req = createAsyncThunk(
-    "dashboard/tendanceVille", 
+const URL = BASE_URL + API_URL.ListeTypeBetail+"?page=1";
+export const listeTypeBetail_req = createAsyncThunk(
+    "dashboard/listeTypeBetail", 
     async() =>{
     // const config = {
     //     headers: {
@@ -18,49 +18,48 @@ export const listTendanceVille_req = createAsyncThunk(
     // };
     
     let { data } = await axios.get(URL, { withCredentials: true })
-    
         return data[0];
     }
 
 )
 
 
-const tendanceVilleSlice = createSlice({
-    name: 'tendanceVille',
+const listeTypeBetailSlice = createSlice({
+    name: 'listeTypeBetail',
     initialState:{
         loading: false,
-        ListTendanceVille: [],
+        ListTypeBetail: [],
         error: null,
     },
+    
     reducers: {},
     extraReducers: (builder)=>{
         builder
-        .addCase(listTendanceVille_req.pending, (state)=>{
+        .addCase(listeTypeBetail_req.pending, (state)=>{
             state.loading = true
-            state.ListTendanceVille = []
+            state.ListTypeBetail = []
             state.error = null
         })
-        .addCase(listTendanceVille_req.fulfilled, (state, action)=>{
+        .addCase(listeTypeBetail_req.fulfilled, (state, action)=>{
             state.loading = false
             if (action.payload.success === 0) {
               // invalid credentials
-              state.ListTendanceVille = []
+              state.ListTypeBetail = []
               state.error = action.payload.errors[0].error_msg
             }else if (action.payload.success === 1){
                 console.log("success 1", action.payload.results)
               // valid credentials
-              state.ListTendanceVille = [] 
-              state.ListTendanceVille = action.payload.results
+              state.ListTypeBetail = [] 
+              state.ListTypeBetail = action.payload.results
               state.error = null
             }
         })
-        .addCase(listTendanceVille_req.rejected, (state, action)=>{
+        .addCase(listeTypeBetail_req.rejected, (state, action)=>{
             state.loading = false
-            state.ListTendanceVille = []
-            // state.error = action.error.message
-            state.error = 'error-network'
+            state.ListTypeBetail = []
+            state.error = action.error.message
         })
     }
 })
 
-export default tendanceVilleSlice.reducer;
+export default listeTypeBetailSlice.reducer;

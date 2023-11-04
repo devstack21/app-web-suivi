@@ -27,7 +27,15 @@ export const API_URL = {
 	UpdatePassword: '/change/password/',
 	UpdateRole: '/role/update/',
 
-	TendanceVilleDashboard: '/alertVilleStat/',
+	TendanceVilleDashboard: '/alertVilleStat',
+	ListeTypeBetail: '/betails/type',
+	statTypeBetail: '/statTypeBetail/',
+	listeRegions: '/listeRegions/',
+	listeDashboard: '/stat/hautDashboard/',
+	statCkeckpoint: '/stat/checkpoint',
+
+	listeCamion: '/camions/liste',
+	itineraireCamion: '/camions/itineraire',
 };
 
 

@@ -11,6 +11,7 @@ const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')))
 // const DashboardAnalytics = Loadable(lazy(() => import('pages/dashboard/analytics')));
 const DashboardAnalytics = Loadable(lazy(() => import('pages/minepia/dashboard/analytics')));
 
+
 // render - widget
 const WidgetStatistics = Loadable(lazy(() => import('pages/widget/statistics')));
 const WidgetData = Loadable(lazy(() => import('pages/widget/data')));
@@ -109,6 +110,7 @@ const AppContactUS = Loadable(lazy(() => import('pages/contact-us')));
 const SamplePage = Loadable(lazy(() => import('pages/extra-pages/sample-page')));
 const PricingPage = Loadable(lazy(() => import('pages/extra-pages/pricing')));
 
+const ListeDesCamions = Loadable(lazy(() =>import('pages/minepia/itineraire/listeCamions') ))
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -135,6 +137,20 @@ const MainRoutes = {
             }
           ]
         },
+        {
+          path: 'itineraire',
+          children: [
+            {
+              path: 'listecamion',
+              element: <ListeDesCamions />
+            }
+          ]
+        },
+
+
+
+
+
         {
           path: 'widget',
           children: [

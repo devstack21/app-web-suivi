@@ -5,7 +5,6 @@ import { persistStore, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 
 
 // project import
 import reducers from './reducers';
-import tendanceVilleReducer from './reducers/minepia/dashboard/tendanceVilleReducer';
 
 // ==============================|| REDUX TOOLKIT - MAIN STORE ||============================== //
 
@@ -17,10 +16,6 @@ const store = configureStore({
         ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
       }
     }),
-
-
-    
-  tendanceVille:tendanceVilleReducer,
 });
 
 const persister = persistStore(store);

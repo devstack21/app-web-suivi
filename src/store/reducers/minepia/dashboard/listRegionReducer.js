@@ -6,9 +6,9 @@ import axios from 'utils/axios';
 
 
 
-const URL = BASE_URL + API_URL.TendanceVilleDashboard;
-export const listTendanceVille_req = createAsyncThunk(
-    "dashboard/tendanceVille", 
+const URL = BASE_URL + API_URL.listeRegions+"?page=1";
+export const listeRegion_req = createAsyncThunk(
+    "dashboard/listeRegion", 
     async() =>{
     // const config = {
     //     headers: {
@@ -18,49 +18,46 @@ export const listTendanceVille_req = createAsyncThunk(
     // };
     
     let { data } = await axios.get(URL, { withCredentials: true })
-    
         return data[0];
     }
 
 )
 
 
-const tendanceVilleSlice = createSlice({
-    name: 'tendanceVille',
+const listeRegionSlice = createSlice({
+    name: 'listeRegion',
     initialState:{
         loading: false,
-        ListTendanceVille: [],
+        ListRegion: [],
         error: null,
     },
+    
     reducers: {},
     extraReducers: (builder)=>{
         builder
-        .addCase(listTendanceVille_req.pending, (state)=>{
+        .addCase(listeRegion_req.pending, (state)=>{
             state.loading = true
-            state.ListTendanceVille = []
+            state.ListRegion = []
             state.error = null
         })
-        .addCase(listTendanceVille_req.fulfilled, (state, action)=>{
+        .addCase(listeRegion_req.fulfilled, (state, action)=>{
             state.loading = false
             if (action.payload.success === 0) {
               // invalid credentials
-              state.ListTendanceVille = []
+              state.ListRegion = []
               state.error = action.payload.errors[0].error_msg
             }else if (action.payload.success === 1){
-                console.log("success 1", action.payload.results)
-              // valid credentials
-              state.ListTendanceVille = [] 
-              state.ListTendanceVille = action.payload.results
+              state.ListRegion = [] 
+              state.ListRegion = action.payload.results
               state.error = null
             }
         })
-        .addCase(listTendanceVille_req.rejected, (state, action)=>{
+        .addCase(listeRegion_req.rejected, (state, action)=>{
             state.loading = false
-            state.ListTendanceVille = []
-            // state.error = action.error.message
-            state.error = 'error-network'
+            state.ListRegion = []
+            state.error = action.error.message
         })
     }
 })
 
-export default tendanceVilleSlice.reducer;
+export default listeRegionSlice.reducer;
