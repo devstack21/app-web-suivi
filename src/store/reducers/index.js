@@ -24,6 +24,9 @@ import listDashboardReducer from './minepia/dashboard/listDashboardReducer';
 import statCheckpointReducer from './minepia/dashboard/statCheckpointReducer';
 import listeDesCamionsReducer from './minepia/itineraire/listeDesCamionsReducer';
 import listeItineraireReducer from './minepia/itineraire/listeItineraireReducer';
+import listVilleReducer from './minepia/dashboard/listVilleReducer';
+import listeContactReducer from './minepia/alerte/listeContactReducer';
+import listeAlerteReducer from './minepia/alerte/listeAlerteReducer';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -132,6 +135,28 @@ const reducers = combineReducers({
       storage
     },
     listeItineraireReducer
+  ),
+
+  listeVille: persistReducer(
+    {
+      key: 'listeVille',
+      storage
+    },
+    listVilleReducer
+  ),
+  listeContact: persistReducer(
+    {
+      key: 'listeContact',
+      storage
+    },
+    listeContactReducer
+  ),
+  listeAlerte: persistReducer(
+    {
+      key: 'listeAlerte',
+      storage
+    },
+    listeAlerteReducer
   ),
 
 });
