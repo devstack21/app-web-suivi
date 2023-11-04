@@ -6,11 +6,12 @@ import chartsMap from './charts-map';
 import other from './other';
 import pages from './pages';
 import itineraire from './minepia/itineraire';
+import alerte from './minepia/alerte'
 
 // ==============================|| MENU ITEMS ||============================== //
 
 const menuItems = {
-  items: [itineraire, widget, applications, formsTables, chartsMap, pages, other]
+  items: [itineraire, alerte, widget, applications, formsTables, chartsMap, pages, other]
 };
 
 export default menuItems;

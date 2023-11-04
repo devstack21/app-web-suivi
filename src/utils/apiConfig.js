@@ -36,6 +36,12 @@ export const API_URL = {
 
 	listeCamion: '/camions/liste',
 	itineraireCamion: '/camions/itineraire',
+	listVilles: '/listeVilles/',
+	listContacts: '/contact/',
+
+	creerAlerte: '/alerte/',
+	listeAlerte: '/alerte/',
+	activeDesactiveAlerte: '/alerteActiveDeactive/'
 };
 
 

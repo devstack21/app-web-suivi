@@ -37,6 +37,22 @@ import ReportChart from 'sections/dashboard/analytics/ReportChart';
 import SalesChart from 'sections/dashboard/analytics/minepia/SalesChart';
 import TransactionHistory from 'sections/dashboard/analytics/TransactionHistory';
 // import UsersCardChart from 'sections/dashboard/analytics/UsersCardChart';
+import AnalyticsDataCard from 'components/cards/statistics/AnalyticsDataCard';
+import WelcomeBanner from 'sections/dashboard/analytics/WelcomeBanner';
+// import IncomeChart from 'sections/dashboard/analytics/IncomeChart';
+import IncomeChart from 'sections/dashboard/analytics/minepia/IncomeChart'
+// import MarketingCardChart from 'sections/dashboard/analytics/MarketingCardChart';
+// import OrdersCardChart from 'sections/dashboard/analytics/OrdersCardChart';
+// import OrdersList from 'sections/dashboard/analytics/OrdersList';
+// import OrdersList from 'sections/dashboard/analytics/minepia/OrdersList';
+
+import PageViews from 'sections/dashboard/analytics/PageViews';
+import ReportChart from 'sections/dashboard/analytics/ReportChart';
+// import SalesCardChart from 'sections/dashboard/analytics/SalesCardChart';
+// import SalesChart from 'sections/dashboard/SalesChart';
+import SalesChart from 'sections/dashboard/analytics/minepia/SalesChart';
+import TransactionHistory from 'sections/dashboard/analytics/TransactionHistory';
+// import UsersCardChart from 'sections/dashboard/analytics/UsersCardChart';
 import LabelledTasks from 'sections/dashboard/analytics/LabelledTasks';
 import ReaderCard from 'sections/dashboard/analytics/ReaderCard';
 import AcquisitionChannels from 'sections/dashboard/analytics/AcquisitionChannels';
@@ -46,7 +62,6 @@ import { DownloadOutlined, CaretDownOutlined } from '@ant-design/icons';
 
 
 import { useSelector, useDispatch } from 'react-redux';
-// import { listTendanceVille_req } from 'store/reducers/minepia/dashboard/tendanceVilleReducer';
 import { listeTypeBetail_req } from 'store/reducers/minepia/listeTypeBetailReducer';
 import { statTypeBetail_req } from 'store/reducers/minepia/dashboard/statTypeBetailReducer';
 import { API_URL } from 'utils/apiConfig';
@@ -54,7 +69,6 @@ import { BASE_URL } from 'config';
 import moment from 'moment';
 import axios from 'utils/axios';
 import { listeRegion_req } from 'store/reducers/minepia/dashboard/listRegionReducer';
-import { listTendanceVille_req } from 'store/reducers/minepia/dashboard/tendanceVilleReducer';
 import AnalyticEcommerce from 'components/cards/statistics/AnalyticEcommerce';
 import { listeHaut_req } from 'store/reducers/minepia/dashboard/listDashboardReducer';
 import { statCheckpoint_req } from 'store/reducers/minepia/dashboard/statCheckpointReducer';
