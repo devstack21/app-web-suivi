@@ -29,7 +29,6 @@ import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import IconButton from 'components/@extended/IconButton';
 import { CSVExport, HeaderSort, IndeterminateCheckbox, TableRowSelection } from 'components/third-party/ReactTable';
-import AlertColumnDelete from 'sections/apps/kanban/Board/AlertColumnDelete';
 
 import { dispatch, useSelector } from 'store';
 import { renderFilterTypes, GlobalFilter, DateColumnFilter } from 'utils/react-table';
@@ -168,7 +167,7 @@ const UserCell = ({ value }) => {
     </Typography>)
 };
 const DateCell = ({ value }) => { return (<Typography variant="subtitle1">{format(new Date(value), 'dd/MM/yyyy')}</Typography>) };
-const ActionCell = (row, setGetInvoiceId, navigation, theme) => {
+const ActionCell = (row, navigation, theme) => {
   return (
     <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
       <Tooltip title={<FormattedMessage id='view' />}>
@@ -202,15 +201,6 @@ const ActionCell = (row, setGetInvoiceId, navigation, theme) => {
       <Tooltip title={<FormattedMessage id='delete' />}>
         <IconButton
           color="error"
-          onClick={(e) => {
-            e.stopPropagation();
-            setGetInvoiceId(row.original.invoice_id);
-            dispatch(
-              alertPopupToggle({
-                alertToggle: true
-              })
-            );
-          }}
         >
           <DeleteTwoTone twoToneColor={theme.palette.error.main} />
         </IconButton>
@@ -228,7 +218,6 @@ DateCell.propTypes = { value: PropTypes.string };
 
 ActionCell.propTypes = {
   row: PropTypes.array,
-  setGetCheckpointId: PropTypes.func,
   navigation: PropTypes.func,
   theme: PropTypes.object
 };
@@ -253,7 +242,6 @@ const List = () => {
   const theme = useTheme();
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [getCheckpointId, setGetCheckpointId] = useState(0);
 
   const { listStatus, checkpointsTab, nbPages, listError } = useSelector((state) => state.checkpoint.list)
 
@@ -311,7 +299,7 @@ const List = () => {
         Header: 'Actions',
         className: 'cell-center',
         disableSortBy: true,
-        Cell: ({ row }) => ActionCell(row, setGetCheckpointId, navigation, theme)
+        Cell: ({ row }) => ActionCell(row, navigation, theme)
       }
     ],
     []
@@ -366,7 +354,6 @@ const List = () => {
 
         }
       </MainCard>
-      <AlertColumnDelete title={`${getCheckpointId}`} open={false} />
     </>
   );
 };

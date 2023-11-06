@@ -35,6 +35,54 @@ const applications = {
   type: 'group',
   children: [
     {
+      id: 'dashboard',
+      title: <FormattedMessage id="dashboard" />,
+      type: 'item',
+      icon: icons.FileTextOutlined,
+      breadcrumbs: true,
+      url: '/dashboard/analytics',
+
+    },
+    {
+      id: 'alerts',
+      title: <FormattedMessage id="alerts" />,
+      type: 'collapse',
+      icon: icons.FileTextOutlined,
+      breadcrumbs: true,
+      children: [
+        {
+          id: 'create',
+          title: <FormattedMessage id="alert-create" />,
+          type: 'item',
+          url: 'apps/alerts/create',
+          icon: icons.IdcardOutlined
+        },
+        {
+          id: 'list',
+          title: <FormattedMessage id="alert-list" />,
+          type: 'item',
+          url: 'apps/alerts/list',
+          icon: icons.IdcardOutlined
+        },
+
+      ]
+    },
+    {
+      id: 'itineraire',
+      title: <FormattedMessage id="itineraire" />,
+      icon: icons.IdcardOutlined,
+      type: 'collapse',
+      children: [
+        {
+          id: 'list',
+          title: <FormattedMessage id="truck-list" />, // <FormattedMessage id="listecamion" />,
+          type: 'item',
+          url: 'apps/itineraire/list',
+          icon: icons.IdcardOutlined
+        }
+      ]
+    },
+    {
       id: 'checkpoints',
       title: <FormattedMessage id="checkpoints" />,
       type: 'collapse',
@@ -99,7 +147,7 @@ const applications = {
           breadcrumbs: false
         }
       ]
-      
+
     },
   ]
 };

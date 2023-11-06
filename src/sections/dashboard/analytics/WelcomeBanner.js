@@ -7,9 +7,6 @@ import MainCard from 'components/MainCard';
 import { ThemeDirection } from 'config';
 
 //asset
-import WelcomeImage from 'assets/images/analytics/welcome-banner.png';
-import WelcomeImageArrow from 'assets/images/analytics/welcome-arrow.png';
-
 // ==============================|| ANALYTICS - WELCOME ||============================== //
 
 const WelcomeBanner = () => {
@@ -42,14 +39,6 @@ const WelcomeBanner = () => {
               >
                 View full statistic
               </Button>
-            </Box>
-          </Stack>
-        </Grid>
-        <Grid item sm={6} xs={12} sx={{ display: { xs: 'none', sm: 'initial' } }}>
-          <Stack sx={{ position: 'relative', pr: { sm: 3, md: 8 } }} justifyContent="center" alignItems="flex-end">
-            <img src={WelcomeImage} alt="Welcome" />
-            <Box sx={{ position: 'absolute', bottom: 0, right: '10%' }}>
-              <img src={WelcomeImageArrow} alt="Welcome Arrow" />
             </Box>
           </Stack>
         </Grid>
