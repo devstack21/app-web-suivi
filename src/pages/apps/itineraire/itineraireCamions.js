@@ -1,17 +1,17 @@
 import React from 'react';
 
 import { Container  } from '@mui/material';
-import TasksCard from '../../../sections/apps/itineraire/TasksCard';
+import TasksCard from './widgets/TasksCard';
 
 
 
 
-const ItineraireCamion = ({itineraireList, onCancel}) => {
+const ItineraireCamion = ({itineraireList, onCancel, startDate, endDate, matriculeCamion}) => {
 
   return (
     <>
     <Container maxWidth="xl">
-        <TasksCard itineraireList={itineraireList} onCancel={onCancel} />
+        <TasksCard itineraireList={itineraireList} onCancel={onCancel} startDate={startDate} endDate={endDate} matriculeCamion={matriculeCamion} />
     </Container>
 
     </>
