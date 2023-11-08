@@ -19,10 +19,10 @@ import listeItineraireReducer from './itineraire/listeItineraireReducer';
 import dashboardReducer from './dashboard/dashboardReducer';
 import locationReducer from './Location/locationReducer';
 
-import listeRapportReducer from './minepia/rapports/listeRapportReducer';
-import detailRapportReducer from './minepia/rapports/detailRapportReducer';
-import activerRapportReducer from './minepia/rapports/activerRapportReducer';
-import rejeterRapportReducer from './minepia/rapports/rejeterRapportReducer';
+import listeRapportReducer from './rapports/listeRapportReducer';
+import detailRapportReducer from './rapports/detailRapportReducer';
+import activerRapportReducer from './rapports/activerRapportReducer';
+import rejeterRapportReducer from './rapports/rejeterRapportReducer';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
