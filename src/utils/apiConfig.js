@@ -6,7 +6,7 @@ export const CODE_ROLE_COLLECTE = "COLLECTE";
 
 
 export const API_URL = {
-	Alert: '/alerte',
+	Alert: '/alerte/',
 	CreateAccount: '/user/create/',
 	CreateCheckpoint: '/checkpoint/create/',
 	CreateRole: '/role/create/',
@@ -32,11 +32,11 @@ export const API_URL = {
 	ResetPassword: '/reset/password/',
 	StatApproTypeBetail: '/stat/approvisionement/betail/region/',
 	StatImportTypeBetail: '/stat/importation/betail/',
+	StatIndicateur: '/stat/indicateur/',
 	statCkeckpoint: '/stat/checkpoint',
 	UpdatePassword: '/change/password/',
 	UpdateRole: '/role/update/',
 
-	TendanceVilleDashboard: '/stat/alertVille/',
 
 	listeCamion: '/camions/liste',
 	itineraireCamion: '/camions/itineraire',

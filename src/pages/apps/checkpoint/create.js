@@ -8,7 +8,7 @@ import BetailCheckpoint from 'sections/apps/checkpoint/Betail';
 import { Form, FormikProvider, useFormik } from 'formik';
 import { FormattedMessage } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
-import { getListDistricts } from 'store/reducers/Location/districtsSlice';
+import { getListDistricts } from 'store/reducers/location/districtsSlice';
 import { createCheckpoints, initCreateCheckpoint } from 'store/reducers/checkpoints/createSlice';
 import { REQUEST_STATUS } from 'utils/apiConfig';
 import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';

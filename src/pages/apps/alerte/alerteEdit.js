@@ -8,9 +8,9 @@ import { BASE_URL } from 'config';
 import { API_URL, REQUEST_STATUS } from 'utils/apiConfig';
 import { CloseOutlined } from '@ant-design/icons'
 import { useSelector, useDispatch } from 'react-redux';
-import { getListBetail } from 'store/reducers/Betail/listBetailSlice';
+import { getListBetail } from 'store/reducers/betail/listBetailSlice';
 import { getContactList } from 'store/reducers/alerte/listeContactSlice';
-import { getListVille } from 'store/reducers/Location/villeSlice';
+import { getListVille } from 'store/reducers/location/villeSlice';
 import { FormattedMessage } from 'react-intl';
 import { SpinnLoader } from 'components/cards/SpinnLoader';
 

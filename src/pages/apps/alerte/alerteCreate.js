@@ -3,16 +3,16 @@ import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { Button, TextField, Grid, Chip, FormControl, InputLabel, Select, MenuItem, Container, Autocomplete, useTheme } from '@mui/material';
 
-import axios from 'utils/axios';
 import MainCard from 'components/MainCard';
 import { useSelector, useDispatch } from 'react-redux';
-import { BASE_URL } from 'config';
-import { API_URL, REQUEST_STATUS } from 'utils/apiConfig';
-import { getListBetail } from 'store/reducers/Betail/listBetailSlice';
+import {  REQUEST_STATUS } from 'utils/apiConfig';
+import { getListBetail } from 'store/reducers/betail/listBetailSlice';
 import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
 import { getContactList } from 'store/reducers/alerte/listeContactSlice';
-import { getListVille } from 'store/reducers/Location/villeSlice';
+import { getListVille } from 'store/reducers/location/villeSlice';
 import { FormattedMessage } from 'react-intl';
+import { createAlert } from 'store/reducers/alerte/createAlerteSlice';
+import EffectComponent from 'sections/apps/alert/EffectComponent';
 
 
 const ListTypeCanal = ["SMS", "EMAIL"]
@@ -65,16 +65,7 @@ const AlertForm = () => {
             ...values,
             contacts: listeIdContacts
           };
-          const URL = BASE_URL + API_URL.creerAlerte;
-          
-        axios.post(URL, dataToSend)
-            .then(response => {
-            console.log('success', response.data[0].success);
-            console.log('object', response.data[0].results[0]);
-            })
-            .catch(error => {
-            console.error(error);
-        });
+        dispatch(createAlert(dataToSend)) 
     }
   });
 
@@ -147,14 +138,14 @@ const AlertForm = () => {
                 <Grid item xs={12} >
                     <Autocomplete
                         id="id_ville"
-                        value={ListVille.find(ville => ville.id === formik.values.id_ville) || null}
+                        value={ListVille.find(ville => ville.pk === formik.values.id_ville) || null}
                         onChange={(event, newValue) => {
-                            formik.setFieldValue('id_ville', newValue ? newValue.id : '');
+                            formik.setFieldValue('id_ville', newValue ? newValue.pk : '');
                         }}
                         onBlur={() => formik.setFieldTouched('id_ville')}
                         getOptionLabel={(option) => option ? option.name : ""}
                         options={ListVille}
-                        isOptionEqualToValue={(option, value) => option.id === value}
+                        isOptionEqualToValue={(option, value) => option.pk === value}
                         renderInput={(params) => (
                             <TextField 
                                 {...params} 
@@ -215,6 +206,8 @@ const AlertForm = () => {
                 <Grid item xs={12}>
                 <Button type="submit" variant="contained" color="primary">Submit</Button>
                 </Grid>
+                <EffectComponent   />
+
             </Grid>
         </form>
 

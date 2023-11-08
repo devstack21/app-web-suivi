@@ -25,7 +25,7 @@ import { dispatch, useSelector } from 'store';
 import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
 import { FormattedMessage } from 'react-intl';
 import { REQUEST_STATUS } from 'utils/apiConfig';
-import { getListRole } from 'store/reducers/Roles/listSlice';
+import { getListRole } from 'store/reducers/roles/listSlice';
 import { ActionCell } from 'sections/apps/users/roles/ActionCell';
 import RoleTable from 'sections/apps/users/roles/RolesTable';
 import { format } from 'date-fns';

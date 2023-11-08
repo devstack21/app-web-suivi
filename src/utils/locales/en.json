@@ -1,7 +1,6 @@
 {
-  "accordion": "Accordion",
   "account-profile": "Account Profile",
-  "action-bar": "Action Bar",
+  "account-blocked": "Account blocked, please contact an administrator",
   "active": "Active",
   "active-account": "Enable/Disable account?",
   "active-role": "Enable/Disable role?",

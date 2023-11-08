@@ -9,8 +9,8 @@ import { dispatch } from 'store';
 import { FormattedMessage } from 'react-intl';
 import { getDetailCheckpoint } from 'store/reducers/checkpoints/detailSlice';
 import {  EditTwoTone } from '@ant-design/icons';
-import { initEditRole } from 'store/reducers/Roles/editSlice';
-import { initCreateRole } from 'store/reducers/Roles/createSlice';
+import { initEditRole } from 'store/reducers/roles/editSlice';
+import { initCreateRole } from 'store/reducers/roles/createSlice';
 
 
 

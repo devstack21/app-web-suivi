@@ -10,12 +10,12 @@ import { REQUEST_STATUS } from 'utils/apiConfig';
 import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
 import * as yup from 'yup';
 import { useNavigate, useParams } from 'react-router';
-import { getListModule } from 'store/reducers/Roles/moduleList';
-import { createRole, initCreateRole } from 'store/reducers/Roles/createSlice';
+import { getListModule } from 'store/reducers/roles/moduleList';
+import { createRole, initCreateRole } from 'store/reducers/roles/createSlice';
 import TaskList from 'sections/apps/users/roles/TaskList';
 import EffectComponent from 'sections/apps/users/roles/RoleEffectComponent';
-import { editRole, initEditRole } from 'store/reducers/Roles/editSlice';
-import { getDetailRole, initDetailRole } from 'store/reducers/Roles/detailSlice';
+import { editRole, initEditRole } from 'store/reducers/roles/editSlice';
+import { getDetailRole, initDetailRole } from 'store/reducers/roles/detailSlice';
 
 
 const Create = () => {

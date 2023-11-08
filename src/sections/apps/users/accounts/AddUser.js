@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import {  useState } from 'react';
+import { useState } from 'react';
 
 // material-ui
 import {
@@ -40,8 +40,8 @@ import IconButton from 'components/@extended/IconButton';
 import { DeleteFilled } from '@ant-design/icons';
 import { FormattedMessage } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
-import { createAccounts } from 'store/reducers/Accounts/createSlice';
-import { editAccounts } from 'store/reducers/Accounts/editSlice';
+import { createAccounts } from 'store/reducers/accounts/createSlice';
+import { editAccounts } from 'store/reducers/accounts/editSlice';
 import EffectComponent from './EffectComponent';
 import Dot from 'components/@extended/Dot';
 
@@ -79,23 +79,31 @@ const AddUser = ({ user, onCancel, page }) => {
 
   const formik = useFormik({
     validationSchema: UserSchema,
-    onSubmit: (values, { setSubmitting }) => {
+    onSubmit: (values, { setSubmitting, resetForm }) => {
       try {
-        const newUser = {
-          username: values.username,
-          email: values.email,
-          phone: values.phone,
-          role_pk: values.role.id,
-          pk: user.id,
-          is_block: values.active
-        };
+
         if (user) {
 
+          const newUser = {
+            username: values.username,
+            email: values.email,
+            phone: values.phone,
+            role_pk: values.role.id,
+            pk: user.id,
+            is_block: values.active
+          };
           dispatch(editAccounts(newUser))
         } else {
+          const newUser = {
+            username: values.username,
+            email: values.email,
+            phone: values.phone,
+            role_pk: values.role.id,
+            is_block: values.active
+          };
           dispatch(createAccounts(newUser));
         }
-
+        resetForm()
         setSubmitting(false);
         onCancel();
       } catch (error) {
@@ -104,13 +112,11 @@ const AddUser = ({ user, onCancel, page }) => {
     }
   });
 
- 
+
 
   const handleToggle = (field, formik) => () => {
     formik.setFieldValue(field, !formik.values[field]);
   };
-
-  //const id_image = Math.floor(Math.random() * 10) + 1
 
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue, setValues } = formik;
@@ -278,7 +284,7 @@ const AddUser = ({ user, onCancel, page }) => {
             </DialogActions>
           </Form>
         </LocalizationProvider>
-        <EffectComponent setValues={setValues} user={user} page={page} />
+        <EffectComponent setValues={setValues} user={user} page={page} isCreating={isCreating} />
       </FormikProvider>
       {!isCreating && <AlertAccountDelete title={user.username} open={openAlert} handleClose={handleAlertClose} />}
     </>

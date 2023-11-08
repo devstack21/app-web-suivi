@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Pagination from '@mui/material/Pagination';
-import { getListBetail } from 'store/reducers/Betail/listBetailSlice';
+import { getListBetail } from 'store/reducers/betail/listBetailSlice';
 import { REQUEST_STATUS } from 'utils/apiConfig';
 import { Checkbox, FormControlLabel, Grid, CardContent, Button } from '@mui/material';
 import { FormattedMessage } from 'react-intl';

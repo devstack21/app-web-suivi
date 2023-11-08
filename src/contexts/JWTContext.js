@@ -6,8 +6,8 @@ import { createContext, useEffect, useReducer } from 'react';
 import CryptoJS from 'react-native-crypto-js';
 
 // reducer - state management
-import { LOGIN, LOGOUT, RESET_PASSWORD, UPDATE_PASSWORD } from 'store/reducers/authActions';
-import authReducer from 'store/reducers/auth';
+import { LOGIN, LOGOUT, RESET_PASSWORD, UPDATE_PASSWORD } from 'store/reducers/auth/authActions';
+import authReducer from 'store/reducers/auth/auth';
 
 // project import
 import Loader from 'components/Loader';
@@ -28,12 +28,12 @@ const verifyToken = (serviceToken) => {
   if (!serviceToken) {
     return false;
   }
- // const decoded = jwtDecode(serviceToken);
+  // const decoded = jwtDecode(serviceToken);
   /**
    * Property 'exp' does not exist on type '<T = unknown>(token: string, options?: JwtDecodeOptions | undefined) => T'.
    */
- // return decoded.exp > Date.now() / 1000;
- return true
+  // return decoded.exp > Date.now() / 1000;
+  return true
 };
 
 const setSession = (serviceToken) => {
@@ -63,8 +63,9 @@ export const JWTProvider = ({ children }) => {
             type: LOGIN,
             payload: {
               isLoggedIn: true,
-             // user
-            }})
+              // user
+            }
+          })
           /*   const response = await axios.get('/api/account/me');
              const { user } = response.data;
              dispatch({
@@ -94,36 +95,40 @@ export const JWTProvider = ({ children }) => {
 
   const login = async (email, pwd) => {
 
-   
+
     try {
       dispatch({ type: LOGOUT })
       const password = CryptoJS.AES.encrypt(pwd, REACT_APP_JWT_SECRET_KEY).toString();
-  
+
       const response = await axios.post(BASE_URL + API_URL.Login, { email, password });
       const { success, results, errors } = response.data[0];
-  
+
       if (success == 1) {
         setSession(results[0].token);
         const user = results[0]
+        console.log(user)
         setSession(user.token)
         dispatch({
           type: LOGIN,
           payload: {
             isLoggedIn: user.reset_password ? false : true,
             user: user,
-            error:"",
+            error: "",
             status: REQUEST_STATUS.succeed
           }
         });
       } else {
         let error_msg
-  
+
         switch (errors[0].error_code) {
           case "LO001":
             error_msg = "user-not-found"
             break;
           case "LO003":
             error_msg = "password-incorect"
+            break;
+          case "LO004":
+            error_msg = "account-blocked"
             break;
           default:
             error_msg = "password-incorect"
@@ -148,7 +153,7 @@ export const JWTProvider = ({ children }) => {
         }
       });
     }
-   
+
   };
 
   const logout = () => {
@@ -168,7 +173,7 @@ export const JWTProvider = ({ children }) => {
 
   const resetPassword = async (email, phone) => {
     try {
-      dispatch({type: RESET_PASSWORD, payload: {status: REQUEST_STATUS.loading}})
+      dispatch({ type: RESET_PASSWORD, payload: { status: REQUEST_STATUS.loading } })
       const response = await axios.post(BASE_URL + API_URL.ResetPassword, { email, phone });
       const { success, errors } = response.data[0];
       if (success) {
@@ -190,12 +195,12 @@ export const JWTProvider = ({ children }) => {
             error_msg = "error-network"
             break;
         }
-        dispatch({type: RESET_PASSWORD,payload: {error: error_msg, status: REQUEST_STATUS.error}});
+        dispatch({ type: RESET_PASSWORD, payload: { error: error_msg, status: REQUEST_STATUS.error } });
       }
     } catch (err) {
-      dispatch({type: RESET_PASSWORD,payload: {error: 'error-network', status: REQUEST_STATUS.error}});
+      dispatch({ type: RESET_PASSWORD, payload: { error: 'error-network', status: REQUEST_STATUS.error } });
     }
-    
+
   };
 
 
@@ -215,7 +220,7 @@ export const JWTProvider = ({ children }) => {
       dispatch({ type: UPDATE_PASSWORD, payload: { status: REQUEST_STATUS.loading } })
       const old_password = CryptoJS.AES.encrypt(old, REACT_APP_JWT_SECRET_KEY).toString();
       const new_password = CryptoJS.AES.encrypt(newPwd, REACT_APP_JWT_SECRET_KEY).toString();
-  
+
       const response = await axios.post(BASE_URL + API_URL.UpdatePassword, { old_password, new_password });
       const { success, errors } = response.data[0];
       if (success) {
@@ -244,7 +249,7 @@ export const JWTProvider = ({ children }) => {
   }
 
   return <JWTContext.Provider value={{
-    ...state, login, logout, initUpdatePassword,initResetPassword,
+    ...state, login, logout, initUpdatePassword, initResetPassword,
     resetPassword, updateProfile, updatePassword
   }}>{children}</JWTContext.Provider>;
 };
