@@ -8,6 +8,7 @@ import menu from './menu';
 import snackbar from './snackbar';
 import roleReducer from './Roles/roleReducer';
 import accountsReducer from './Accounts/accountsReducer';
+import alertReducer from './alerte/alertReducer';
 import checkpointsReducer from './checkpoints/checkpointsReducer';
 import betailReducer from './Betail/betailReducer';
 
@@ -15,11 +16,13 @@ import tendanceVilleReducer from './dashboard/tendanceVilleReducer';
 import statCheckpointReducer from './dashboard/statCheckpointReducer';
 import listeDesCamionsReducer from './itineraire/listeDesCamionsReducer';
 import listeItineraireReducer from './itineraire/listeItineraireReducer';
-import listVilleReducer from './Location/villeSlice';
-import listeContactReducer from './alerte/listeContactReducer';
-import listeAlerteReducer from './alerte/listeAlerteReducer';
 import dashboardReducer from './dashboard/dashboardReducer';
 import locationReducer from './Location/locationReducer';
+
+import listeRapportReducer from './minepia/rapports/listeRapportReducer';
+import detailRapportReducer from './minepia/rapports/detailRapportReducer';
+import activerRapportReducer from './minepia/rapports/activerRapportReducer';
+import rejeterRapportReducer from './minepia/rapports/rejeterRapportReducer';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -70,7 +73,14 @@ const reducers = combineReducers({
     },
     roleReducer
   ),
-
+  alert: persistReducer(
+    {
+      key: 'alert',
+      storage
+    },
+    alertReducer
+  ),
+ 
 
 
   tendanceVille: persistReducer(
@@ -107,26 +117,34 @@ const reducers = combineReducers({
     listeItineraireReducer
   ),
 
-  listeVille: persistReducer(
+  
+  listeRapport: persistReducer(
     {
-      key: 'listeVille',
+      key: 'listeRapport',
       storage
     },
-    listVilleReducer
+    listeRapportReducer
   ),
-  listeContact: persistReducer(
+  detailRapport: persistReducer(
     {
-      key: 'listeContact',
+      key: 'detailRapport',
       storage
     },
-    listeContactReducer
+    detailRapportReducer
   ),
-  listeAlerte: persistReducer(
+  activerRapport: persistReducer(
     {
-      key: 'listeAlerte',
+      key: 'activerRapport',
       storage
     },
-    listeAlerteReducer
+    activerRapportReducer
+  ),
+  rejeterRapport: persistReducer(
+    {
+      key: 'rejeterRapport',
+      storage
+    },
+    rejeterRapportReducer
   ),
 
 });

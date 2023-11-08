@@ -41,7 +41,7 @@ const StatApproBetailRegion = () => {
 
 
   useEffect(() => {
-    if (type.id  && start) {
+    if (type?.id  && start) {
     
       dispatch(getApproTypeBetail({
         debut: formatDateToYYYYMMDD(start),
@@ -75,7 +75,7 @@ const StatApproBetailRegion = () => {
       <Grid container alignItems="center" justifyContent="space-between">
         <Grid item>
         </Grid>
-        <Typography variant="h5"><FormattedMessage id='statistics-supply' /> {type.libelle} </Typography>
+        <Typography variant="h5"><FormattedMessage id='statistics-supply' /> {type?.libelle} </Typography>
       </Grid>
       <MainCard content={false} sx={{ mt: 1.5 }}>
         <Grid item>

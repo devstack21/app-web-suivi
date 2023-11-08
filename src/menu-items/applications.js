@@ -3,28 +3,32 @@ import { FormattedMessage } from 'react-intl';
 
 // assets
 import {
-  BuildOutlined,
-  CalendarOutlined,
+  AreaChartOutlined,
+  AlertOutlined,
+  CompassOutlined,
   CustomerServiceOutlined,
   FileTextOutlined,
   FileDoneOutlined,
   MessageOutlined,
   ShoppingCartOutlined,
   UserOutlined,
+  HomeOutlined,
   AppstoreAddOutlined
 } from '@ant-design/icons';
 
 // icons
 const icons = {
-  BuildOutlined,
-  CalendarOutlined,
+  AreaChartOutlined,
+  AlertOutlined,
+  CompassOutlined,
   CustomerServiceOutlined,
   MessageOutlined,
   ShoppingCartOutlined,
   UserOutlined,
   AppstoreAddOutlined,
   FileTextOutlined,
-  FileDoneOutlined
+  FileDoneOutlined,
+  HomeOutlined,
 };
 // ==============================|| MENU ITEMS - APPLICATIONS ||============================== //
 
@@ -38,7 +42,7 @@ const applications = {
       id: 'dashboard',
       title: <FormattedMessage id="dashboard" />,
       type: 'item',
-      icon: icons.FileTextOutlined,
+      icon: icons.AreaChartOutlined,
       breadcrumbs: true,
       url: '/dashboard/analytics',
 
@@ -47,7 +51,7 @@ const applications = {
       id: 'alerts',
       title: <FormattedMessage id="alerts" />,
       type: 'collapse',
-      icon: icons.FileTextOutlined,
+      icon: icons.AlertOutlined,
       breadcrumbs: true,
       children: [
         {
@@ -55,38 +59,22 @@ const applications = {
           title: <FormattedMessage id="alert-create" />,
           type: 'item',
           url: 'apps/alerts/create',
-          icon: icons.IdcardOutlined
         },
         {
           id: 'list',
           title: <FormattedMessage id="alert-list" />,
           type: 'item',
           url: 'apps/alerts/list',
-          icon: icons.IdcardOutlined
         },
 
       ]
     },
-    {
-      id: 'itineraire',
-      title: <FormattedMessage id="itineraire" />,
-      icon: icons.IdcardOutlined,
-      type: 'collapse',
-      children: [
-        {
-          id: 'list',
-          title: <FormattedMessage id="truck-list" />, // <FormattedMessage id="listecamion" />,
-          type: 'item',
-          url: 'apps/itineraire/list',
-          icon: icons.IdcardOutlined
-        }
-      ]
-    },
+    
     {
       id: 'checkpoints',
       title: <FormattedMessage id="checkpoints" />,
       type: 'collapse',
-      icon: icons.FileTextOutlined,
+      icon: icons.HomeOutlined,
       breadcrumbs: true,
       children: [
         {
@@ -101,6 +89,20 @@ const applications = {
           type: 'item',
           url: '/apps/checkpoints/agents'
         },
+      ]
+    },
+    {
+      id: 'itineraire',
+      title: <FormattedMessage id="itineraire" />,
+      icon: icons.CompassOutlined,
+      type: 'collapse',
+      children: [
+        {
+          id: 'list',
+          title: <FormattedMessage id="truck-list" />, // <FormattedMessage id="listecamion" />,
+          type: 'item',
+          url: 'apps/itineraire/list',
+        }
       ]
     },
     {
@@ -129,23 +131,15 @@ const applications = {
       id: 'reports',
       title: <FormattedMessage id="reports" />,
       type: 'collapse',
-      url: '/forms/validation',
       icon: icons.FileDoneOutlined,
       children: [
         {
-          id: 'users-roles',
-          title: <FormattedMessage id="user-group" />,
+          id: 'reports',
+          title: <FormattedMessage id="report-list" />,
           type: 'item',
-          url: '/apps/users/roles',
+          url: '/apps/reports/list',
           breadcrumbs: false
         },
-        {
-          id: 'users-accounts',
-          title: <FormattedMessage id="user-account" />,
-          type: 'item',
-          url: '/apps/users/accounts',
-          breadcrumbs: false
-        }
       ]
 
     },

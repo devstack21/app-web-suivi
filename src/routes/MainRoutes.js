@@ -7,7 +7,6 @@ import Loadable from 'components/Loadable';
 import AuthGuard from 'utils/route-guard/AuthGuard';
 
 // render - dashboard
-// const DashboardAnalytics = Loadable(lazy(() => import('pages/dashboard/analytics')));
 const DashboardAnalytics = Loadable(lazy(() => import('pages/dashboard/analytics')));
 
 //Checkpoint
@@ -16,7 +15,6 @@ const AppCheckpointEdit = Loadable(lazy(() => import('pages/apps/checkpoint/edit
 const AppCheckpointDetail = Loadable(lazy(() => import('pages/apps/checkpoint/details')));
 const AppCheckpointList = Loadable(lazy(() => import('pages/apps/checkpoint/list')));
 const AppCheckpointAgentList = Loadable(lazy(() => import('pages/apps/checkpoint/agentList')));
-
 
 // alerts
 const AppAlertList = Loadable(lazy(() => import('pages/apps/alerte/alerteList')));
@@ -27,6 +25,7 @@ const AppAlertEdit = Loadable(lazy(() => import('pages/apps/alerte/alerteEdit'))
 const AppItineraireList = Loadable(lazy(() => import('pages/apps/itineraire/listeCamions')));
 const AppItineraireDetail = Loadable(lazy(() => import('pages/apps/itineraire/itineraireCamions')));
 
+// Role
 const RoleList = Loadable(lazy(() => import('pages/apps/users/roles/roleList')));
 const RoleCreate = Loadable(lazy(() => import('pages/apps/users/roles/create')));
 
@@ -41,7 +40,6 @@ const ProfileTabUserHabilitations = Loadable(lazy(() => import('sections/apps/pr
 const ProfileTabPassword = Loadable(lazy(() => import('sections/apps/profiles/me/TabPassword')));
 
 
-// render - forms & tables
 
 // pages routing
 const AuthLogin = Loadable(lazy(() => import('pages/auth/login')));
@@ -50,6 +48,9 @@ const AuthResetPassword = Loadable(lazy(() => import('pages/auth/reset-password'
 const AuthCheckMail = Loadable(lazy(() => import('pages/auth/check-mail')));
 
 
+//Rapport
+const RapportList = Loadable(lazy(()=> import('pages/apps/rapports/list')));
+const RapportDetail = Loadable(lazy(()=> import('pages/apps/rapports/detailRapport')));
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -72,6 +73,8 @@ const MainRoutes = {
             }
           ]
         },
+     
+     
         {
           path: 'apps',
           children: [
@@ -130,23 +133,16 @@ const MainRoutes = {
               ]
             },
             {
-              path: 'users',
+              path: 'reports',
               children: [
                 {
-                  path: 'accounts',
-                  element: <UserAccounts />,
+                  path: 'list',
+                  element: <RapportList />
                 },
+                
                 {
-                  path: 'roles',
-                  element: <RoleList />,
-                },
-                {
-                  path: 'role/create',
-                  element: <RoleCreate />,
-                },
-                {
-                  path: 'role/edit/:id',
-                  element: <RoleCreate />,
+                  path: 'details/:id',
+                  element: <RapportDetail />
                 }
               ]
             },
@@ -173,6 +169,28 @@ const MainRoutes = {
                 }
               ]
             },
+            {
+              path: 'users',
+              children: [
+                {
+                  path: 'accounts',
+                  element: <UserAccounts />,
+                },
+                {
+                  path: 'roles',
+                  element: <RoleList />,
+                },
+                {
+                  path: 'role/create',
+                  element: <RoleCreate />,
+                },
+                {
+                  path: 'role/edit/:id',
+                  element: <RoleCreate />,
+                }
+              ]
+            },
+            
           ]
         },
       ]

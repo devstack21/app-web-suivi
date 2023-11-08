@@ -4,13 +4,10 @@ import { API_URL } from 'utils/apiConfig';
 // import { getToken } from "../manageToken";
 import axios from 'utils/axios';
 
-const page = 1;
-const nbre_ligne = 100;
 
-const URL = BASE_URL + API_URL.listContacts+`?page=${page}&nbre_ligne=${nbre_ligne}`;
-export const listeContact_req = createAsyncThunk(
-    "alerte/listeContact", 
-    async() =>{
+export const detailRapport_req = createAsyncThunk(
+    "rapport/listeRapport", 
+    async(args) =>{
     // const config = {
     //     headers: {
     //     'Authorization ': 'Token ' + getToken(),
@@ -18,6 +15,7 @@ export const listeContact_req = createAsyncThunk(
     // }
     // };
     
+    const URL = BASE_URL + API_URL.detailRapport+`?page=${args.page}&nbre_ligne=${args.nbre_ligne}&date=${args.date}&id_agent=${args.id_agent}`;
     let { data } = await axios.get(URL, { withCredentials: true })
         return data[0];
     }
@@ -25,40 +23,44 @@ export const listeContact_req = createAsyncThunk(
 )
 
 
-const listeContactSlice = createSlice({
-    name: 'listeContact',
+const detailRapportSlice = createSlice({
+    name: 'detailRapport',
     initialState:{
         loading: false,
-        ListContact: [],
+        ListdetailRapport: [],
         error: null,
+        nbPages: 1
     },
     
     reducers: {},
     extraReducers: (builder)=>{
         builder
-        .addCase(listeContact_req.pending, (state)=>{
+        .addCase(detailRapport_req.pending, (state)=>{
             state.loading = true
-            state.ListContact = []
+            state.ListdetailRapport = []
             state.error = null
+            state.nbPages = 1
         })
-        .addCase(listeContact_req.fulfilled, (state, action)=>{
+        .addCase(detailRapport_req.fulfilled, (state, action)=>{
             state.loading = false
             if (action.payload.success === 0) {
               // invalid credentials
-              state.ListContact = []
+              state.ListdetailRapport = []
               state.error = action.payload.errors[0].error_msg
             }else if (action.payload.success === 1){
-              state.ListContact = [] 
-              state.ListContact = action.payload.results
+              state.ListdetailRapport = [] 
+              state.ListdetailRapport = action.payload.results
+              state.nbPages = action.payload.nombre_page
               state.error = null
             }
         })
-        .addCase(listeContact_req.rejected, (state, action)=>{
+        .addCase(detailRapport_req.rejected, (state, action)=>{
             state.loading = false
-            state.ListContact = []
+            state.ListdetailRapport = []
             state.error = action.error.message
+            state.nbPages = 1
         })
     }
 })
 
-export default listeContactSlice.reducer;
+export default detailRapportSlice.reducer;
