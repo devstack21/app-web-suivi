@@ -6,14 +6,15 @@ import { Button, TextField, Grid, Chip, FormControl, InputLabel, Select, MenuIte
 import axios from 'utils/axios';
 import MainCard from 'components/MainCard';
 import { useSelector, useDispatch } from 'react-redux';
-import { listeContact_req } from 'store/reducers/alerte/listeContactReducer';
 import { BASE_URL } from 'config';
-import { API_URL } from 'utils/apiConfig';
+import { API_URL, REQUEST_STATUS } from 'utils/apiConfig';
 import { getListBetail } from 'store/reducers/Betail/listBetailSlice';
+import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
+import { getContactList } from 'store/reducers/alerte/listeContactSlice';
 import { getListVille } from 'store/reducers/Location/villeSlice';
+import { FormattedMessage } from 'react-intl';
 
-// const villes = [{'id':1, 'name': 'Ville 1'}, {'id':2, 'name': 'Ville 2'}];
-// const contacts = [{'id':1, 'phone': '697152526', 'email': 'pgpg@gmail.com'}, {'id':2, 'phone': '698425265', 'email': 'dadadagoo@gmail.com'}];
+
 const ListTypeCanal = ["SMS", "EMAIL"]
 
 const validationSchema = yup.object({
@@ -29,9 +30,13 @@ const AlertForm = () => {
     const dispatch = useDispatch();
     const theme = useTheme()
 
-    const { loading:loadV, ListVille, error:errV } = useSelector((state) => state.listeVille);
-    const { loading:loadC, ListContact, error:errC } = useSelector((state) => state.listeContact);
-    const { listStatus, betailTab, nbPages } = useSelector((state) => state.betail.list);
+    const statutListVille = useSelector((state) => state.location.villes.status);
+    const {ListVille } = useSelector((state) => state.location.villes);
+
+    const statutListContact = useSelector((state) => state.alert.contact.status);
+    const { ListContact } = useSelector((state) => state.alert.contact);
+
+    const { listStatus, betailTab } = useSelector((state) => state.betail.list);
 
     const [selectedContacts, setSelectedContacts] = useState([]);
     const [listeIdContacts, setlisteIdContacts] = useState([]);
@@ -39,9 +44,8 @@ const AlertForm = () => {
 
     useEffect(() => {
         dispatch(getListBetail({ page: 1 }));
-        dispatch(listeContact_req());
+        dispatch(getContactList());
         dispatch(getListVille());
-  
     }, []);
 
 
@@ -89,10 +93,13 @@ const AlertForm = () => {
         setlisteIdContacts((prevIds) => prevIds.filter((id) => id !== contactToRemove.id));
     };
 
-    console.log("ListVille", ListVille, loadV, errV);
-    console.log("ListContact", ListContact, loadC, errC);
-    console.log("betailTab", betailTab, listStatus, nbPages);
-    console.log(formik.errors);
+
+    if (statutListContact == REQUEST_STATUS.loading ||  listStatus == REQUEST_STATUS.loading ||
+        statutListVille == REQUEST_STATUS.loading) {
+        return(
+            <EmptyUserCard title={<FormattedMessage id='loading' />} />
+        )
+    }
 
   return (
     <Container maxWidth="sm">

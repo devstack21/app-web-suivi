@@ -1,5 +1,6 @@
 // project import
-import applications from './applications';
+
+import applications from "./applications";
 
 // ==============================|| MENU ITEMS ||============================== //
 

@@ -6,9 +6,11 @@ export const CODE_ROLE_COLLECTE = "COLLECTE";
 
 
 export const API_URL = {
+	Alert: '/alerte',
 	CreateAccount: '/user/create/',
 	CreateCheckpoint: '/checkpoint/create/',
 	CreateRole: '/role/create/',
+	Contacts: '/contact/',
 	DashboardAnalytics: '/stat/dashboard/analytics/',
 	DeleteRole: '/role/delete/',
 	DetailCheckpoint: '/checkpoint/detail/',
@@ -25,24 +27,24 @@ export const API_URL = {
 	ListRegions: '/list/regions/',
 	ListRole: '/role/list/',
 	ListeTypeBetail: '/betails/type/',
-	ListVilles: '/list/Villes/',
+	ListVilles: '/list/villes/',
 	Login: '/login/',
 	ResetPassword: '/reset/password/',
-	StatTypeBetail: '/stat/typeBetail/',
 	StatApproTypeBetail: '/stat/approvisionement/betail/region/',
+	statCkeckpoint: '/stat/checkpoint',
 	UpdatePassword: '/change/password/',
 	UpdateRole: '/role/update/',
 
-	TendanceVilleDashboard: '/alertVilleStat',
-	statCkeckpoint: '/stat/checkpoint',
+	TendanceVilleDashboard: '/stat/alertVille/',
 
 	listeCamion: '/camions/liste',
 	itineraireCamion: '/camions/itineraire',
-	listContacts: '/contact/',
 
-	creerAlerte: '/alerte/',
-	listeAlerte: '/alerte/',
-	activeDesactiveAlerte: '/alerteActiveDeactive/'
+	activeDesactiveAlerte: '/alerteActiveDeactive/',
+	listeRapports: '/rapport/user/historique/',
+	detailRapport: '/rapport/user/details/',
+	activerRapport: '/rapport/valider/',
+	rejeterRapport: '/rapport/rejeter/'
 };
 
 export const PERIODS = [

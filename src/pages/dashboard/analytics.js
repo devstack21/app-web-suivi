@@ -26,6 +26,7 @@ import Loader from 'components/Loader';
 import StatApproBetailRegion from 'sections/dashboard/StatsBetailRegion';
 import { getListTypeBetail } from 'store/reducers/Betail/listeTypeBetailSlice';
 import { getRegions } from 'store/reducers/Location/regionSlice';
+import OrdersList from 'sections/dashboard/analytics/minepia/OrdersList';
 
 
 // ==============================|| DASHBOARD - ANALYTICS ||============================== //
@@ -61,7 +62,7 @@ const DashboardAnalytics = () => {
       <Grid container rowSpacing={4.5} columnSpacing={3}>
         {/* row 1 */}
 
-        <DashbaordAnalytics />
+        {analyticStatus == REQUEST_STATUS.succeed && <DashbaordAnalytics />}
 
 
 
@@ -103,7 +104,7 @@ const DashboardAnalytics = () => {
             <Grid item />
           </Grid>
           <MainCard sx={{ mt: 2 }} content={false}>
-            {/* <OrdersList ListTendanceVille={ListTendanceVille} /> */}
+            <OrdersList ListTendanceVille={[]} />
           </MainCard>
         </Grid>
         <Grid item xs={12} md={5} lg={4}>

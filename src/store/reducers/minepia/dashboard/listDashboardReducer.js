@@ -3,13 +3,16 @@ import { BASE_URL } from 'config';
 import { API_URL } from 'utils/apiConfig';
 // import { getToken } from "../manageToken";
 import axios from 'utils/axios';
+import moment from 'moment';
 
-const page = 1;
-const nbre_ligne = 100;
+const lastWeek = moment().subtract(1, 'weeks');
+const date_debut = lastWeek.startOf('week').format("YYYY-MM-DD HH:mm:ss");
+const date_fin = lastWeek.endOf('week').format("YYYY-MM-DD HH:mm:ss");
 
-const URL = BASE_URL + API_URL.listeAlerte+`?page=${page}&nbre_ligne=${nbre_ligne}`;
-export const listeAlerte_req = createAsyncThunk(
-    "alerte/listeAlerte", 
+const URL = BASE_URL + API_URL.listeDashboard + `?date_debut=${date_debut}&date_fin=${date_fin}`;
+
+export const listeHaut_req = createAsyncThunk(
+    "dashboard/haut", 
     async() =>{
     // const config = {
     //     headers: {
@@ -25,40 +28,40 @@ export const listeAlerte_req = createAsyncThunk(
 )
 
 
-const listeAlerteSlice = createSlice({
-    name: 'listeAlerte',
+const listeHautSlice = createSlice({
+    name: 'listeHaut',
     initialState:{
         loading: false,
-        ListAlerte: [],
+        ListHaut: [],
         error: null,
     },
     
     reducers: {},
     extraReducers: (builder)=>{
         builder
-        .addCase(listeAlerte_req.pending, (state)=>{
+        .addCase(listeHaut_req.pending, (state)=>{
             state.loading = true
-            state.ListAlerte = []
+            state.ListHaut = []
             state.error = null
         })
-        .addCase(listeAlerte_req.fulfilled, (state, action)=>{
+        .addCase(listeHaut_req.fulfilled, (state, action)=>{
             state.loading = false
             if (action.payload.success === 0) {
               // invalid credentials
-              state.ListAlerte = []
+              state.ListHaut = []
               state.error = action.payload.errors[0].error_msg
             }else if (action.payload.success === 1){
-              state.ListAlerte = [] 
-              state.ListAlerte = action.payload.results
+              state.ListHaut = [] 
+              state.ListHaut = action.payload.results[0]
               state.error = null
             }
         })
-        .addCase(listeAlerte_req.rejected, (state, action)=>{
+        .addCase(listeHaut_req.rejected, (state, action)=>{
             state.loading = false
-            state.ListAlerte = []
+            state.ListHaut = []
             state.error = action.error.message
         })
     }
 })
 
-export default listeAlerteSlice.reducer;
+export default listeHautSlice.reducer;

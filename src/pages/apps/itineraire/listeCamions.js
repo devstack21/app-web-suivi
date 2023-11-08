@@ -1,6 +1,5 @@
 import React from 'react';
-import RecentTickets from '../../../sections/apps/itineraire/RecentTickets';
-import { listeCamion_req } from 'store/reducers/itineraire/listeDesCamionsReducer';
+import { listeCamion_req } from 'store/reducers/minepia/itineraire/listeDesCamionsReducer';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { PopupTransition } from 'components/@extended/Transitions';
@@ -11,6 +10,7 @@ import { BASE_URL } from 'config';
 import { API_URL } from 'utils/apiConfig';
 // import { getToken } from "../manageToken";
 import axios from 'utils/axios';
+import RecentTickets from 'sections/apps/itineraire/RecentTickets';
 
 
 
