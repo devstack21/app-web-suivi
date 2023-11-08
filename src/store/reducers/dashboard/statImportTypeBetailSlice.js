@@ -4,11 +4,11 @@ import { API_URL, REQUEST_STATUS } from 'utils/apiConfig';
 import axios from 'utils/axios';
 
 
-export const getStatApproTypeBetail = createAsyncThunk(
-    "dashboard/stat/appro/TypeBetail",
+export const getStatImportTypeBetail = createAsyncThunk(
+    "dashboard/stat/import/TypeBetail",
     async (arg) => {
         const urlSuite = `?date_debut=${arg.debut}&date_fin=${arg.end}&betail=${arg.betail}`;
-        const URL = BASE_URL + API_URL.StatApproTypeBetail + urlSuite;
+        const URL = BASE_URL + API_URL.StatImportTypeBetail + urlSuite;
 
         let { data } = await axios.get(URL, { withCredentials: true })
 
@@ -18,7 +18,7 @@ export const getStatApproTypeBetail = createAsyncThunk(
 )
 
 
-const statTypeBetailSlice = createSlice({
+const statImportTypeBetailSlice = createSlice({
     name: 'statTypeBetail',
     initialState: {
         status: REQUEST_STATUS.idle,
@@ -28,12 +28,12 @@ const statTypeBetailSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(getStatApproTypeBetail.pending, (state) => {
+            .addCase(getStatImportTypeBetail.pending, (state) => {
                 state.status = REQUEST_STATUS.loading
                 state.result = []
                 state.error = ''
             })
-            .addCase(getStatApproTypeBetail.fulfilled, (state, action) => {
+            .addCase(getStatImportTypeBetail.fulfilled, (state, action) => {
                 const { success, results } = action.payload;
                 if (success) {
                     state.status = REQUEST_STATUS.succeed
@@ -41,11 +41,11 @@ const statTypeBetailSlice = createSlice({
                     state.error = ''
                 } else {
                     state.result = []
-                    state.error = 'error-stat-appro-type-betail'
+                    state.error = 'error-stat-import-type-betail'
                     state.status = REQUEST_STATUS.error
                 }
             })
-            .addCase(getStatApproTypeBetail.rejected, (state) => {
+            .addCase(getStatImportTypeBetail.rejected, (state) => {
                 state.statTypeBetailList = []
                 state.error = 'error-network'
                 state.status = REQUEST_STATUS.error
@@ -53,4 +53,4 @@ const statTypeBetailSlice = createSlice({
     }
 })
 
-export default statTypeBetailSlice.reducer;
+export default statImportTypeBetailSlice.reducer;

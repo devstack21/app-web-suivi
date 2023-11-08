@@ -114,7 +114,7 @@ const ApproBetailRegionChart = () => {
   const primaryMain = theme.palette.primary.main;
   const successDark = theme.palette.success.dark;
 
-  const { result } = useSelector((state) => state.dashbaord.supply);
+  const { result } = useSelector((state) => state.dashboard.supply);
   const { regionTab } = useSelector((state) => state.location.region);
 
 
@@ -128,7 +128,7 @@ const ApproBetailRegionChart = () => {
 
     setSeries([
       {
-        name: `${(new Date(result.date.now.debut)).toDateString() } - ${(new Date(result.date.now.fin)).toDateString() }`,
+        name: `${(new Date(result?.date?.now?.debut)).toDateString() } - ${(new Date(result?.date?.now?.fin)).toDateString() }`,
         data: tab_now
       },
       {

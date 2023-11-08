@@ -1,12 +1,14 @@
 // rootReducer.js
 import { combineReducers } from 'redux';
 import analyticsSlice from './analyticsSlice';
-import statTypeBetailSlice from './statApproTypeBetailSlice';
+import statImportTypeBetailSlice from './statImportTypeBetailSlice';
+import statApproTypeBetailSlice from './statApproTypeBetailSlice';
 // Import other reducers...
 
 const dashboardReducer = combineReducers({
     analytics: analyticsSlice,
-    supply: statTypeBetailSlice
+    import:statImportTypeBetailSlice,
+    supply: statApproTypeBetailSlice
 
 });
 

@@ -17,33 +17,29 @@ import { useDispatch, useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { useEffect, useState } from 'react';
 import { REQUEST_STATUS } from 'utils/apiConfig';
-import { getApproTypeBetail } from 'store/reducers/dashboard/statApproTypeBetailSlice';
 import { formatDateToYYYYMMDD } from 'utils/function';
 import { TendanceComponent } from './Tendance';
 import ApproBetailRegionChart from './BetailRegionChart';
 import {SpinnLoader} from 'components/cards/SpinnLoader';
+import { getStatApproTypeBetail } from 'store/reducers/dashboard/statApproTypeBetailSlice';
 
 
 
 // ==============================|| DASHBOARD - ANALYTICS ||============================== //
 
-const StatApproBetailRegion = () => {
+const StatApproBetailRegion = ({type, setType, start, setStart}) => {
 
   const dispatch = useDispatch()
 
-  const { status, result } = useSelector((state) => state.dashbaord.supply);
-  const { typeBetail } = useSelector((state) => state.betail.type);
-
-  
-  const [type, setType] = useState(typeBetail[0])
+  const { status, result } = useSelector((state) => state.dashboard.supply);
+ 
   const [period, setPeriod] = useState('week')
-  const [start, setStart] = useState()
 
 
   useEffect(() => {
     if (type?.id  && start) {
     
-      dispatch(getApproTypeBetail({
+      dispatch(getStatApproTypeBetail({
         debut: formatDateToYYYYMMDD(start),
         end: formatDateToYYYYMMDD(new Date()),
         betail: type.id,
