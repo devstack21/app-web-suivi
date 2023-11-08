@@ -47,7 +47,7 @@ const listeCamionItineraireSlice = createSlice({
               state.error = action.payload.errors[0].error_msg
             }else if (action.payload.success === 1){
               state.ListCamionItineraire = [] 
-              state.ListCamionItineraire = action.payload.results[0]
+              state.ListCamionItineraire = action.payload.results 
               state.error = null
             }
         })
