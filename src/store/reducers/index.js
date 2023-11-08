@@ -12,16 +12,14 @@ import checkpointsReducer from './checkpoints/checkpointsReducer';
 import betailReducer from './Betail/betailReducer';
 
 import tendanceVilleReducer from './dashboard/tendanceVilleReducer';
-import listeTypeBetailReducer from './minepia/listeTypeBetailReducer';
-import statTypeBetailReducer from './dashboard/statTypeBetailReducer';
-import listRegionReducer from './dashboard/listRegionReducer';
-import listDashboardReducer from './dashboard/listDashboardReducer';
 import statCheckpointReducer from './dashboard/statCheckpointReducer';
 import listeDesCamionsReducer from './itineraire/listeDesCamionsReducer';
 import listeItineraireReducer from './itineraire/listeItineraireReducer';
-import listVilleReducer from './dashboard/listVilleReducer';
+import listVilleReducer from './Location/villeSlice';
 import listeContactReducer from './alerte/listeContactReducer';
 import listeAlerteReducer from './alerte/listeAlerteReducer';
+import dashboardReducer from './dashboard/dashboardReducer';
+import locationReducer from './Location/locationReducer';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -51,6 +49,20 @@ const reducers = combineReducers({
     },
     checkpointsReducer
   ),
+  dashbaord: persistReducer(
+    {
+      key: 'dashboard',
+      storage
+    },
+    dashboardReducer
+  ),
+  location: persistReducer(
+    {
+      key: 'location',
+      storage
+    },
+    locationReducer
+  ),
   role: persistReducer(
     {
       key: 'role',
@@ -68,36 +80,10 @@ const reducers = combineReducers({
     },
     tendanceVilleReducer
   ),
-  listeTypeBetail: persistReducer(
-    {
-      key: 'listeTypeBetail',
-      storage
-    },
-    listeTypeBetailReducer
-  ),
 
-  statTypeBetail: persistReducer(
-    {
-      key: 'statTypeBetail',
-      storage
-    },
-    statTypeBetailReducer
-  ),
+
+
   
-  listeRegion: persistReducer(
-    {
-      key: 'listeRegion',
-      storage
-    },
-    listRegionReducer
-  ),
-  listeHaut: persistReducer(
-    {
-      key: 'listeHaut',
-      storage
-    },
-    listDashboardReducer
-  ),
   statCheckpoint: persistReducer(
     {
       key: 'statCheckpoint',

@@ -3,7 +3,7 @@ import { combineReducers } from 'redux';
 import listReducer from './listSlice';
 import createSlice from './createSlice';
 import editSlice from './editSlice';
-import districtsSlice from './districtsSlice';
+import districtsSlice from '../Location/districtsSlice';
 import detailSlice from './detailSlice';
 import listAgentSlice from './listAgentSlice';
 // Import other reducers...

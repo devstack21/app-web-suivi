@@ -22,7 +22,7 @@ const ActionCell = ({ row, setCustomer, setCustomerDeleteId, handleAdd, handleCl
     <Tooltip title="Delete">
       <IconButton
         color="error"
-        disabled={true}
+        disabled={false}
         onClick={(e) => {
           e.stopPropagation();
           handleClose();

@@ -8,9 +8,9 @@ import { BASE_URL } from 'config';
 import { API_URL } from 'utils/apiConfig';
 import { CloseOutlined } from '@ant-design/icons'
 import { useSelector, useDispatch } from 'react-redux';
-import { getListBetail } from 'store/reducers/Betail/listSlice';
+import { getListBetail } from 'store/reducers/Betail/listBetailSlice';
 import { listeContact_req } from 'store/reducers/alerte/listeContactReducer';
-import { listeVille_req } from 'store/reducers/dashboard/listVilleReducer';
+import { getListVille } from 'store/reducers/Location/villeSlice';
 
 const ListTypeCanal = ["SMS", "EMAIL"]
 
@@ -37,7 +37,7 @@ const EditAlert = ({ alert, onCancel }) => {
     useEffect(() => {
         if(betailTab.length != 0) dispatch(getListBetail({ page: 1 }));
         if(ListContact.length != 0) dispatch(listeContact_req());
-        if(ListVille.length != 0) dispatch(listeVille_req());
+        if(ListVille.length != 0) dispatch(getListVille());
         
         formik.setFieldValue('pk', alert.pk);
         formik.setFieldValue('min_animal', alert.min_animal);

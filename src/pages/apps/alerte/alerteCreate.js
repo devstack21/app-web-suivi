@@ -9,8 +9,8 @@ import { useSelector, useDispatch } from 'react-redux';
 import { listeContact_req } from 'store/reducers/alerte/listeContactReducer';
 import { BASE_URL } from 'config';
 import { API_URL } from 'utils/apiConfig';
-import { getListBetail } from 'store/reducers/Betail/listSlice';
-import { listeVille_req } from 'store/reducers/dashboard/listVilleReducer';
+import { getListBetail } from 'store/reducers/Betail/listBetailSlice';
+import { getListVille } from 'store/reducers/Location/villeSlice';
 
 // const villes = [{'id':1, 'name': 'Ville 1'}, {'id':2, 'name': 'Ville 2'}];
 // const contacts = [{'id':1, 'phone': '697152526', 'email': 'pgpg@gmail.com'}, {'id':2, 'phone': '698425265', 'email': 'dadadagoo@gmail.com'}];
@@ -40,7 +40,7 @@ const AlertForm = () => {
     useEffect(() => {
         dispatch(getListBetail({ page: 1 }));
         dispatch(listeContact_req());
-        dispatch(listeVille_req());
+        dispatch(getListVille());
   
     }, []);
 

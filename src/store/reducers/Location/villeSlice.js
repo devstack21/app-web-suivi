@@ -1,21 +1,15 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { BASE_URL } from 'config';
 import { API_URL } from 'utils/apiConfig';
-// import { getToken } from "../manageToken";
 import axios from 'utils/axios';
 
 
 
-const URL = BASE_URL + API_URL.listVilles+"?page=1";
-export const listeVille_req = createAsyncThunk(
-    "alerte/listeVille", 
+const URL = BASE_URL + API_URL.ListVilles+"?page=1";
+export const getListVille = createAsyncThunk(
+    "location/list/villes", 
     async() =>{
-    // const config = {
-    //     headers: {
-    //     'Authorization ': 'Token ' + getToken(),
-    //     'Content-Type': 'application/json'
-    // }
-    // };
+ 
     
     let { data } = await axios.get(URL, { withCredentials: true })
         return data[0];
@@ -25,7 +19,7 @@ export const listeVille_req = createAsyncThunk(
 
 
 const listeVilleSlice = createSlice({
-    name: 'listeVille',
+    name: 'ville',
     initialState:{
         loading: false,
         ListVille: [],
@@ -35,12 +29,12 @@ const listeVilleSlice = createSlice({
     reducers: {},
     extraReducers: (builder)=>{
         builder
-        .addCase(listeVille_req.pending, (state)=>{
+        .addCase(getListVille.pending, (state)=>{
             state.loading = true
             state.ListVille = []
             state.error = null
         })
-        .addCase(listeVille_req.fulfilled, (state, action)=>{
+        .addCase(getListVille.fulfilled, (state, action)=>{
             state.loading = false
             if (action.payload.success === 0) {
               // invalid credentials
@@ -52,7 +46,7 @@ const listeVilleSlice = createSlice({
               state.error = null
             }
         })
-        .addCase(listeVille_req.rejected, (state, action)=>{
+        .addCase(getListVille.rejected, (state, action)=>{
             state.loading = false
             state.ListVille = []
             state.error = action.error.message

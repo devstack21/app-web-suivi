@@ -8,10 +8,13 @@ import MainCard from 'components/MainCard';
 
 // assets
 import { FallOutlined, RiseOutlined } from '@ant-design/icons';
+import { FormattedMessage } from 'react-intl';
 
 // ==============================|| STATISTICS - ECOMMERCE CARD  ||============================== //
 
-const AnalyticEcommerce = ({ color = 'primary', title, count, percentage, isLoss, extra }) => (
+
+
+const AnalyticEcommerce = ({ color = 'primary', title, count, percentage, isLoss, extra, type }) => (
   <MainCard contentSX={{ p: 2.25 }}>
     <Stack spacing={0.5}>
       <Typography variant="h6" color="textSecondary">
@@ -23,7 +26,7 @@ const AnalyticEcommerce = ({ color = 'primary', title, count, percentage, isLoss
             {count}
           </Typography>
         </Grid>
-        {percentage && (
+        {percentage !== 0 && (
           <Grid item>
             <Chip
               variant="combined"
@@ -44,11 +47,10 @@ const AnalyticEcommerce = ({ color = 'primary', title, count, percentage, isLoss
     </Stack>
     <Box sx={{ pt: 2.25 }}>
       <Typography variant="caption" color="textSecondary">
-        You made an extra{' '}
         <Typography component="span" variant="caption" sx={{ color: `${color || 'primary'}.main` }}>
           {extra}
         </Typography>{' '}
-        this year
+        <FormattedMessage id={type}/> <FormattedMessage id='previous-week'/>
       </Typography>
     </Box>
   </MainCard>

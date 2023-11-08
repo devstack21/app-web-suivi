@@ -6,9 +6,10 @@ export const CODE_ROLE_COLLECTE = "COLLECTE";
 
 
 export const API_URL = {
-	CreateAccount:'/user/create/',
+	CreateAccount: '/user/create/',
 	CreateCheckpoint: '/checkpoint/create/',
 	CreateRole: '/role/create/',
+	DashboardAnalytics: '/stat/dashboard/analytics/',
 	DeleteRole: '/role/delete/',
 	DetailCheckpoint: '/checkpoint/detail/',
 	DetailRole: '/role/detail/',
@@ -21,28 +22,39 @@ export const API_URL = {
 	ListCheckpoints: '/checkpoint/list/',
 	ListDistrcits: '/list/districts/',
 	ListModule: '/module/list/',
+	ListRegions: '/list/regions/',
 	ListRole: '/role/list/',
+	ListeTypeBetail: '/betails/type/',
+	ListVilles: '/list/Villes/',
 	Login: '/login/',
 	ResetPassword: '/reset/password/',
+	StatTypeBetail: '/stat/typeBetail/',
+	StatApproTypeBetail: '/stat/approvisionement/betail/region/',
 	UpdatePassword: '/change/password/',
 	UpdateRole: '/role/update/',
 
 	TendanceVilleDashboard: '/alertVilleStat',
-	ListeTypeBetail: '/betails/type',
-	statTypeBetail: '/statTypeBetail/',
-	listeRegions: '/listeRegions/',
-	listeDashboard: '/stat/hautDashboard/',
 	statCkeckpoint: '/stat/checkpoint',
 
 	listeCamion: '/camions/liste',
 	itineraireCamion: '/camions/itineraire',
-	listVilles: '/listeVilles/',
 	listContacts: '/contact/',
 
 	creerAlerte: '/alerte/',
 	listeAlerte: '/alerte/',
 	activeDesactiveAlerte: '/alerteActiveDeactive/'
 };
+
+export const PERIODS = [
+	{
+		value: 'week',
+		label: 'this-week'
+	},
+	{
+		value: 'month',
+		label: 'this-month'
+	}
+]
 
 
 export const REQUEST_STATUS = {
@@ -51,3 +63,4 @@ export const REQUEST_STATUS = {
 	succeed: 'succeed',
 	error: "error"
 }
+

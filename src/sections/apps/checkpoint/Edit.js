@@ -22,7 +22,7 @@ const EditCheckpoint = () => {
   const theme = useTheme()
   const navigation = useNavigate()
 
-  const { districtsTab } = useSelector((state) => state.checkpoint.disctricts)
+  const { districtsTab } = useSelector((state) => state.location.disctricts)
   const { checkpoint } = useSelector((state) => state.checkpoint.detail)
   const { createStatus } = useSelector((state) => state.checkpoint.create)
 

@@ -43,7 +43,7 @@ const ListDistrictslice = createSlice({
                     state.districtsTab = results
                 } else {
                     state.listStatus = REQUEST_STATUS.error,
-                    state.listError = 'error-list-accounts'
+                    state.listError = 'error-list-districts'
                     state.districtsTab = []
                 }
             })
