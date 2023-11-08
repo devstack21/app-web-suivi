@@ -1,6 +1,6 @@
-import { Link as RouterLink } from 'react-router-dom';
+// import { Link as RouterLink } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import { Chip, Grid, Link, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Pagination } from '@mui/material';
+import { Chip, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Pagination, Grid, TextField, Button } from '@mui/material';
 
 import MainCard from 'components/MainCard';
 import { PAGE_ROWS } from 'config';
@@ -9,7 +9,9 @@ import { PAGE_ROWS } from 'config';
 import { useSelector, useDispatch } from 'react-redux';
 import { listeRapport_req } from 'store/reducers/rapports/listeRapportReducer';
 import {  useNavigate } from 'react-router-dom';
-
+import moment from 'moment';
+import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
+import { FormattedMessage } from 'react-intl';
 
 
 export default function ListRapport() {
@@ -18,11 +20,14 @@ export default function ListRapport() {
 
     // const [listeRaps, setListeRaps] = useState([])
     const [currentPage, setCurrentPage] = useState(1);
+    const lastWeek = moment().subtract(1, 'weeks');
+    const [startDate, setStartDate] = useState(lastWeek.startOf('week').format("YYYY-MM-DD HH:mm:ss"));
+    const [endDate, setEndDate] = useState(lastWeek.endOf('week').format("YYYY-MM-DD HH:mm:ss"));
 
     const { loading:loadR, ListRapport, error:errR, nbPages } = useSelector((state) => state.listeRapport);
 
     useEffect(() => {
-        dispatch(listeRapport_req({ page: currentPage, nbre_ligne: PAGE_ROWS }));
+        dispatch(listeRapport_req({ page: currentPage, nbre_ligne: PAGE_ROWS, start_date: startDate, end_date: endDate }));
         // setListeRaps(ListRapport)
   
     }, [currentPage]);
@@ -33,33 +38,90 @@ export default function ListRapport() {
       navigate(`/apps/reports/details/${row.id}`,{state:row});
     }
 
+    const handleSubmit = async (startDate, endDate) => {
+      setCurrentPage(1);
+      dispatch(listeRapport_req({ page: currentPage, nbre_ligne: PAGE_ROWS, start_date: startDate, end_date: endDate }));
+      
+    }
+
     console.log("ListAlerte", ListRapport, loadR, errR);
+
+    if (loadR) {
+      return (
+        <EmptyUserCard title={<FormattedMessage id='loading' />} />
+      )
+    }
+  
+    if (errR) {
+      return (
+        <EmptyUserCard title={<FormattedMessage id={errR} />} />
+      )
+    }
+
   return (
     <MainCard
-      title="Liste des rapports de la semaine"
+      // title="Liste des rapports de la semaine"
+      title={<><FormattedMessage id='detailrapport-liste-rapports-semaine' /></>}
       content={false}
       secondary={
-        <Link component={RouterLink} to="#" color="primary">
-          View all
-        </Link>
+        <Grid container spacing={3} alignItems="center">
+          <Grid item>
+            <TextField
+              // label="Date de début"
+              label={<FormattedMessage id='detailrapport-dateDebut' />}
+              type="date"
+              defaultValue={moment(startDate).format('YYYY-MM-DD')}
+              onChange={(e) => {
+                const date = moment(e.target.value);
+                const formattedDate = date.format('YYYY-MM-DD HH:mm:ss');
+                setStartDate(formattedDate);
+              }}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              // label="Date de fin"
+              label={<FormattedMessage id='detailrapport-dateFin' />}
+              type="date"
+              defaultValue={moment(endDate).format('YYYY-MM-DD')}
+              onChange={(e) => {
+                const date = moment(e.target.value);
+                const formattedDate = date.format('YYYY-MM-DD HH:mm:ss');
+                setEndDate(formattedDate);
+              }}
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
+          </Grid>
+          <Grid item>
+            <Button variant="contained" color="primary" onClick={()=>handleSubmit(startDate, endDate)}>
+              <FormattedMessage id='detailrapport-valider' />
+            </Button>
+          </Grid>
+        </Grid>
       }
     >
       <TableContainer>
         <Table sx={{ minWidth: 350 }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell sx={{ pl: 3 }}>Utilisateur</TableCell>
-              <TableCell>Destination</TableCell>
-              <TableCell>Provenance</TableCell>
-              <TableCell>Validateur</TableCell>
-              <TableCell align="right">Matricule</TableCell>
-              <TableCell align="center">Date</TableCell>
+              <TableCell sx={{ pl: 3 }}><FormattedMessage id='detailrapport-utilisateur' /></TableCell>
+              <TableCell><FormattedMessage id='detailrapport-ville-destination' /></TableCell>
+              <TableCell><FormattedMessage id='detailrapport-ville-provenance' /></TableCell>
+              <TableCell><FormattedMessage id='detailrapport-Validateur' /></TableCell>
+              <TableCell align="right"><FormattedMessage id='detailrapport-matricule' /></TableCell>
+              <TableCell align="center"><FormattedMessage id='detailrapport-date' /></TableCell>
               {/* <TableCell align="center" sx={{ pr: 3 }}>
                 Action
               </TableCell> */}
             </TableRow>
           </TableHead>
-          <TableBody>
+          {ListRapport.length > 0 ?
+            <TableBody>
             {ListRapport.map((row, index) => (
               <TableRow hover key={index} onClick={()=>{goToDetail(row)}} >
                 <TableCell sx={{ pl: 3 }}>{row.agent}</TableCell>
@@ -75,6 +137,13 @@ export default function ListRapport() {
               </TableRow>
             ))}
           </TableBody>
+          :
+          <TableBody>
+            <EmptyUserCard title={<FormattedMessage id='no-rapport' />} />
+          </TableBody>
+            
+          }
+          
         </Table>
 
         <Grid sx={{ p: 2, py: 3 }} colSpan={9} >
