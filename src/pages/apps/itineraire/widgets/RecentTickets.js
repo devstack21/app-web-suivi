@@ -5,6 +5,7 @@ import { Chip, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
 // import { Link as RouterLink } from 'react-router-dom';
 import { format } from 'date-fns';
 import moment from 'moment';
+import { FormattedMessage } from 'react-intl';
 
 const RecentTickets = ({ handleAdd, ListeCamion, handleSubmit, startDate, setStartDate, endDate, setEndDate }) => {
 
@@ -15,7 +16,7 @@ const RecentTickets = ({ handleAdd, ListeCamion, handleSubmit, startDate, setSta
   return (
       <MainCard
       style={{ width: '100%' }}
-      title="Liste des Camions"
+      title={<FormattedMessage id='list-transport' />}
       secondary={
         <Grid container spacing={3} alignItems="center">
           <Grid item>
@@ -60,7 +61,7 @@ const RecentTickets = ({ handleAdd, ListeCamion, handleSubmit, startDate, setSta
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ pl: 3 }}>Matricule</TableCell>
+              <TableCell sx={{ pl: 3 }}>Immatriculation</TableCell>
               <TableCell>Ville provenance</TableCell>
               <TableCell>Ville destination</TableCell>
               <TableCell>Type</TableCell>
