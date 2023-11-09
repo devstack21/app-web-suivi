@@ -15,13 +15,13 @@ import betailReducer from './betail/betailReducer';
 import statCheckpointReducer from './dashboard/statCheckpointSlice';
 import listeDesCamionsReducer from './itineraire/listeDesCamionsReducer';
 import listeItineraireReducer from './itineraire/listeItineraireReducer';
-import dashboardReducer from './dashboard/dashboardSlice';
+import dashboardReducer from './dashboard/dashboardReducer';
 import locationReducer from './location/locationReducer';
 
-import listeRapportReducer from './minepia/rapports/listeRapportReducer';
-import detailRapportReducer from './minepia/rapports/detailRapportReducer';
-import activerRapportReducer from './minepia/rapports/activerRapportReducer';
-import rejeterRapportReducer from './minepia/rapports/rejeterRapportReducer';
+import detailRapportReducer from './rapports/detailRapportReducer';
+import activerRapportReducer from './rapports/activerRapportReducer';
+import rejeterRapportReducer from './rapports/rejeterRapportReducer';
+import rapportdReducer from './rapports/rapportReducer';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -79,6 +79,13 @@ const reducers = combineReducers({
     },
     alertReducer
   ),
+  rapport: persistReducer(
+    {
+      key: 'alert',
+      storage
+    },
+    rapportdReducer
+  ),
  
 
 
@@ -111,13 +118,7 @@ const reducers = combineReducers({
   ),
 
   
-  listeRapport: persistReducer(
-    {
-      key: 'listeRapport',
-      storage
-    },
-    listeRapportReducer
-  ),
+  
   detailRapport: persistReducer(
     {
       key: 'detailRapport',
