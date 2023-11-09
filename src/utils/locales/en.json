@@ -266,5 +266,27 @@
   "detailrapport-rejeter": "Dismiss",
   "detailrapport-liste-rapports-semaine": "List of reports of the week",
   "detailrapport-dateDebut": "Start date",
-  "detailrapport-dateFin": "End date"
+  "detailrapport-dateFin": "End date",
+
+  "itineraire-titre-matricule": "Itinerary of the registration number",
+  "itineraire-titre": "List of Trucks",
+  "itineraire-titre-periode": "Period of",
+  "itineraire-matricule": "Registration number",
+  "itineraire-type": "Type",
+  "itineraire-ville-destination": "destination city",
+  "itineraire-ville-provenance": "city ​​of origin",
+  "itineraire-periode": "Period",
+
+  "alerte-tableau-bornInf": "Lower bound",
+  "alerte-tableau-bornSup": "Upper bound",
+  "alerte-tableau-ville": "City",
+  "alerte-tableau-animal": "Animal",
+  "alerte-tableau-typeCanal": "Type canal",
+  "alerte-tableau-tatus": "Status",
+  "alerte-confirm-suppression": "Are you sure you want to delete ?",
+  "alerte-confirm-active": "Are you sure you want to activate ?",
+  "alerte-confirm-deactive": "Are you sure you want to deactivate ?"
+
+
+
 }

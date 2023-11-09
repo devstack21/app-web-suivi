@@ -5,22 +5,21 @@ import { Chip, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
 // import { Link as RouterLink } from 'react-router-dom';
 import { format } from 'date-fns';
 import moment from 'moment';
+import { FormattedMessage } from 'react-intl';
 
 const RecentTickets = ({ handleAdd, ListeCamion, handleSubmit, startDate, setStartDate, endDate, setEndDate }) => {
 
   
-
-  // const startDate = lastWeek.startOf('week').format("YYYY-MM-DD HH:mm:ss");
-  // const endDate = lastWeek.endOf('week').format("YYYY-MM-DD HH:mm:ss");
   return (
       <MainCard
       style={{ width: '100%' }}
-      title="Liste des Camions"
+      title={<FormattedMessage id='itineraire-titre' />}
       secondary={
         <Grid container spacing={3} alignItems="center">
           <Grid item>
             <TextField
-              label="Date de début"
+              // label="Date de début"
+              label={<FormattedMessage id='detailrapport-dateDebut' />}
               type="date"
               defaultValue={moment(startDate).format('YYYY-MM-DD')}
               onChange={(e) => {
@@ -35,7 +34,8 @@ const RecentTickets = ({ handleAdd, ListeCamion, handleSubmit, startDate, setSta
           </Grid>
           <Grid item>
             <TextField
-              label="Date de fin"
+              // label="Date de fin"
+              label={<FormattedMessage id='detailrapport-dateFin' />}
               type="date"
               defaultValue={moment(endDate).format('YYYY-MM-DD')}
               onChange={(e) => {
@@ -50,7 +50,7 @@ const RecentTickets = ({ handleAdd, ListeCamion, handleSubmit, startDate, setSta
           </Grid>
           <Grid item>
             <Button variant="contained" color="primary" onClick={()=>handleSubmit(startDate, endDate)}>
-              Soumettre
+              <FormattedMessage id='detailrapport-valider' />
             </Button>
           </Grid>
         </Grid>
@@ -60,12 +60,12 @@ const RecentTickets = ({ handleAdd, ListeCamion, handleSubmit, startDate, setSta
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ pl: 3 }}>Matricule</TableCell>
-              <TableCell>Ville provenance</TableCell>
-              <TableCell>Ville destination</TableCell>
-              <TableCell>Type</TableCell>
+              <TableCell sx={{ pl: 3 }}><FormattedMessage id='itineraire-matricule' /></TableCell>
+              <TableCell><FormattedMessage id='itineraire-ville-provenance' /></TableCell>
+              <TableCell><FormattedMessage id='itineraire-ville-destination' /></TableCell>
+              <TableCell><FormattedMessage id='itineraire-type' /></TableCell>
               <TableCell align="right" sx={{ pr: 3 }}>
-                Période
+                <FormattedMessage id='itineraire-periode' />
               </TableCell>
             </TableRow>
           </TableHead>

@@ -11,12 +11,23 @@ import Avatar from 'components/@extended/Avatar';
 import { CarOutlined } from '@ant-design/icons'; //, ClockCircleFilled, BugFilled, MobileFilled, WarningFilled 
 import { CloseOutlined } from '@ant-design/icons'
 import { format } from 'date-fns';
+import { FormattedMessage } from 'react-intl';
 
 
 const TasksCard = ({itineraireList, onCancel, startDate, endDate, matriculeCamion}) => (
   // const titre = `Itinéraire du ${startDate} au ${endDate}`;
   <MainCard
-    title={"Itinéraire du matricul "+ matriculeCamion+ ' pour la periode du ' + format(new Date(startDate), 'dd/MM/yyyy') + ' - '+ format(new Date(endDate), 'dd/MM/yyyy')}
+    // title={<FormattedMessage id='itineraire-titre-matricule' />+ matriculeCamion+ <FormattedMessage id='itineraire-titre-periode' /> + format(new Date(startDate), 'dd/MM/yyyy') + ' - '+ format(new Date(endDate), 'dd/MM/yyyy')}
+    title={
+      <>
+        <FormattedMessage id='itineraire-titre-matricule' />
+        {matriculeCamion}
+        <FormattedMessage id='itineraire-titre-periode' />
+        {format(new Date(startDate), 'dd/MM/yyyy')}
+        {' - '}
+        {format(new Date(endDate), 'dd/MM/yyyy')}
+      </>
+    }
     content={false}
     secondary={
       <Button color="primary" onClick={() => onCancel('')}>
