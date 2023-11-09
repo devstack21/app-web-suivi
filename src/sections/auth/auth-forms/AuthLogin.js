@@ -30,7 +30,7 @@ import AnimateButton from 'components/@extended/AnimateButton';
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
 import { dispatch } from 'store';
 import { REQUEST_STATUS } from 'utils/apiConfig';
-import { RESET_PASSWORD } from 'store/reducers/authActions';
+import { RESET_PASSWORD } from 'store/reducers/auth/authActions';
 
 
 // ============================|| JWT - LOGIN ||============================ //

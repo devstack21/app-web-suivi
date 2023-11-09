@@ -12,6 +12,8 @@ import { CarOutlined } from '@ant-design/icons'; //, ClockCircleFilled, BugFille
 import { CloseOutlined } from '@ant-design/icons'
 import { format } from 'date-fns';
 import { FormattedMessage } from 'react-intl';
+import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
+
 
 
 const TasksCard = ({itineraireList, onCancel, startDate, endDate, matriculeCamion}) => (
@@ -21,8 +23,11 @@ const TasksCard = ({itineraireList, onCancel, startDate, endDate, matriculeCamio
     title={
       <>
         <FormattedMessage id='itineraire-titre-matricule' />
+        {' '}
         {matriculeCamion}
+        {' '}
         <FormattedMessage id='itineraire-titre-periode' />
+        {' '}
         {format(new Date(startDate), 'dd/MM/yyyy')}
         {' - '}
         {format(new Date(endDate), 'dd/MM/yyyy')}
@@ -58,7 +63,9 @@ const TasksCard = ({itineraireList, onCancel, startDate, endDate, matriculeCamio
           }
         }}
       >
-
+        
+        {itineraireList.length > 0 ?
+        <>
         {itineraireList.map((item) => (
           <Grid item xs={12} md={12} key={item.pk}>
             <Grid container spacing={2}>
@@ -85,7 +92,11 @@ const TasksCard = ({itineraireList, onCancel, startDate, endDate, matriculeCamio
             </Grid>
           </Grid>
         ))}
-
+          </>
+          :
+          <EmptyUserCard title={<FormattedMessage id='itineraire-no-deplacement' />} />
+        }
+        
       </Grid>
     </CardContent>
   </MainCard>

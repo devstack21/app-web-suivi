@@ -7,11 +7,10 @@ import axios from 'utils/axios';
 
 export const getContactList = createAsyncThunk(
     "alerte/liste/Contact",
-    async () => {
-
-        const page = 1;
-        const nbre_ligne = 100;
-        const URL = BASE_URL + API_URL.Contacts + `?page=${page}&nbre_ligne=${nbre_ligne}`;
+    async (args) => {
+        // const page = 1;
+        // const nbre_ligne = 100;
+        const URL = BASE_URL + API_URL.Contacts + `?page=${args.page}&nbre_ligne=${args.nbre_ligne}`;
 
         let { data } = await axios.get(URL, { withCredentials: true })
         return data[0];
@@ -26,6 +25,7 @@ const listeContactSlice = createSlice({
         status: REQUEST_STATUS.idle,
         ListContact: [],
         error: '',
+        nbPages: 1
     },
 
     reducers: {
@@ -40,13 +40,15 @@ const listeContactSlice = createSlice({
                 state.status = REQUEST_STATUS.loading
                 state.ListContact = []
                 state.error = ''
+                state.nbPages = 1
             })
             .addCase(getContactList.fulfilled, (state, action) => {
              
-                const { success, results } = action.payload;
+                const { success, results, nombre_page } = action.payload;
                 if (success) {
                     state.status = REQUEST_STATUS.succeed
                     state.ListContact = results
+                    state.nbPages = nombre_page
                     state.editError = ''
                 } else {
                     state.editStatus = REQUEST_STATUS.error
@@ -58,6 +60,7 @@ const listeContactSlice = createSlice({
                 state.editStatus = REQUEST_STATUS.error
                     state.editError = 'error-network'
                     state.ListContact = []
+                    state.nbPages = 1
             })
     }
 })

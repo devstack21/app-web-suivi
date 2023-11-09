@@ -13,6 +13,7 @@ import { API_URL } from 'utils/apiConfig';
 import axios from 'utils/axios';
 import { PAGE_ROWS } from 'config';
 import moment from 'moment';
+import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
 
 
 
@@ -31,9 +32,9 @@ const ListeCamion = () => {
     const [startDate, setStartDate] = useState(lastWeek.startOf('week').format("YYYY-MM-DD HH:mm:ss"));
     const [endDate, setEndDate] = useState(lastWeek.endOf('week').format("YYYY-MM-DD HH:mm:ss"));
 
-    const handleAdd = (event) => {
+    const handleAdd = (event, id_supply) => {
         setAdd(!add);
-        if (event != '') fetchData(event)
+        if (event != '') fetchData(event, id_supply)
     };
 
 
@@ -44,21 +45,11 @@ const ListeCamion = () => {
 
     const handleChangePage = (event, newPage) => {setCurrentPage(newPage);};
 
-    console.log("liste camions", ListCamion, load, err)
-    console.log("startDate 2", startDate)
-
-
-    const fetchData = async (matricule) => {
+    const fetchData = async (matricule, id_supply) => {
     
         try {
-          // const config = {
-          //   headers: {
-          //     'Authorization ': 'Token ' + getToken(),
-          //     'Content-Type': 'application/json'
-          //   }
-          // };
-          setMatriculeCamion(matricule)
-          const URL = BASE_URL + API_URL.itineraireCamion + `?matricule=${matricule}`;
+          setMatriculeCamion(matricule, id_supply)
+          const URL = BASE_URL + API_URL.itineraireCamion + `?matricule=${matricule}&id_supply=${id_supply}`;
           const response = await axios.get(URL, { withCredentials: true });
           if(response.data[0].success == 1){
             setItineraireList(response.data[0].results);
@@ -77,6 +68,13 @@ const ListeCamion = () => {
         setCurrentPage(1);
         dispatch(listeCamion_req({ page: currentPage, nbre_ligne: PAGE_ROWS, startDate:startDate, endDate:endDate}));
         
+      }
+
+
+      if (load) {
+        return (
+          <EmptyUserCard title={err} />
+        )
       }
 
 

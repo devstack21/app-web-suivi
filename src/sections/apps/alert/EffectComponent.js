@@ -3,46 +3,19 @@ import { useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
 import { initCreateUser } from "store/reducers/accounts/createSlice";
-import { initEditUser } from "store/reducers/accounts/editSlice";
 import { getListAccounts } from "store/reducers/accounts/listSlice";
+import { initEditAlert } from "store/reducers/alerte/editAlerteSlice";
+import { getListAlerts } from "store/reducers/alerte/listeAlerteSlice";
 import { openSnackbar } from "store/reducers/snackbar";
 import { REQUEST_STATUS } from "utils/apiConfig";
 
-const getInitialValues = (user, roleTab) => {
-
-  const newUser = {
-    username: '',
-    email: '',
-    role: null,
-    phone: '',
-    active: true
-  };
-
-  if (user) {
-    newUser.username = user.username || '';
-    newUser.email = user.email || '';
-    newUser.phone = user.phone || '';
-    newUser.active = user.is_block;
-
-    if (user.role) {
-      // Find the role object based on libelle
-      const matchingRole = roleTab.find((role) => role.libelle === user.role);
-
-      // Set the role based on the found role
-      newUser.role = matchingRole || null; // Set to null if not found
-
-    }
-  }
-  return newUser;
-};
 
 
-const EffectComponent = ({ setValues, user, page }) => {
 
-  const { createStatus, createError } = useSelector((state) => state.account.create)
-  const { editStatus, editError } = useSelector((state) => state.account.edit)
-  const { roleTab } = useSelector((state) => state.role.list)
+const EffectComponent = () => {
 
+  const { createStatus, createError } = useSelector((state) => state.alert.create)
+  const { editStatus, editError } = useSelector((state) => state.alert.edit)
 
   const dispatch = useDispatch()
 
@@ -51,7 +24,7 @@ const EffectComponent = ({ setValues, user, page }) => {
       dispatch(
         openSnackbar({
           open: true,
-          message: <FormattedMessage id='add-user-succeed' />,
+          message: <FormattedMessage id='add-alert-succeed' />,
           variant: 'alert',
           alert: {
             color: 'success'
@@ -83,7 +56,7 @@ const EffectComponent = ({ setValues, user, page }) => {
       dispatch(
         openSnackbar({
           open: true,
-          message: <FormattedMessage id='edit-user-succeed' />,
+          message: <FormattedMessage id='edit-alert-succeed' />,
           variant: 'alert',
           alert: {
             color: 'success'
@@ -91,8 +64,8 @@ const EffectComponent = ({ setValues, user, page }) => {
           close: false
         })
       );
-      dispatch(getListAccounts({ page: page, nb: PAGE_ROWS }))
-      dispatch(initEditUser())
+      dispatch(getListAlerts({ page: 1, nb: PAGE_ROWS }))
+      dispatch(initCreateUser())
     }
     if (editStatus == REQUEST_STATUS.error) {
       dispatch(
@@ -106,17 +79,9 @@ const EffectComponent = ({ setValues, user, page }) => {
           close: false
         })
       );
-      dispatch(initEditUser())
+      dispatch(initEditAlert())
     }
   }, [editStatus])
-
-
-
-  useEffect(() => {
-    const initialValues = getInitialValues(user, roleTab);
-    setValues(initialValues);
-  }, [user, setValues]);
-
 
 
   return null; // No need to render anything for this example

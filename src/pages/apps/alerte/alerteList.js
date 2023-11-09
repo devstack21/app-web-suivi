@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 
 // material-ui
-import { Chip, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
+import { Chip, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Grid, Pagination } from '@mui/material';
 
 // project imports
 import MainCard from 'components/MainCard';
@@ -25,6 +25,7 @@ import { FormattedMessage } from 'react-intl';
 import AlertDelete from './AlertDelete';
 import AlertConfirmeActive from './AlertConfirmeActive';
 import { activeAlert } from 'store/reducers/alerte/activeAlerteSlice';
+import { PAGE_ROWS } from 'config';
 
 
 
@@ -40,23 +41,22 @@ export default function ListAlerte() {
   const [pageChange, setPageChange] = useState(1);
 
 
-  const { ListAlerte, status } = useSelector((state) => state.alert.list);
+  const { ListAlerte, status, nbPages } = useSelector((state) => state.alert.list);
   const { deleteStatus } = useSelector((state) => state.alert.delete);
+  const [currentPage, setCurrentPage] = useState(1);
 
 
-  useEffect(() => { dispatch(getListAlerts()) }, [pageChange])
+  useEffect(() => { dispatch(getListAlerts({ page: currentPage, nbre_ligne: PAGE_ROWS})) },
+   [pageChange, currentPage])
 
   const handleEdit = (event) => {
     setAdd(!add);
+    setPageChange(pageChange+1);
     if (event != '') setAlerte(event);
   };
 
 
   const handleDelete = async (row) => {
-    // const confirmDelete = window.confirm('Êtes-vous sûr de vouloir supprimer cette alerte ?');
-    // if (confirmDelete) {
-    //   dispatch(deleteAlert({ 'pk': row.pk }))
-    // }
     setIdAlerte(row.pk);
     setOpen(!open);
   };
@@ -76,27 +76,6 @@ export default function ListAlerte() {
 
 
   const handleActivateDeactivate = async (row) => {
-    // let confirmDelete;
-    // if (!row.status) confirmDelete = window.confirm('Êtes-vous sûr de vouloir activer cette alerte ?');
-    // if (row.status) confirmDelete = window.confirm('Êtes-vous sûr de vouloir désactiver cette alerte ?');
-    // if (confirmDelete) {
-    //   try {
-    //     const URL = BASE_URL + API_URL.activeDesactiveAlerte;
-    //     const response = await axios.post(URL, { 'pk': row.pk, 'status': !row.status });
-    //     if (response.data[0].success === 1) {
-    //       const res = response.data[0].results[0];
-    //       console.log(res)
-    //       //  let list = ListAlerte.map(item => item.pk === res.pk ? res : item);
-    //       //  setListeDesAlertes(list);
-    //     }
-
-    //   } catch (error) {
-    //     console.error('Erreur lors de la suppression :', error);
-    //   }
-    // }
-
-
-
     if (!row.status) setActive(true)
     setAlerte(row)
     setOpenActive(!openActive);
@@ -104,6 +83,7 @@ export default function ListAlerte() {
   };
 
 
+  const handleChangePage = (event, newPage) => {setCurrentPage(newPage);};
 
   if (status == REQUEST_STATUS.loading || deleteStatus == REQUEST_STATUS.loading) {
     return (
@@ -167,7 +147,19 @@ export default function ListAlerte() {
         :
         <AlertConfirmeActive title={<FormattedMessage id='alerte-confirm-deactive' />} open={openActive} handleClose={handleCloseActive} />
         }
-            
+
+
+      <Grid item sx={{ mt: { xs: 2, sm: 0 } }}>
+          <Pagination
+            count={nbPages}
+            page={currentPage}
+            onChange={handleChangePage}
+            color="primary"
+            variant="combined"
+          />
+        </Grid>
+
+
       <Dialog
         maxWidth="sm"
         TransitionComponent={PopupTransition}
@@ -178,7 +170,7 @@ export default function ListAlerte() {
         sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
         aria-describedby="alert-dialog-slide-description"
       >
-        {alert.lenght != 0 ? <EditAlert alert={alert} onCancel={handleEdit} /> : null}
+        {alert.lenght != 0 ? <EditAlert alert={alert} onCancel={handleEdit} setAlerte={setAlerte} /> : null}
       </Dialog>
     </MainCard>
 

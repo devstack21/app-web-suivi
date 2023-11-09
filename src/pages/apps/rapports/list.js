@@ -7,7 +7,7 @@ import { PAGE_ROWS } from 'config';
 // assets
 // import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { listeRapport_req } from 'store/reducers/rapports/listeRapportReducer';
+import { listeRapport_req } from 'store/reducers/minepia/rapports/listeRapportReducer';
 import {  useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';

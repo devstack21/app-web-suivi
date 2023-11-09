@@ -6,23 +6,22 @@ import storage from 'redux-persist/lib/storage';
 // project import
 import menu from './menu';
 import snackbar from './snackbar';
-import roleReducer from './Roles/roleReducer';
-import accountsReducer from './Accounts/accountsReducer';
+import roleReducer from './roles/roleReducer';
+import accountsReducer from './accounts/accountsReducer';
 import alertReducer from './alerte/alertReducer';
 import checkpointsReducer from './checkpoints/checkpointsReducer';
-import betailReducer from './Betail/betailReducer';
+import betailReducer from './betail/betailReducer';
 
-import tendanceVilleReducer from './dashboard/tendanceVilleReducer';
-import statCheckpointReducer from './dashboard/statCheckpointReducer';
+import statCheckpointReducer from './dashboard/statCheckpointSlice';
 import listeDesCamionsReducer from './itineraire/listeDesCamionsReducer';
 import listeItineraireReducer from './itineraire/listeItineraireReducer';
-import dashboardReducer from './dashboard/dashboardReducer';
-import locationReducer from './Location/locationReducer';
+import dashboardReducer from './dashboard/dashboardSlice';
+import locationReducer from './location/locationReducer';
 
-import listeRapportReducer from './rapports/listeRapportReducer';
-import detailRapportReducer from './rapports/detailRapportReducer';
-import activerRapportReducer from './rapports/activerRapportReducer';
-import rejeterRapportReducer from './rapports/rejeterRapportReducer';
+import listeRapportReducer from './minepia/rapports/listeRapportReducer';
+import detailRapportReducer from './minepia/rapports/detailRapportReducer';
+import activerRapportReducer from './minepia/rapports/activerRapportReducer';
+import rejeterRapportReducer from './minepia/rapports/rejeterRapportReducer';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -52,7 +51,7 @@ const reducers = combineReducers({
     },
     checkpointsReducer
   ),
-  dashbaord: persistReducer(
+  dashboard: persistReducer(
     {
       key: 'dashboard',
       storage
@@ -83,13 +82,7 @@ const reducers = combineReducers({
  
 
 
-  tendanceVille: persistReducer(
-    {
-      key: 'tendanceVille',
-      storage
-    },
-    tendanceVilleReducer
-  ),
+ 
 
 
 

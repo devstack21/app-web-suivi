@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { useDispatch, useSelector } from 'react-redux';
-import { getListDistricts } from 'store/reducers/Location/districtsSlice';
+import { getListDistricts } from 'store/reducers/location/districtsSlice';
 import { REQUEST_STATUS } from 'utils/apiConfig';
 import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
 import EditCheckpoint from 'sections/apps/checkpoint/Edit';

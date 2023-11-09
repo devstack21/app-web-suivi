@@ -1,5 +1,6 @@
 {
   "account-profile": "Profil du compte",
+  "account-blocked": "Compte bloqué, veuillez contacter un administrateur",
   "action-bar": "Barre d'action",
   "active": "Actif",
   "active-account": "Activer/Désactiver le compte ?",
@@ -226,6 +227,7 @@
   "select-role": "Sélectionner un rôle",
   "sorting": "Tri",
   "statistics": "Statistiques",
+  "statistics-import": "Importation",
   "statistics-supply": "Statistiques approvisionement",
   "stat-region": "Statistiques bétail région",
   "stat-region-betail": "Statistiques bétail par région",
@@ -290,6 +292,8 @@
   "itineraire-ville-destination": "ville de destination",
   "itineraire-ville-provenance": "ville de provenance",
   "itineraire-periode": "Période",
+  "itineraire-no-camion": "Pas de camion",
+  "itineraire-no-deplacement": "Pas dencore de deplacement",
 
   "alerte-tableau-bornInf": "Borne inf.",
   "alerte-tableau-bornSup": "Borne sup.",
@@ -299,7 +303,8 @@
   "alerte-tableau-tatus": "Statut",
   "alerte-confirm-suppression": "Voulez-vous vraiment supprimer ?",
   "alerte-confirm-active": "Voulez-vous vraiment activer ?",
-  "alerte-confirm-deactive": "Voulez-vous vraiment désactiver ?"
+  "alerte-confirm-deactive": "Voulez-vous vraiment désactiver ?",
+  "alerte-form-maxmin": "La valeur minimale ne doit pas être supérieure à la valeur maximale"
 
 
   

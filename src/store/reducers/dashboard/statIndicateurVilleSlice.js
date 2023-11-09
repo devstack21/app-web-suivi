@@ -4,22 +4,21 @@ import { API_URL, REQUEST_STATUS } from 'utils/apiConfig';
 import axios from 'utils/axios';
 
 
-export const getStatApproTypeBetail = createAsyncThunk(
-    "dashboard/stat/appro/TypeBetail",
-    async (arg) => {
-        const urlSuite = `?date_debut=${arg.debut}&date_fin=${arg.end}&betail=${arg.betail}`;
-        const URL = BASE_URL + API_URL.StatApproTypeBetail + urlSuite;
+
+export const getIndicateurVilles = createAsyncThunk(
+    "dashboard/indicateurs",
+    async () => {
+        const URL = BASE_URL + API_URL.StatIndicateur;
 
         let { data } = await axios.get(URL, { withCredentials: true })
-
         return data[0];
     }
 
 )
 
 
-const statTypeBetailSlice = createSlice({
-    name: 'statTypeBetail',
+const indicateurVilleSlice = createSlice({
+    name: 'tendanceVille',
     initialState: {
         status: REQUEST_STATUS.idle,
         result: [],
@@ -28,12 +27,13 @@ const statTypeBetailSlice = createSlice({
     reducers: {},
     extraReducers: (builder) => {
         builder
-            .addCase(getStatApproTypeBetail.pending, (state) => {
+
+            .addCase(getIndicateurVilles.pending, (state) => {
                 state.status = REQUEST_STATUS.loading
                 state.result = []
                 state.error = ''
             })
-            .addCase(getStatApproTypeBetail.fulfilled, (state, action) => {
+            .addCase(getIndicateurVilles.fulfilled, (state, action) => {
                 const { success, results } = action.payload;
                 if (success) {
                     state.status = REQUEST_STATUS.succeed
@@ -45,7 +45,7 @@ const statTypeBetailSlice = createSlice({
                     state.status = REQUEST_STATUS.error
                 }
             })
-            .addCase(getStatApproTypeBetail.rejected, (state) => {
+            .addCase(getIndicateurVilles.rejected, (state) => {
                 state.statTypeBetailList = []
                 state.error = 'error-network'
                 state.status = REQUEST_STATUS.error
@@ -53,4 +53,4 @@ const statTypeBetailSlice = createSlice({
     }
 })
 
-export default statTypeBetailSlice.reducer;
+export default indicateurVilleSlice.reducer;

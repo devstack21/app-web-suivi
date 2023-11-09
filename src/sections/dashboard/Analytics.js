@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 
 const DashbaordAnalytics = () => {
 
-    const { analytics } = useSelector((state) => state.dashbaord.analytics);
+    const { analytics } = useSelector((state) => state.dashboard.analytics);
 
 
     return (

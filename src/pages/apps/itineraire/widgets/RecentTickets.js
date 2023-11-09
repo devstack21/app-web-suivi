@@ -6,6 +6,7 @@ import { Chip, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
 import { format } from 'date-fns';
 import moment from 'moment';
 import { FormattedMessage } from 'react-intl';
+import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
 
 const RecentTickets = ({ handleAdd, ListeCamion, handleSubmit, startDate, setStartDate, endDate, setEndDate }) => {
 
@@ -69,9 +70,10 @@ const RecentTickets = ({ handleAdd, ListeCamion, handleSubmit, startDate, setSta
               </TableCell>
             </TableRow>
           </TableHead>
+          {ListeCamion.length > 0 ?
           <TableBody>
             {ListeCamion.map((row, index) => (
-              <TableRow hover key={index} onClick={() => handleAdd(row.matricule)}>
+              <TableRow hover key={index} onClick={() => handleAdd(row.matricule, row.id_supply)}>
                 <TableCell sx={{ pl: 3 }}>
                 <Chip variant="outlined" color="secondary" label={row.matricule} size="small" />
                   </TableCell>
@@ -85,6 +87,11 @@ const RecentTickets = ({ handleAdd, ListeCamion, handleSubmit, startDate, setSta
               </TableRow>
             ))}
           </TableBody>
+          :
+          <TableBody>
+          <EmptyUserCard title={<FormattedMessage id='itineraire-no-camion' />} />
+        </TableBody>
+        }
         </Table>
       </TableContainer>
     </MainCard>

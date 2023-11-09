@@ -17,7 +17,7 @@ import { IndeterminateCheckbox, } from 'components/third-party/ReactTable';
 
 // assets
 import { FormattedMessage } from 'react-intl';
-import { getListAccounts } from 'store/reducers/Accounts/listSlice';
+import { getListAccounts } from 'store/reducers/accounts/listSlice';
 import { REQUEST_STATUS } from 'utils/apiConfig';
 import { useSelector, useDispatch } from 'react-redux';
 import AlertAccountDelete from 'sections/apps/users/accounts/AlertAccountDelete';
@@ -25,7 +25,7 @@ import AddUser from 'sections/apps/users/accounts/AddUser';
 import UserView from 'sections/apps/users/accounts/UserView';
 import { PAGE_ROWS } from 'config';
 import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
-import { getListRole } from 'store/reducers/Roles/listSlice';
+import { getListRole } from 'store/reducers/roles/listSlice';
 import AccountsTable from 'sections/apps/users/accounts/AccountsTable';
 import ActionCell from 'sections/apps/users/accounts/ActionCell';
 import StatusCell from 'sections/apps/users/accounts/StatusCell';
