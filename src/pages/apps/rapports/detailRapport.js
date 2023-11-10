@@ -15,6 +15,8 @@ import { PopupTransition } from 'components/@extended/Transitions';
 import DetailUnRapport from './detailUnRapport';
 import { Dialog } from '@mui/material';
 import { format } from 'date-fns';
+import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
+import { FormattedMessage } from 'react-intl';
 
 
 
@@ -59,24 +61,40 @@ export default function ListDetailRapport() {
 
 
       const handleDetail = (event) => {
+        if (event != '')  {
+          setRapport(event)
+        } else{
+          setRapport({})
+        }
         setAdd(!add);
-        if (event != '') 
-          setRapport(event); 
+        console.log("rapport dans detail", rapport);
     };
 
-    console.log("ListDetailRaps", ListdetailRapport, loadR, errR, selectedItems);
+    console.log("rapport", rapport);
+    if (loadR) {
+      return (
+        <EmptyUserCard title={<FormattedMessage id='loading' />} />
+      )
+    }
+  
+    if (errR) {
+      return (
+        <EmptyUserCard title={<FormattedMessage id={errR} />} />
+      )
+    }
+
   return (
     <MainCard
-      title={"Detail de rapports du "+ format(new Date(state.heure), 'dd/MM/yyyy')}
+      title={<><FormattedMessage id='detailrapport-Detail-rapports-du' /> {format(new Date(state.heure), 'dd/MM/yyyy')}</>}
       content={false}
       secondary={
         selectedItems.length > 0 ? (
           <Button variant="contained" color="primary" onClick={handleDesactivate}>
-            Désactiver
+            <FormattedMessage id='detailrapport-rejeter' />
           </Button>
         ) : (
           <Button variant="contained" color="primary" onClick={handleActivate}>
-            Activer
+            <FormattedMessage id='detailrapport-valider' />
           </Button>
         )
       }
@@ -89,17 +107,18 @@ export default function ListDetailRapport() {
                 <TableCell padding="checkbox">
                     <Checkbox />
                 </TableCell>
-                <TableCell sx={{ pl: 3 }}>Utilisateur</TableCell>
-                <TableCell>Destination</TableCell>
-                <TableCell>Provenance</TableCell>
-                <TableCell>Validateur</TableCell>
-                <TableCell align="right">Matricule</TableCell>
-                <TableCell align="center">Date</TableCell>
+                <TableCell sx={{ pl: 3 }}><FormattedMessage id='detailrapport-utilisateur' /></TableCell>
+                <TableCell><FormattedMessage id='detailrapport-ville-destination' /></TableCell>
+                <TableCell><FormattedMessage id='detailrapport-ville-provenance' /></TableCell>
+                <TableCell><FormattedMessage id='detailrapport-Validateur' /></TableCell>
+                <TableCell align="right"><FormattedMessage id='detailrapport-matricule' /></TableCell>
+                <TableCell align="center"><FormattedMessage id='detailrapport-date' /></TableCell>
                 <TableCell align="center" sx={{ pr: 3 }}>
                     Action
                 </TableCell>
             </TableRow>
         </TableHead>
+        {ListdetailRapport.length > 0 ?
         <TableBody>
             {ListdetailRapport.map((row, index) => {
             const isSelected = selectedItems.includes(row.id);
@@ -124,9 +143,12 @@ export default function ListDetailRapport() {
             );
             })}
         </TableBody>
+        :
+        <TableBody>
+          <EmptyUserCard title={<FormattedMessage id='no-detail-rapport' />} />
+        </TableBody>
+          }
         </Table>
-
-
 
         <Grid sx={{ p: 2, py: 3 }} colSpan={9} >
         <Grid item sx={{ mt: { xs: 2, sm: 0 } }}>
@@ -152,7 +174,8 @@ export default function ListDetailRapport() {
         sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
         aria-describedby="alert-dialog-slide-description"
         >
-            {rapport.lenght !=0 ? <DetailUnRapport data={rapport} onCancel={handleDetail} /> : null}
+            {/* {rapport.length > 0 ? <DetailUnRapport data={rapport} onCancel={handleDetail} /> : null} */}
+            {Object.keys(rapport).length > 0 ? <DetailUnRapport data={rapport} onCancel={handleDetail} /> : null}
         </Dialog>
     </MainCard>
 

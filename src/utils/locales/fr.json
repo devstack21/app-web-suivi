@@ -268,5 +268,26 @@
   "view": "Consulter",
   "virtualized": "Virtualisées",
   "widgets": "Widget",
-  "More Items": "Plus d'articles"
+  "More Items": "Plus d'articles",
+
+  "no rapport": "Pas de rapport",
+  "no-detail-rapport": "pas de détail pour ce rapport",
+  "detailrapport-list-animaux": "liste des animaux",
+  "detailrapport-ville-destination": "ville de destination",
+  "detailrapport-ville-provenance": "ville de provenance",
+  "detailrapport-type-transport": "Type de transport",
+  "detailrapport-Validateur": "Validateur",
+  "detailrapport-agent": "Agent",
+  "detailrapport-date": "Date",
+  "detailrapport-matricule": "Matricule",
+  "detailrapport-utilisateur": "Utilisateur",
+  "detailrapport-Detail-rapports-du": "Detail de rapports du ",
+  "detailrapport-valider": "Valider",
+  "detailrapport-rejeter": "Rejeter",
+  "detailrapport-liste-rapports-semaine": "Liste des rapports de la semaine",
+  "detailrapport-dateDebut": "Date de debut",
+  "detailrapport-dateFin": "Date de fin"
+
+
+  
 }

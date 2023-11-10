@@ -253,5 +253,23 @@
   "utils": "Utils",
   "validate": "Validate",
   "view": "View",
-  "More Items": "More Items"
+  "More Items": "More Items",
+
+  "no rapport": "no report",
+  "no-detail-rapport": "no details for this report",
+  "detailrapport-list-animaux": "list of animals",
+  "detailrapport-ville-destination": "destination city",
+  "detailrapport-ville-provenance": "city ​​of origin",
+  "detailrapport-type-transport": "Transportation type",
+  "detailrapport-Validateur": "Validator",
+  "detailrapport-Agent": "Agent",
+  "detailrapport-date": "Date",
+  "detailrapport-matricule": "Registration number",
+  "detailrapport-utilisateur": "Utilisateur",
+  "detailrapport-Detail-rapports-du": "Detail of reports from ",
+  "detailrapport-valider": "validate",
+  "detailrapport-rejeter": "Dismiss",
+  "detailrapport-liste-rapports-semaine": "List of reports of the week",
+  "detailrapport-dateDebut": "Start date",
+  "detailrapport-dateFin": "End date"
 }
