@@ -12,6 +12,10 @@ import {  useNavigate } from 'react-router-dom';
 import moment from 'moment';
 import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
 import { FormattedMessage } from 'react-intl';
+import RapportFrom from './rapportForm';
+import { PopupTransition } from 'components/@extended/Transitions';
+import { rapportPdf_req } from 'store/reducers/minepia/rapports/rapportPdfReducer';
+import { Dialog } from '@mui/material';
 
 
 export default function ListRapport() {
@@ -23,6 +27,8 @@ export default function ListRapport() {
     const lastWeek = moment().subtract(1, 'weeks');
     const [startDate, setStartDate] = useState(lastWeek.startOf('week').format("YYYY-MM-DD HH:mm:ss"));
     const [endDate, setEndDate] = useState(lastWeek.endOf('week').format("YYYY-MM-DD HH:mm:ss"));
+    const [add, setAdd] = useState(false)
+    const { isLoading, error, pdf } = useSelector((state) => state.rapportPdf);
 
     const { loading:loadR, ListRapport, error:errR, nbPages } = useSelector((state) => state.listeRapport);
 
@@ -40,9 +46,18 @@ export default function ListRapport() {
 
     const handleSubmit = async (startDate, endDate) => {
       setCurrentPage(1);
-      dispatch(listeRapport_req({ page: currentPage, nbre_ligne: PAGE_ROWS, start_date: startDate, end_date: endDate }));
+      dispatch(listeRapport_req({ start_date: startDate, end_date: endDate }));
       
     }
+
+    const handleSubmitRapport = (dateDebut, dateFin) => {
+      dispatch(rapportPdf_req({ startDate: dateDebut, endDate: dateFin }));
+  };
+
+  const handleClose = () => {
+    setAdd(!add);
+  }
+
 
     console.log("ListAlerte", ListRapport, loadR, errR);
 
@@ -59,6 +74,11 @@ export default function ListRapport() {
     }
 
   return (
+    <>
+    <Button variant="contained" color="primary" onClick={handleClose}>
+      <FormattedMessage id='alerte-formRap-titre' />
+    </Button>
+
     <MainCard
       // title="Liste des rapports de la semaine"
       title={<><FormattedMessage id='detailrapport-liste-rapports-semaine' /></>}
@@ -160,19 +180,19 @@ export default function ListRapport() {
 
       </TableContainer>
 
-      {/* <Dialog
+      <Dialog
         maxWidth="sm"
         TransitionComponent={PopupTransition}
         keepMounted
         fullWidth
-        onClose={handleEdit}
+        onClose={handleClose}
         open={add}
         sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
         aria-describedby="alert-dialog-slide-description"
         >
-            {alert.lenght !=0 ? <EditAlert alert={alert} onCancel={handleEdit} /> : null}
-        </Dialog> */}
+            <RapportFrom handleSubmitRapport={handleSubmitRapport} handleClose={handleClose} pdf={pdf} isLoading={isLoading} error={error} />
+        </Dialog>
     </MainCard>
-
+    </>
   );
 }

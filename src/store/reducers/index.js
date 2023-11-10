@@ -22,6 +22,7 @@ import listeRapportReducer from './minepia/rapports/listeRapportReducer';
 import detailRapportReducer from './minepia/rapports/detailRapportReducer';
 import activerRapportReducer from './minepia/rapports/activerRapportReducer';
 import rejeterRapportReducer from './minepia/rapports/rejeterRapportReducer';
+import rapportPdfReducer from './minepia/rapports/rapportPdfReducer';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -138,6 +139,14 @@ const reducers = combineReducers({
       storage
     },
     rejeterRapportReducer
+  ),
+
+  rapportPdf: persistReducer(
+    {
+      key: 'rapportPdf',
+      storage
+    },
+    rapportPdfReducer
   ),
 
 });

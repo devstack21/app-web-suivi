@@ -288,7 +288,8 @@
   "alerte-confirm-suppression": "Are you sure you want to delete ?",
   "alerte-confirm-active": "Are you sure you want to activate ?",
   "alerte-confirm-deactive": "Are you sure you want to deactivate ?",
-  "alerte-form-maxmin": "The minimum value must not be greater than the maximum value"
+  "alerte-form-maxmin": "The minimum value must not be greater than the maximum value",
+  "alerte-formRap-titre": "Download the report over a period"
 
 
 

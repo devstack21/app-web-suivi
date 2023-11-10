@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useEffect, useMemo } from 'react'; //, useEffect, useCallback, 
+import { useEffect, useState, useMemo } from 'react'; //, useEffect, useCallback, 
 import { useTheme } from '@mui/material/styles';
 // import { Button, Dialog, Grid, Pagination, Stack, } from '@mui/material';
 
@@ -12,6 +12,7 @@ import { PAGE_ROWS } from 'config';
 import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
 import AccountsTable from 'sections/apps/users/accounts/AccountsTable';
 import { statCheckpoint_req } from 'store/reducers/dashboard/statCheckpointSlice';
+import moment from 'moment';
 
 const SelectionCell = ({ row }) => <IndeterminateCheckbox {...row.getToggleRowSelectedProps()} />;
 const SelectionHeader = ({ getToggleAllPageRowsSelectedProps }) => (
@@ -30,6 +31,10 @@ const StatCheckpointPage = () => {
 
   const { loading, ListStatChpt , error} = useSelector((state) => state.statCheckpoint)
 
+  const lastWeek = moment().subtract(1, 'weeks');
+  const [startDate, setStartDate] = useState(lastWeek.startOf('week').format("YYYY-MM-DD HH:mm:ss"));
+  const [endDate, setEndDate] = useState(lastWeek.endOf('week').format("YYYY-MM-DD HH:mm:ss"));
+
   const columns = useMemo(
     () => [
       {
@@ -42,7 +47,9 @@ const StatCheckpointPage = () => {
   );
 
     useEffect(() => { 
-        dispatch(statCheckpoint_req({ page: 1, nbre_ligne: PAGE_ROWS })) 
+        dispatch(statCheckpoint_req({ page: 1, nbre_ligne: PAGE_ROWS, startDate:startDate, endDate:endDate }));
+        setStartDate(startDate);
+        setEndDate(endDate);
     }, [])
 //   const renderRowSubComponent = useCallback(({ row }) => <UserView data={accountsTab[row.id]} />, [accountsTab]);
   if (loading) {

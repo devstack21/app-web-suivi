@@ -78,13 +78,18 @@ const TasksCard = ({itineraireList, onCancel, startDate, endDate, matriculeCamio
                 <Grid container spacing={0}>
                   <Grid item xs={12}>
                     <Typography align="left" variant="caption" color="secondary">
-                      {new Date(item.createat).toLocaleDateString()}
+                      {new Date(item.date).toLocaleDateString()}
 
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
                     <Typography align="left" variant="body2">
-                      {item.libelle}
+                      {item.nom_ckpt}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography align="left" variant="body2">
+                      {item.betails.map((betail) => `${betail.animal}: ${betail.effectif}`).join(', ')}
                     </Typography>
                   </Grid>
                 </Grid>

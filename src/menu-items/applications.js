@@ -143,20 +143,7 @@ const applications = {
       ]
 
     },
-    {
-      id: 'statRapport',
-      title: <FormattedMessage id="stat-rapport" />,
-      icon: icons.CompassOutlined,
-      type: 'collapse',
-      children: [
-        {
-          id: 'list',
-          title: <FormattedMessage id="stat-rapport" />, // <FormattedMessage id="listecamion" />,
-          type: 'item',
-          url: 'apps/stat/rapport',
-        }
-      ]
-    },
+    
   ]
 };
 

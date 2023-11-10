@@ -45,7 +45,8 @@ export const API_URL = {
 	listeRapports: '/rapport/user/historique/',
 	detailRapport: '/rapport/user/details/',
 	activerRapport: '/rapport/valider/',
-	rejeterRapport: '/rapport/rejeter/'
+	rejeterRapport: '/rapport/rejeter/',
+	genererRapport: '/generate/rapport/'
 };
 
 export const PERIODS = [
