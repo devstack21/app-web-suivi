@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 // material-ui
 import {
@@ -13,11 +15,8 @@ import StatFilters from './StatFilter';
 // assets
 
 
-import { useDispatch, useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { useEffect, useState } from 'react';
 import { REQUEST_STATUS } from 'utils/apiConfig';
-import { formatDateToYYYYMMDD } from 'utils/function';
 import { TendanceComponent } from './Tendance';
 import ApproBetailRegionChart from './BetailRegionChart';
 import {SpinnLoader} from 'components/cards/SpinnLoader';
@@ -27,21 +26,19 @@ import { getStatApproTypeBetail } from 'store/reducers/dashboard/statApproTypeBe
 
 // ==============================|| DASHBOARD - ANALYTICS ||============================== //
 
-const StatApproBetailRegion = ({type, setType, start, setStart}) => {
+const StatApproBetailRegion = ({type, setType, start, end}) => {
 
   const dispatch = useDispatch()
 
   const { status, result } = useSelector((state) => state.dashboard.supply);
  
-  const [period, setPeriod] = useState('week')
-
 
   useEffect(() => {
-    if (type?.id  && start) {
+    if (type?.id  && start && end) {
     
       dispatch(getStatApproTypeBetail({
-        debut: formatDateToYYYYMMDD(start),
-        end: formatDateToYYYYMMDD(new Date()),
+        debut: start,
+        end: end,
         betail: type.id,
       }));
     } else {
@@ -49,19 +46,8 @@ const StatApproBetailRegion = ({type, setType, start, setStart}) => {
     }
 
 
-  }, [type, start])
+  }, [type, start, end])
 
-  useEffect(() => {
-    if (period === 'week') {
-      const now = new Date();
-      const startOfWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate() - now.getDay());
-      setStart(startOfWeek);
-    } else if (period === 'month') {
-      const now = new Date();
-      const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-      setStart(startOfMonth);
-    }
-  }, [period]);
 
 
 
@@ -69,9 +55,10 @@ const StatApproBetailRegion = ({type, setType, start, setStart}) => {
 
     <Grid item xs={12} md={7} lg={8}>
       <Grid container alignItems="center" justifyContent="space-between">
+        
+        <Typography variant="h5"><FormattedMessage id='statistics-supply' /> {type?.libelle} </Typography>
         <Grid item>
         </Grid>
-        <Typography variant="h5"><FormattedMessage id='statistics-supply' /> {type?.libelle} </Typography>
       </Grid>
       <MainCard content={false} sx={{ mt: 1.5 }}>
         <Grid item>
@@ -81,15 +68,13 @@ const StatApproBetailRegion = ({type, setType, start, setStart}) => {
               <StatFilters
                 type={type}
                 setType={setType}
-                period={period}
-                setPeriod={setPeriod}
               />
             </Grid>
           </Grid>
         </Grid>
         <Box sx={{ pt: 1 }}>
           {status === REQUEST_STATUS.loading && <SpinnLoader title="loading-chart" />}
-          {status === REQUEST_STATUS.succeed && <ApproBetailRegionChart period={period} />}
+          {status === REQUEST_STATUS.succeed && <ApproBetailRegionChart />}
         </Box>
       </MainCard>
     </Grid>

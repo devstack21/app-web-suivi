@@ -16,13 +16,12 @@ import { DownloadOutlined } from '@ant-design/icons';
 
 
 import { useSelector } from 'react-redux';
-import PeriodSelector from './PeriodSelector';
 
 
 
 // ==============================|| DASHBOARD - ANALYTICS ||============================== //
 
-const StatFilters = ({ type, setType, period, setPeriod }) => {
+const StatFilters = ({ type, setType }) => {
 
 
     const theme = useTheme()
@@ -38,9 +37,6 @@ const StatFilters = ({ type, setType, period, setPeriod }) => {
             justifyContent={{ xs: 'center', sm: 'flex-end' }}
             sx={{ mt: 3, mr: 2 }}
         >
-
-            <PeriodSelector value={period} setValue={setPeriod} />
-
 
             <Select size="small" value={type} onChange={(e) => setType(e.target.value)}>
                 {typeBetail?.map((item, index) => (

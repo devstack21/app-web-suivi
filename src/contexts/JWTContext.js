@@ -122,7 +122,7 @@ export const JWTProvider = ({ children }) => {
 
         switch (errors[0].error_code) {
           case "LO001":
-            error_msg = "user-not-found"
+            error_msg = "password-incorect"
             break;
           case "LO003":
             error_msg = "password-incorect"

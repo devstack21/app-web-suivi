@@ -2,16 +2,11 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { BASE_URL } from 'config';
 import { API_URL, REQUEST_STATUS } from 'utils/apiConfig';
 import axios from 'utils/axios';
-import { formatDateToYYYYMMDD, getStartOfWeek } from "utils/function";
-
-
 
 export const getAnalytics = createAsyncThunk(
     "dashboard/analytics",
-    async () => {
-        const date_debut = formatDateToYYYYMMDD(getStartOfWeek());
-        const date_fin = formatDateToYYYYMMDD();
-        const URL = BASE_URL + API_URL.DashboardAnalytics + `?date_debut=${date_debut}&date_fin=${date_fin}`;
+    async (arg) => {
+        const URL = BASE_URL + API_URL.DashboardAnalytics + `?date_debut=${arg.start}&date_fin=${arg.end}`;
 
         let { data } = await axios.get(URL, { withCredentials: true })
         return data[0];
