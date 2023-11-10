@@ -31,9 +31,10 @@ export const API_URL = {
 	Login: '/login/',
 	ResetPassword: '/reset/password/',
 	StatApproTypeBetail: '/stat/approvisionement/betail/region/',
+	statCkeckpoint: '/stat/checkpoint',
 	StatImportTypeBetail: '/stat/importation/betail/',
 	StatIndicateur: '/stat/indicateur/',
-	statCkeckpoint: '/stat/checkpoint',
+	StatTypeBetail: '/stat/type/betail/',
 	UpdatePassword: '/change/password/',
 	UpdateRole: '/role/update/',
 
