@@ -6,7 +6,7 @@ import axios from 'utils/axios';
 
 
 
-const URL = BASE_URL + API_URL.ListeTypeBetail + "?page=*";
+const URL = BASE_URL + API_URL.ListTypeBetail + "?page=*";
 export const getListTypeBetail = createAsyncThunk(
     "betail/list/type",
     async () => {

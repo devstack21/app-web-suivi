@@ -62,8 +62,6 @@ const DashboardAnalytics = () => {
     return <Loader />
   }
 
-  console.log(analyticStatus)
-
 
   return (
     <Box id="print" ref={componentRef} paddingX={2}>

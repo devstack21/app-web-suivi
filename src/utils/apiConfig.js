@@ -27,7 +27,9 @@ export const API_URL = {
 	ListModule: '/module/list/',
 	ListRegions: '/list/regions/',
 	ListRole: '/role/list/',
-	ListeTypeBetail: '/betails/type/',
+	ListTypeBetail: '/betails/type/',
+	ListTransport: '/transport/list',
+
 	ListVilles: '/list/villes/',
 	Login: '/login/',
 	ResetPassword: '/reset/password/',
@@ -38,10 +40,8 @@ export const API_URL = {
 	StatTypeBetail: '/stat/type/betail/',
 	UpdatePassword: '/change/password/',
 	UpdateRole: '/role/update/',
+	TransportItinary: '/transport/itinary',
 
-
-	listeCamion: '/camions/liste',
-	itineraireCamion: '/camions/itineraire',
 
 	activeDesactiveAlerte: '/alerteActiveDeactive/',
 	listeRapports: '/rapport/user/historique/',

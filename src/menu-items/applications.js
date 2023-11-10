@@ -92,16 +92,16 @@ const applications = {
       ]
     },
     {
-      id: 'itineraire',
+      id: 'transport',
       title: <FormattedMessage id="itineraire" />,
       icon: icons.CompassOutlined,
       type: 'collapse',
       children: [
         {
           id: 'list',
-          title: <FormattedMessage id="truck-list" />, // <FormattedMessage id="listecamion" />,
+          title: <FormattedMessage id="transport-list" />, 
           type: 'item',
-          url: 'apps/itineraire/list',
+          url: 'apps/transport/list',
         }
       ]
     },

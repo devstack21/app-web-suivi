@@ -6,7 +6,7 @@ import { FormattedMessage } from 'react-intl';
 import MainCard from 'components/MainCard';
 import { REQUEST_STATUS } from 'utils/apiConfig';
 import { formatDateToYYYYMMDD, getStartOfWeek } from 'utils/function';
-import { DatePicker } from 'components/cards/date/DateSelector';
+import DateSelector from 'components/cards/date/DateSelector';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRapportPDF } from 'store/reducers/rapports/rapportPdfSlice';
 import { SpinnLoader } from 'components/cards/SpinnLoader';
@@ -43,8 +43,7 @@ export default function RapportFrom({ handleClose }) {
         >
 
             <Grid container spacing={3} alignItems="center">
-                <DatePicker date={startDate} setDate={setStartDate} label={"start-date"} />
-                <DatePicker date={endDate} setDate={setEndDate} label={'end-date'} />
+            <DateSelector startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} />
                 <Grid item>
                     {pdf && (
                         <a href={URL.createObjectURL(pdf)} download="monFichier.pdf">

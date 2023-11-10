@@ -22,8 +22,8 @@ const AppAlertCreate = Loadable(lazy(() => import('pages/apps/alerte/alerteCreat
 const AppAlertEdit = Loadable(lazy(() => import('pages/apps/alerte/alerteEdit')));
 
 // Itineraire
-const AppItineraireList = Loadable(lazy(() => import('pages/apps/itineraire/listeCamions')));
-const AppItineraireDetail = Loadable(lazy(() => import('pages/apps/itineraire/itineraireCamions')));
+const AppItineraireList = Loadable(lazy(() => import('pages/apps/transport/listTransport')));
+const AppItineraireDetail = Loadable(lazy(() => import('pages/apps/transport/detailTransport')));
 
 // Role
 const RoleList = Loadable(lazy(() => import('pages/apps/users/roles/roleList')));
@@ -96,7 +96,7 @@ const MainRoutes = {
                 }
               ]
             }, {
-              path: 'itineraire',
+              path: 'transport',
               children: [
                 {
                   path: 'list',
