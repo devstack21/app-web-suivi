@@ -310,7 +310,8 @@
   "alerte-confirm-suppression": "Voulez-vous vraiment supprimer ?",
   "alerte-confirm-active": "Voulez-vous vraiment activer ?",
   "alerte-confirm-deactive": "Voulez-vous vraiment désactiver ?",
-  "alerte-form-maxmin": "La valeur minimale ne doit pas être supérieure à la valeur maximale"
+  "alerte-form-maxmin": "La valeur minimale ne doit pas être supérieure à la valeur maximale",
+  "alerte-formRap-titre": "Télécharger le rapport sur une période"
 
 
   

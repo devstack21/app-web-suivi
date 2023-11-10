@@ -22,6 +22,7 @@ import detailRapportReducer from './rapports/detailRapportReducer';
 import activerRapportReducer from './rapports/activerRapportReducer';
 import rejeterRapportReducer from './rapports/rejeterRapportReducer';
 import rapportdReducer from './rapports/rapportReducer';
+import rapportPdfReducer from './rapports/rapportPdfSlice';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -139,6 +140,14 @@ const reducers = combineReducers({
       storage
     },
     rejeterRapportReducer
+  ),
+
+  rapportPdf: persistReducer(
+    {
+      key: 'rapportPdf',
+      storage
+    },
+    rapportPdfReducer
   ),
 
 });
