@@ -13,7 +13,8 @@ import StatImportBetail from 'sections/dashboard/StatImportBetail';
 import StatApproBetailRegion from 'sections/dashboard/StatsBetailRegion';
 import StatIndicateurVille from 'sections/dashboard/StatIndicateurVille';
 import StatTauxImportation from 'sections/dashboard/StatTauxImportation';
-import LabelledTasks from 'sections/dashboard/analytics/LabelledTasks';
+import StatTypeBetail from 'sections/dashboard/StatTypeBetail';
+
 
 // assets
 import { REQUEST_STATUS } from 'utils/apiConfig';
@@ -82,13 +83,14 @@ const DashboardAnalytics = () => {
 
         {analyticStatus == REQUEST_STATUS.succeed && <DashbaordAnalytics />}
         <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
-        <LabelledTasks />
+        <StatTypeBetail start={start} end={end}/>
 
         <StatApproBetailRegion type={type} setType={setType} start={start} end={end} />
-        <StatTauxImportation type={type}/>
+        <StatImportBetail type={type} start={start} end={end} />
+
 
         <StatIndicateurVille start={start} end={end} />
-        <StatImportBetail type={type} start={start} end={end} />
+        <StatTauxImportation type={type}/>
 
       </Grid>
     </Box>

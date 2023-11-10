@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { Button, TextField, Grid, FormControl, Chip, InputLabel, Select, MenuItem, Container, Autocomplete, useTheme } from '@mui/material';
+import { Button, TextField, Pagination, Grid, FormControl, Chip, InputLabel, Select, MenuItem, Container, Autocomplete, useTheme } from '@mui/material';
 import MainCard from 'components/MainCard';
-import axios from 'utils/axios';
-import { BASE_URL } from 'config';
-import { API_URL, REQUEST_STATUS } from 'utils/apiConfig';
+// import axios from 'utils/axios';
+// import { BASE_URL } from 'config'; 
+import { REQUEST_STATUS } from 'utils/apiConfig'; //API_URL, 
 import { CloseOutlined } from '@ant-design/icons'
 import { useSelector, useDispatch } from 'react-redux';
 import { getListBetail } from 'store/reducers/betail/listBetailSlice';
@@ -13,6 +13,8 @@ import { getContactList } from 'store/reducers/alerte/listeContactSlice';
 import { getListVille } from 'store/reducers/location/villeSlice';
 import { FormattedMessage } from 'react-intl';
 import { SpinnLoader } from 'components/cards/SpinnLoader';
+import { PAGE_ROWS } from 'config';
+import { editAlert } from 'store/reducers/alerte/editAlerteSlice';
 
 const ListTypeCanal = ["SMS", "EMAIL"]
 
@@ -31,19 +33,22 @@ const EditAlert = ({ alert, onCancel }) => {
 
     const [selectedContacts, setSelectedContacts] = useState([]);
     const [listeIdContacts, setlisteIdContacts] = useState([]);
+    const [page, setPage] = useState(1);
 
     const statutListVille = useSelector((state) => state.location.villes.status);
     const { ListVille } = useSelector((state) => state.location.villes);
 
     const statutListContact = useSelector((state) => state.alert.contact.status);
     const { ListContact } = useSelector((state) => state.alert.contact);
+    const totalPagesContact = useSelector((state) => state.alert.contact.nbPages);
 
-    const { betailTab } = useSelector((state) => state.betail.list);
+    const { betailTab } = useSelector((state) => state.betail.listTout);
 
     useEffect(() => {
-        if (betailTab.length != 0) dispatch(getListBetail({ page: 1 }));
-        if (ListContact.length != 0) dispatch(getContactList());
-        if (ListVille.length != 0) dispatch(getListVille());
+        if (betailTab.length < 0) dispatch(getListBetail({ page: 1}));
+        if (ListContact.length < 0) dispatch(getContactList({page: page, nbre_ligne:PAGE_ROWS}));
+        // dispatch(getContactList({page: page, nbre_ligne:PAGE_ROWS}));
+        if (ListVille.length < 0) dispatch(getListVille());
 
         formik.setFieldValue('pk', alert.pk);
         formik.setFieldValue('min_animal', alert.min_animal);
@@ -75,23 +80,29 @@ const EditAlert = ({ alert, onCancel }) => {
                 ...values,
                 contacts: listeIdContacts
             };
-            const URL = BASE_URL + API_URL.creerAlerte;
-            console.log("les dats qui partent ", dataToSend)
-            axios.put(URL, dataToSend)
-                .then(response => {
-                    console.log('success', response.data[0].success);
-                    console.log('object', response.data[0].results[0]);
-                    if (response.data[0].success === 1) onCancel(response.data[0].results[0]);
-                })
-                .catch(error => {
-                    console.error(error);
-                });
+            // const URL = BASE_URL + API_URL.Alert;
+            console.log("les dats qui partent ", dataToSend);
+            if(values.min_animal > values.max_animal) {
+                formik.setErrors({ min_animal: <FormattedMessage id='alerte-form-maxmin'/>, max_animal: <FormattedMessage id='alerte-form-maxmin'/> }); 
+                return;
+            }
+            
+            dispatch(editAlert(dataToSend));
+            onCancel('');
         }
     });
 
+    // const handleAddContact = (id) => {
+    //     const contact = ListContact.find(contact => contact.id === id);
+    //     if (!selectedContacts.includes(contact)) {
+    //         setSelectedContacts((prevContacts) => [...prevContacts, contact]);
+    //         setlisteIdContacts((prevIds) => [...prevIds, id]);
+    //     }
+    // };
+
     const handleAddContact = (id) => {
         const contact = ListContact.find(contact => contact.id === id);
-        if (!selectedContacts.includes(contact)) {
+        if (!selectedContacts.some(selectedContact => selectedContact.id === id)) {
             setSelectedContacts((prevContacts) => [...prevContacts, contact]);
             setlisteIdContacts((prevIds) => [...prevIds, id]);
         }
@@ -101,6 +112,13 @@ const EditAlert = ({ alert, onCancel }) => {
         setSelectedContacts((prevContacts) => prevContacts.filter((contact) => contact !== contactToRemove));
         setlisteIdContacts((prevIds) => prevIds.filter((id) => id !== contactToRemove.id));
     };
+
+    const handleChangePage = (event, value) => {
+        setPage(value);
+        dispatch(getContactList({page: value, nbre_ligne:2}));
+        formik.setFieldValue('id_contact', "");
+    };
+
 
 
     if (statutListContact == REQUEST_STATUS.loading || statutListVille == REQUEST_STATUS.loading) {
@@ -213,7 +231,7 @@ const EditAlert = ({ alert, onCancel }) => {
 
                         </Grid>
 
-                        <Grid item xs={12}>
+                        {/* <Grid item xs={12}>
                             <FormControl fullWidth>
                                 <InputLabel>Contact</InputLabel>
                                 <Select name="id_contact"
@@ -231,7 +249,37 @@ const EditAlert = ({ alert, onCancel }) => {
                             {selectedContacts.map((contact, index) => (
                                 <Chip key={index} label={`${contact.email}-${contact.phone}`} onDelete={() => handleRemoveContact(contact)} />
                             ))}
+                        </Grid> */}
+
+
+
+
+
+
+                        <Grid item xs={12}>
+                            <FormControl fullWidth>
+                                <InputLabel>Contact</InputLabel>
+                                <Select name="id_contact" 
+                                value={formik.values.id_contact} 
+                                onChange={(event) => { formik.handleChange(event); handleAddContact(event.target.value); }}
+                                error={formik.touched.id_contact && Boolean(formik.errors.id_contact)}
+                                helperText={formik.touched.id_contact && formik.errors.id_contact} >
+                                    {ListContact.map((contact, index) => (
+                                        <MenuItem key={index} value={contact.id}>{contact.email}-{contact.phone}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
                         </Grid>
+                        <Grid item xs={12}>
+                            <Pagination count={totalPagesContact} page={page} onChange={handleChangePage} />
+                        </Grid>
+                        <Grid item xs={12}>
+                            {selectedContacts.map((contact, index) => (
+                                <Chip key={index} label={`${contact.email}-${contact.phone}`} onDelete={() => handleRemoveContact(contact)} />
+                            ))}
+                        </Grid>
+
+
 
                         <Grid item xs={12}>
                             <Button type="submit" variant="contained" color="primary">Submit</Button>

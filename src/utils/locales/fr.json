@@ -231,6 +231,8 @@
   "sorting": "Tri",
   "start-date": "Date de début",
   "statistics": "Statistiques",
+  "statistics-animals": "Répartition du bétail",
+  "statistics-animals-variation": "Variation du bétail",
   "statistics-import": "Importation",
   "statistics-supply": "Statistiques approvisionement",
   "stat-region": "Statistiques bétail région",
@@ -286,7 +288,30 @@
   "detailrapport-rejeter": "Rejeter",
   "detailrapport-liste-rapports-semaine": "Liste des rapports de la semaine",
   "detailrapport-dateDebut": "Date de debut",
-  "detailrapport-dateFin": "Date de fin"
+  "detailrapport-dateFin": "Date de fin",
+
+  "itineraire-titre-matricule": "Itinéraire du matricul",
+  "itineraire-titre": "Liste des Camions",
+  "itineraire-titre-periode": "Période du ",
+  "itineraire-matricule": "Matricule",
+  "itineraire-type": "Type",
+  "itineraire-ville-destination": "ville de destination",
+  "itineraire-ville-provenance": "ville de provenance",
+  "itineraire-periode": "Période",
+  "itineraire-no-camion": "Pas de camion",
+  "itineraire-no-deplacement": "Pas dencore de deplacement",
+
+  "alerte-tableau-bornInf": "Borne inf.",
+  "alerte-tableau-bornSup": "Borne sup.",
+  "alerte-tableau-ville": "Ville.",
+  "alerte-tableau-animal": "Animal",
+  "alerte-tableau-typeCanal": "Type canal",
+  "alerte-tableau-tatus": "Statut",
+  "alerte-confirm-suppression": "Voulez-vous vraiment supprimer ?",
+  "alerte-confirm-active": "Voulez-vous vraiment activer ?",
+  "alerte-confirm-deactive": "Voulez-vous vraiment désactiver ?",
+  "alerte-form-maxmin": "La valeur minimale ne doit pas être supérieure à la valeur maximale",
+  "alerte-formRap-titre": "Télécharger le rapport sur une période"
 
 
   

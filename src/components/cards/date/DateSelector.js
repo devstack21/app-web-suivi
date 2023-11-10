@@ -2,7 +2,7 @@ import { Grid, TextField, Stack } from "@mui/material";
 import { FormattedMessage } from "react-intl";
 
 
-const DatePicker = ({ date, setDate, label }) => {
+export const DatePicker = ({ date, setDate, label }) => {
     return (
         <Grid item xs={8} md={4} marginX={2} >
             <TextField

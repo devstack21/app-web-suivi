@@ -11,12 +11,28 @@ import Avatar from 'components/@extended/Avatar';
 import { CarOutlined } from '@ant-design/icons'; //, ClockCircleFilled, BugFilled, MobileFilled, WarningFilled 
 import { CloseOutlined } from '@ant-design/icons'
 import { format } from 'date-fns';
+import { FormattedMessage } from 'react-intl';
+import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
+
 
 
 const TasksCard = ({itineraireList, onCancel, startDate, endDate, matriculeCamion}) => (
   // const titre = `Itinéraire du ${startDate} au ${endDate}`;
   <MainCard
-    title={"Itinéraire du matricul "+ matriculeCamion+ ' pour la periode du ' + format(new Date(startDate), 'dd/MM/yyyy') + ' - '+ format(new Date(endDate), 'dd/MM/yyyy')}
+    // title={<FormattedMessage id='itineraire-titre-matricule' />+ matriculeCamion+ <FormattedMessage id='itineraire-titre-periode' /> + format(new Date(startDate), 'dd/MM/yyyy') + ' - '+ format(new Date(endDate), 'dd/MM/yyyy')}
+    title={
+      <>
+        <FormattedMessage id='itineraire-titre-matricule' />
+        {' '}
+        {matriculeCamion}
+        {' '}
+        <FormattedMessage id='itineraire-titre-periode' />
+        {' '}
+        {format(new Date(startDate), 'dd/MM/yyyy')}
+        {' - '}
+        {format(new Date(endDate), 'dd/MM/yyyy')}
+      </>
+    }
     content={false}
     secondary={
       <Button color="primary" onClick={() => onCancel('')}>
@@ -47,7 +63,9 @@ const TasksCard = ({itineraireList, onCancel, startDate, endDate, matriculeCamio
           }
         }}
       >
-
+        
+        {itineraireList.length > 0 ?
+        <>
         {itineraireList.map((item) => (
           <Grid item xs={12} md={12} key={item.pk}>
             <Grid container spacing={2}>
@@ -60,13 +78,18 @@ const TasksCard = ({itineraireList, onCancel, startDate, endDate, matriculeCamio
                 <Grid container spacing={0}>
                   <Grid item xs={12}>
                     <Typography align="left" variant="caption" color="secondary">
-                      {new Date(item.createat).toLocaleDateString()}
+                      {new Date(item.date).toLocaleDateString()}
 
                     </Typography>
                   </Grid>
                   <Grid item xs={12}>
                     <Typography align="left" variant="body2">
-                      {item.libelle}
+                      {item.nom_ckpt}
+                    </Typography>
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Typography align="left" variant="body2">
+                      {item.betails.map((betail) => `${betail.animal}: ${betail.effectif}`).join(', ')}
                     </Typography>
                   </Grid>
                 </Grid>
@@ -74,7 +97,11 @@ const TasksCard = ({itineraireList, onCancel, startDate, endDate, matriculeCamio
             </Grid>
           </Grid>
         ))}
-
+          </>
+          :
+          <EmptyUserCard title={<FormattedMessage id='itineraire-no-deplacement' />} />
+        }
+        
       </Grid>
     </CardContent>
   </MainCard>
