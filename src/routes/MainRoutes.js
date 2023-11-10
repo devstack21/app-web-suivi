@@ -51,6 +51,7 @@ const AuthCheckMail = Loadable(lazy(() => import('pages/auth/check-mail')));
 //Rapport
 const RapportList = Loadable(lazy(()=> import('pages/apps/rapports/list')));
 const RapportDetail = Loadable(lazy(()=> import('pages/apps/rapports/detailRapport')));
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -146,6 +147,7 @@ const MainRoutes = {
                 }
               ]
             },
+            
             {
               path: 'profiles',
               children: [

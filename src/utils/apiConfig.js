@@ -18,6 +18,7 @@ export const API_URL = {
 	EditAccount: '/user/update/',
 	EditCheckpoint: '/checkpoint/update/',
 	EditRole: '/role/update/',
+	GenerateReport: '/generate/rapport/',
 	ListAccounts: '/user/list/',
 	ListBetail: '/betails/',
 	ListAgentCheckpoints: '/user/list/checkpoints',
@@ -31,9 +32,10 @@ export const API_URL = {
 	Login: '/login/',
 	ResetPassword: '/reset/password/',
 	StatApproTypeBetail: '/stat/approvisionement/betail/region/',
+	statCkeckpoint: '/stat/checkpoint',
 	StatImportTypeBetail: '/stat/importation/betail/',
 	StatIndicateur: '/stat/indicateur/',
-	statCkeckpoint: '/stat/checkpoint',
+	StatTypeBetail: '/stat/type/betail/',
 	UpdatePassword: '/change/password/',
 	UpdateRole: '/role/update/',
 
@@ -45,7 +47,7 @@ export const API_URL = {
 	listeRapports: '/rapport/user/historique/',
 	detailRapport: '/rapport/user/details/',
 	activerRapport: '/rapport/valider/',
-	rejeterRapport: '/rapport/rejeter/'
+	rejeterRapport: '/rapport/rejeter/',
 };
 
 export const PERIODS = [

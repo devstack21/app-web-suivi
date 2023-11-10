@@ -225,6 +225,8 @@
   "start-date": "Satrt date",
   "stat-region-betail": "Livestock statistics by region",
   "statistics": "Statistics",
+  "statistics-animals": "Livestock distribution",
+  "statistics-animals-variation": "Livestock variation",
   "statistics-import": "Importation",
   "statistics-supply": "Supply statistics",
   "status": "Status",
@@ -271,5 +273,31 @@
   "detailrapport-rejeter": "Dismiss",
   "detailrapport-liste-rapports-semaine": "List of reports of the week",
   "detailrapport-dateDebut": "Start date",
-  "detailrapport-dateFin": "End date"
+  "detailrapport-dateFin": "End date",
+
+  "itineraire-titre-matricule": "Itinerary of the registration number",
+  "itineraire-titre": "List of Trucks",
+  "itineraire-titre-periode": "Period of",
+  "itineraire-matricule": "Registration number",
+  "itineraire-type": "Type",
+  "itineraire-ville-destination": "destination city",
+  "itineraire-ville-provenance": "city ​​of origin",
+  "itineraire-periode": "Period",
+  "itineraire-no-camion": "no camion",
+  "itineraire-no-deplacement": "No travel yet",
+
+  "alerte-tableau-bornInf": "Lower bound",
+  "alerte-tableau-bornSup": "Upper bound",
+  "alerte-tableau-ville": "City",
+  "alerte-tableau-animal": "Animal",
+  "alerte-tableau-typeCanal": "Type canal",
+  "alerte-tableau-tatus": "Status",
+  "alerte-confirm-suppression": "Are you sure you want to delete ?",
+  "alerte-confirm-active": "Are you sure you want to activate ?",
+  "alerte-confirm-deactive": "Are you sure you want to deactivate ?",
+  "alerte-form-maxmin": "The minimum value must not be greater than the maximum value",
+  "alerte-formRap-titre": "Download the report over a period"
+
+
+
 }

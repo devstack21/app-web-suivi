@@ -6,22 +6,21 @@ import { Chip, Table, TableBody, TableCell, TableContainer, TableHead, TableRow,
 import { format } from 'date-fns';
 import moment from 'moment';
 import { FormattedMessage } from 'react-intl';
+import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
 
 const RecentTickets = ({ handleAdd, ListeCamion, handleSubmit, startDate, setStartDate, endDate, setEndDate }) => {
 
   
-
-  // const startDate = lastWeek.startOf('week').format("YYYY-MM-DD HH:mm:ss");
-  // const endDate = lastWeek.endOf('week').format("YYYY-MM-DD HH:mm:ss");
   return (
       <MainCard
       style={{ width: '100%' }}
-      title={<FormattedMessage id='list-transport' />}
+      title={<FormattedMessage id='itineraire-titre' />}
       secondary={
         <Grid container spacing={3} alignItems="center">
           <Grid item>
             <TextField
-              label="Date de début"
+              // label="Date de début"
+              label={<FormattedMessage id='detailrapport-dateDebut' />}
               type="date"
               defaultValue={moment(startDate).format('YYYY-MM-DD')}
               onChange={(e) => {
@@ -36,7 +35,8 @@ const RecentTickets = ({ handleAdd, ListeCamion, handleSubmit, startDate, setSta
           </Grid>
           <Grid item>
             <TextField
-              label="Date de fin"
+              // label="Date de fin"
+              label={<FormattedMessage id='detailrapport-dateFin' />}
               type="date"
               defaultValue={moment(endDate).format('YYYY-MM-DD')}
               onChange={(e) => {
@@ -51,7 +51,7 @@ const RecentTickets = ({ handleAdd, ListeCamion, handleSubmit, startDate, setSta
           </Grid>
           <Grid item>
             <Button variant="contained" color="primary" onClick={()=>handleSubmit(startDate, endDate)}>
-              Soumettre
+              <FormattedMessage id='detailrapport-valider' />
             </Button>
           </Grid>
         </Grid>
@@ -61,18 +61,19 @@ const RecentTickets = ({ handleAdd, ListeCamion, handleSubmit, startDate, setSta
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell sx={{ pl: 3 }}>Immatriculation</TableCell>
-              <TableCell>Ville provenance</TableCell>
-              <TableCell>Ville destination</TableCell>
-              <TableCell>Type</TableCell>
+              <TableCell sx={{ pl: 3 }}><FormattedMessage id='itineraire-matricule' /></TableCell>
+              <TableCell><FormattedMessage id='itineraire-ville-provenance' /></TableCell>
+              <TableCell><FormattedMessage id='itineraire-ville-destination' /></TableCell>
+              <TableCell><FormattedMessage id='itineraire-type' /></TableCell>
               <TableCell align="right" sx={{ pr: 3 }}>
-                Période
+                <FormattedMessage id='itineraire-periode' />
               </TableCell>
             </TableRow>
           </TableHead>
+          {ListeCamion.length > 0 ?
           <TableBody>
             {ListeCamion.map((row, index) => (
-              <TableRow hover key={index} onClick={() => handleAdd(row.matricule)}>
+              <TableRow hover key={index} onClick={() => handleAdd(row.matricule, row.id_supply)}>
                 <TableCell sx={{ pl: 3 }}>
                 <Chip variant="outlined" color="secondary" label={row.matricule} size="small" />
                   </TableCell>
@@ -86,6 +87,11 @@ const RecentTickets = ({ handleAdd, ListeCamion, handleSubmit, startDate, setSta
               </TableRow>
             ))}
           </TableBody>
+          :
+          <TableBody>
+          <EmptyUserCard title={<FormattedMessage id='itineraire-no-camion' />} />
+        </TableBody>
+        }
         </Table>
       </TableContainer>
     </MainCard>

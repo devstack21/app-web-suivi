@@ -8,7 +8,7 @@ export const createAlert = createAsyncThunk(
     "alerte/create",
     async (args) => {
         const URL = BASE_URL + API_URL.Alert ;
-        let { data } = await axios.put(URL, args)
+        let { data } = await axios.post(URL, args)
         return data[0];
     }
 
