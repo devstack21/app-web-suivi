@@ -1,5 +1,5 @@
 import React from 'react';
-import TransportTable from '../../../sections/apps/transport/TransportList';
+import TransportTable from '../../../sections/apps/itineraire/TransportList';
 import { useSelector, useDispatch } from 'react-redux';
 import { useState, useEffect } from 'react';
 import { Grid, Pagination } from '@mui/material';

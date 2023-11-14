@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 
 import { Box, Button, Grid, IconButton, Stack, Typography } from '@mui/material';
-import TransportItinary from '../../../sections/apps/transport/TransportItinary';
+import TransportItinary from '../../../sections/apps/itineraire/TransportItinary';
 import { REQUEST_STATUS } from 'utils/apiConfig';
 import { SpinnLoader } from 'components/cards/SpinnLoader';
 import { CloseOutlined, PrinterFilled } from '@ant-design/icons';

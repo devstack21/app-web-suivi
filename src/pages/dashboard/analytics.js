@@ -23,7 +23,7 @@ import Loader from 'components/Loader';
 import { getListTypeBetail } from 'store/reducers/betail/listeTypeBetailSlice';
 import { getRegions } from 'store/reducers/location/regionSlice';
 import DateSelector from 'components/cards/statistics/DateSelector';
-import { formatDateToYYYYMMDD, getStartOfWeek } from 'utils/function';
+import { formatDateToYYYYMMDD, getEndOfWeek, getStartOfWeek } from 'utils/function';
 
 
 // ==============================|| DASHBOARD - ANALYTICS ||============================== //
@@ -35,7 +35,7 @@ const DashboardAnalytics = () => {
 
   const [type, setType] = useState({})
   const [start, setStart] = useState(formatDateToYYYYMMDD(getStartOfWeek()))
-  const [end, setEnd] = useState(formatDateToYYYYMMDD(new Date()))
+  const [end, setEnd] = useState(formatDateToYYYYMMDD(getEndOfWeek()))
 
 
   const { typeBetail } = useSelector((state) => state.betail.type);
@@ -50,6 +50,10 @@ const DashboardAnalytics = () => {
     dispatch(getRegions())
   }, [])
 
+
+  useEffect(() => {
+    dispatch(getAnalytics({ start: start, end: end }))
+  }, [start,end])
 
 
   useEffect(() => {

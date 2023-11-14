@@ -33,7 +33,7 @@ export default function ListDetailRapport() {
 
     useEffect(() => {
         
-        dispatch(detailRapport_req({ page: currentPage, nbre_ligne: PAGE_ROWS, date: state.heure, id_agent: state.id_agent }));
+        dispatch(detailRapport_req({ page: currentPage, nbre_ligne: PAGE_ROWS, date: state.date, id_agent: state.id_agent }));
         // setListeDetailRaps(ListdetailRapport)
   
     }, [currentPage, changePage]);
@@ -85,7 +85,7 @@ export default function ListDetailRapport() {
 
   return (
     <MainCard
-      title={<><FormattedMessage id='detailrapport-Detail-rapports-du' /> {format(new Date(state.heure), 'dd/MM/yyyy')}</>}
+      title={<><FormattedMessage id='detailrapport-Detail-rapports-du' /> {format(new Date(state.date), 'dd/MM/yyyy')}</>}
       content={false}
       secondary={
         selectedItems.length > 0 ? (

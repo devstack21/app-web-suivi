@@ -6,7 +6,7 @@ import { API_URL, REQUEST_STATUS } from 'utils/apiConfig';
 export const getRapportPDF = createAsyncThunk(
   'rapport/fetch/pdf',
   async (args) => {
-    const URL = BASE_URL + API_URL.GenerateReport + `?startDate=${args.start}&endDate=${args.end}`;
+    const URL = BASE_URL + API_URL.GenerateReport + `?date_debut=${args.start}&date_fin=${args.end}`;
     // const response = await axios.get(URL, { responseType: 'blob' });
     await axios.get(URL, { responseType: 'blob' });
   });

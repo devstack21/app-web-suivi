@@ -5,6 +5,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'utils/axios';
 import { BASE_URL } from 'config';
 import { API_URL, REQUEST_STATUS } from 'utils/apiConfig';
+import { PAGE_ROWS } from 'config';
 
 // ----------------------------------------------------------------------
 
@@ -19,7 +20,7 @@ const initialState = {
 export const getListRole = createAsyncThunk(
     "roles/list",
     async (args) => {
-        const { data } = await axios.get(`${BASE_URL}${API_URL.ListRole}?page=${args.page}`);
+        const { data } = await axios.get(`${BASE_URL}${API_URL.ListRole}?page=${args.page}&nbr_ligne=${PAGE_ROWS}`);
         return data[0]
     }
 

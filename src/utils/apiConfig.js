@@ -25,6 +25,7 @@ export const API_URL = {
 	ListCheckpoints: '/checkpoint/list/',
 	ListDistrcits: '/list/districts/',
 	ListModule: '/module/list/',
+	ListReports: '/rapport/user/historique/',
 	ListRegions: '/list/regions/',
 	ListRole: '/role/list/',
 	ListTypeBetail: '/betails/type/',
@@ -44,7 +45,6 @@ export const API_URL = {
 
 
 	activeDesactiveAlerte: '/alerteActiveDeactive/',
-	listeRapports: '/rapport/user/historique/',
 	detailRapport: '/rapport/user/details/',
 	activerRapport: '/rapport/valider/',
 	rejeterRapport: '/rapport/rejeter/',
