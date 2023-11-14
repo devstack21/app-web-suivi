@@ -19,12 +19,12 @@ import { editAlert } from 'store/reducers/alerte/editAlerteSlice';
 const ListTypeCanal = ["SMS", "EMAIL"]
 
 const validationSchema = yup.object({
-    min_animal: yup.number().required('Min animal is required'),
-    max_animal: yup.number().required('Max animal is required'),
-    type_canal: yup.string().required('Type canal is required'),
-    id_ville: yup.string().required('Ville is required'),
-    id_animal: yup.string().required('Animal is required'),
-    id_contact: yup.string().required('Contact is required')
+    min_animal: yup.number().required(<FormattedMessage id='alerte-form-minAnimal'/>),
+    max_animal: yup.number().required(<FormattedMessage id='alerte-form-maxAnimal'/>),
+    type_canal: yup.string().required(<FormattedMessage id='alerte-form-typeCanal'/>),
+    id_ville: yup.string().required(<FormattedMessage id='alerte-form-ville'/>),
+    id_animal: yup.string().required(<FormattedMessage id='alerte-form-animal'/>),
+    id_contact: yup.string().required(<FormattedMessage id='alerte-form-contact'/>)
 });
 
 const EditAlert = ({ alert, onCancel }) => {

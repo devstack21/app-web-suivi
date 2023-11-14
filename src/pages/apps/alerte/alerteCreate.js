@@ -20,12 +20,12 @@ import { PAGE_ROWS } from 'config';
 const ListTypeCanal = ["SMS", "EMAIL"]
 
 const validationSchema = yup.object({
-  min_animal: yup.number().required('Min animal is required'),
-  max_animal: yup.number().required('Max animal is required'),
-  type_canal: yup.string().required('Type canal is required'),
-  id_ville: yup.string().required('Ville is required'),
-  id_animal: yup.string().required('Animal is required'),
-  id_contact: yup.string().required('Contact is required')
+  min_animal: yup.number().required(<FormattedMessage id='alerte-form-minAnimal'/>),
+  max_animal: yup.number().required(<FormattedMessage id='alerte-form-maxAnimal'/>),
+  type_canal: yup.string().required(<FormattedMessage id='alerte-form-typeCanal'/>),
+  id_ville: yup.string().required(<FormattedMessage id='alerte-form-ville'/>),
+  id_animal: yup.string().required(<FormattedMessage id='alerte-form-animal'/>),
+  id_contact: yup.string().required(<FormattedMessage id='alerte-form-contact'/>)
 });
 
 const AlertForm = () => {
@@ -39,7 +39,7 @@ const AlertForm = () => {
     const { ListContact } = useSelector((state) => state.alert.contact);
     const totalPagesContact = useSelector((state) => state.alert.contact.nbPages);
 
-    const { listStatus, betailTab } = useSelector((state) => state.betail.listTout);
+    const { listStatus, betailTab, listError } = useSelector((state) => state.betail.listTout);
 
     const [selectedContacts, setSelectedContacts] = useState([]);
     const [listeIdContacts, setlisteIdContacts] = useState([]);
@@ -52,7 +52,7 @@ const AlertForm = () => {
         dispatch(getListVille());
     }, []);
 
-
+    
     const formik = useFormik({
         initialValues: {
           min_animal: '',
@@ -104,7 +104,12 @@ const AlertForm = () => {
         )
     }
 
-
+    console.log("****** ", statutListContact, listStatus, statutListVille, listError)
+    if (listError) {
+        return (
+          <EmptyUserCard title={<FormattedMessage id={listError} />} />
+        )
+      }
 
   return (
     <Container maxWidth="sm">
@@ -245,7 +250,7 @@ const AlertForm = () => {
                 
                     
                 <Grid item xs={12}>
-                <Button type="submit" variant="contained" color="primary">Submit</Button>
+                    <Button type="submit" variant="contained" color="primary"><FormattedMessage id='detailrapport-Validateur'/></Button>
                 </Grid>
                 <EffectComponent   />
 

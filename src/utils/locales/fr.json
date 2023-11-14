@@ -305,8 +305,15 @@
   "alerte-confirm-active": "Voulez-vous vraiment activer ?",
   "alerte-confirm-deactive": "Voulez-vous vraiment désactiver ?",
   "alerte-form-maxmin": "La valeur minimale ne doit pas être supérieure à la valeur maximale",
-  "alerte-formRap-titre": "Télécharger le rapport sur une période"
+  "alerte-formRap-titre": "Télécharger le rapport sur une période",
 
+  "alerte-form-minAnimal": "Min animaux est requis",
+  "alerte-form-maxAnimal": "Max animaux est requis",
+  "alerte-form-typeCanal": "Type canal est requis",
+  "alerte-form-ville": "Ville est requis",
+  "alerte-form-animal": "Animal est requis",
+  "alerte-form-contact": "Contact est requis"
 
+  
   
 }

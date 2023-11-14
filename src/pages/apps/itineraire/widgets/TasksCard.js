@@ -17,9 +17,9 @@ import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
 
 
 const TasksCard = ({itineraireList, onCancel, startDate, endDate, matriculeCamion}) => (
-  // const titre = `Itinéraire du ${startDate} au ${endDate}`;
+
   <MainCard
-    // title={<FormattedMessage id='itineraire-titre-matricule' />+ matriculeCamion+ <FormattedMessage id='itineraire-titre-periode' /> + format(new Date(startDate), 'dd/MM/yyyy') + ' - '+ format(new Date(endDate), 'dd/MM/yyyy')}
+    
     title={
       <>
         <FormattedMessage id='itineraire-titre-matricule' />
@@ -35,12 +35,13 @@ const TasksCard = ({itineraireList, onCancel, startDate, endDate, matriculeCamio
     }
     content={false}
     secondary={
-      <Button color="primary" onClick={() => onCancel('')}>
+      <Button color="primary" onClick={() => onCancel()}>
         <CloseOutlined />
       </Button>
     }
   >
-    <CardContent maxWidth="xl">
+     {/* maxWidth="xl" */}
+    <CardContent>
       <Grid
         container
         spacing={2.75}
@@ -66,8 +67,8 @@ const TasksCard = ({itineraireList, onCancel, startDate, endDate, matriculeCamio
         
         {itineraireList.length > 0 ?
         <>
-        {itineraireList.map((item) => (
-          <Grid item xs={12} md={12} key={item.pk}>
+        {itineraireList.map((item, key) => (
+          <Grid item xs={12} md={12} key={key}>
             <Grid container spacing={2}>
               <Grid item>
                 <Avatar type="filled" color="success" size="sm" sx={{ top: 10 }}>

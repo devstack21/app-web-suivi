@@ -38,6 +38,10 @@ const ListeCamion = () => {
     };
 
 
+    const onCancel = () => {
+      setAdd(!add);
+  };
+
     useEffect(() => {
       dispatch(listeCamion_req({ page: currentPage, nbre_ligne: PAGE_ROWS, startDate:startDate, endDate:endDate}));
   
@@ -103,12 +107,12 @@ const ListeCamion = () => {
         TransitionComponent={PopupTransition}
         keepMounted
         fullWidth
-        onClose={handleAdd}
+        onClose={onCancel}
         open={add}
         sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
         aria-describedby="alert-dialog-slide-description"
         >
-          {itineraireList.length !=0 ? <ItineraireCamion itineraireList={itineraireList} onCancel={handleAdd} startDate={startDate} endDate={endDate} matriculeCamion={matriculeCamion} /> :null}  
+          {itineraireList.length !=0 ? <ItineraireCamion itineraireList={itineraireList} onCancel={onCancel} startDate={startDate} endDate={endDate} matriculeCamion={matriculeCamion} /> :null}  
 
         </Dialog>
     </>
