@@ -51,6 +51,7 @@ const AuthCheckMail = Loadable(lazy(() => import('pages/auth/check-mail')));
 //Rapport
 const RapportList = Loadable(lazy(()=> import('pages/apps/rapports/list')));
 const RapportDetail = Loadable(lazy(()=> import('pages/apps/rapports/detailRapport')));
+const ValidatePassword = Loadable(lazy(()=> import('pages/apps/users/valideChangePassword/ListeValidePassword')));
 
 const AxeparcoursList = Loadable(lazy(()=> import('pages/apps/axeparcours/axeparcoursListe')))
 const AxeparcoursCreate = Loadable(lazy(()=> import('pages/apps/axeparcours/axeparcoursCreate')))
@@ -215,9 +216,14 @@ const MainRoutes = {
                 {
                   path: 'role/edit/:id',
                   element: <RoleCreate />,
+                },
+                {
+                  path: 'validatePassword',
+                  element: <ValidatePassword />,
                 }
               ]
             },
+            
             
           ]
         },
