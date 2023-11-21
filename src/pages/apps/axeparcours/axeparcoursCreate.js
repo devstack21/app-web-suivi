@@ -17,7 +17,7 @@ import EffectComponentAxe from 'sections/apps/axeparcours/EffectComponentAxe';
 
 const validationSchema = yup.object({
     libelle: yup.string().required(<FormattedMessage id='axeparcours-formLibelle-required' />),
-    description: yup.string().required(<FormattedMessage id='axeparcours-formDescription-required' />).matches(/^[a-zA-Z0-9\s]*[a-zA-Z][a-zA-Z0-9\s]*$/,<FormattedMessage id='checkpoint-name-characters' /> ),
+    description: yup.string().required(<FormattedMessage id='axeparcours-formDescription-required' />),
     id_checkpoint: yup.string().required(<FormattedMessage id='axeparcours-formid_checkpoint-required' />)
 });
 

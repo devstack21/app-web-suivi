@@ -14,7 +14,6 @@ import { useFilters, useExpanded, useGlobalFilter, useRowSelect, useSortBy, useT
 import {
     CSVExport,
     HeaderSort,
-    SortingSelect,
     TableRowSelection
 } from 'components/third-party/ReactTable';
 import { renderFilterTypes, GlobalFilter } from 'utils/react-table';
@@ -27,7 +26,6 @@ function AccountsTable({ columns, data, getHeaderProps, renderRowSubComponent, h
     const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
     const filterTypes = useMemo(() => renderFilterTypes, []);
-    const sortBy = { id: 'username', desc: false };
 
     const {
         getTableProps,
@@ -35,20 +33,18 @@ function AccountsTable({ columns, data, getHeaderProps, renderRowSubComponent, h
         headerGroups,
         prepareRow,
         setHiddenColumns,
-        allColumns,
         visibleColumns,
         page,
         state: { globalFilter, selectedRowIds, expanded },
         preGlobalFilteredRows,
         setGlobalFilter,
-        setSortBy,
         selectedFlatRows
     } = useTable(
         {
             columns,
             data,
             filterTypes,
-            initialState: { pageIndex: 0, pageSize: 10, sortBy: [sortBy] }
+            initialState: { pageIndex: 0, pageSize: 10,}
         },
         useGlobalFilter,
         useFilters,
@@ -64,6 +60,7 @@ function AccountsTable({ columns, data, getHeaderProps, renderRowSubComponent, h
         }
         // eslint-disable-next-line
     }, [matchDownSM]);
+
 
     return (
         <>
@@ -83,7 +80,6 @@ function AccountsTable({ columns, data, getHeaderProps, renderRowSubComponent, h
                         size="small"
                     />
                     <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={1}>
-                        <SortingSelect sortBy={sortBy.id} setSortBy={setSortBy} allColumns={allColumns} />
                         <Button variant="contained" startIcon={<PlusOutlined />} onClick={handleAdd} size="small">
                             <FormattedMessage id="add-user" />
                         </Button>
@@ -95,7 +91,7 @@ function AccountsTable({ columns, data, getHeaderProps, renderRowSubComponent, h
                     <TableHead>
                         {headerGroups.map((headerGroup, i) => (
                             <TableRow key={i} {...headerGroup.getHeaderGroupProps()} sx={{ '& > th:first-of-type': { width: '58px' } }}>
-                                {headerGroup.headers.map((column, index) => (
+                                {headerGroup?.headers.map((column, index) => (
                                     <TableCell key={index} {...column.getHeaderProps([{ className: column.className }, getHeaderProps(column)])}>
                                         <HeaderSort column={column} />
                                     </TableCell>

@@ -31,6 +31,7 @@ import ActionCell from 'sections/apps/users/accounts/ActionCell';
 import StatusCell from 'sections/apps/users/accounts/StatusCell';
 import useAccountState from 'sections/apps/users/accounts/useAccountState';
 import { PlusOutlined } from '@ant-design/icons';
+import { formatDateTime } from 'utils/function';
 
 
 
@@ -43,7 +44,7 @@ const SelectionHeader = ({ getToggleAllPageRowsSelectedProps }) => (
 );
 
 
-const NumberFormatCell = ({ value }) => <PatternFormat displayType="text" format="+237 # ## ## ## ##" mask="_" defaultValue={value} />;
+export const NumberFormatCell = ({ value }) => <PatternFormat displayType="text" format="+237 # ## ## ## ##" mask="_" defaultValue={value} />;
 
 
 NumberFormatCell.propTypes = {
@@ -81,7 +82,6 @@ const AccountListPage = () => {
 
   const { editStatus } = useSelector((state) => state.account.edit)
 
-
   const columns = useMemo(
     () => [
       {
@@ -97,24 +97,29 @@ const AccountListPage = () => {
         className: 'cell-center'
       },
       {
-        Header: 'User Name',
+        Header: <FormattedMessage id='name' />,
         accessor: 'username',
       },
       {
-        Header: 'Role',
+        Header: <FormattedMessage id='role' />,
         accessor: 'role'
       },
       {
-        Header: 'Email',
+        Header: <FormattedMessage id='email' />,
         accessor: 'email'
       },
       {
-        Header: 'Contact',
+        Header: <FormattedMessage id='phone' />,
         accessor: 'phone',
         Cell: NumberFormatCell
       },
       {
-        Header: 'Status',
+        Header: <FormattedMessage id='created' />,
+        accessor:  'created_at',
+        Cell: ({value}) => formatDateTime(value)
+      },
+      {
+        Header: <FormattedMessage id='status' />,
         accessor: 'is_block',
         Cell: StatusCell
       },
@@ -138,6 +143,7 @@ const AccountListPage = () => {
     [theme]
   );
 
+console.log(columns)  
   useEffect(() => {
     dispatch(getListAccounts({ page: currentPage, nb: PAGE_ROWS }))
   }, [currentPage])
