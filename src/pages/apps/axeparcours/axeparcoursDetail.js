@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useMemo, useEffect, Fragment, useState, useRef } from 'react';
+import { useNavigate } from 'react-router';
 
 // material-ui
 import {
@@ -15,14 +16,13 @@ import {
   Tooltip,
   Pagination,
   Grid,
+  Button
 } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
 
-// third-party
 import { useExpanded, useFilters, useGlobalFilter, usePagination, useRowSelect, useSortBy, useTable } from 'react-table';
-import {  EditTwoTone, EyeTwoTone } from '@ant-design/icons';
+import { EyeTwoTone, PlusOutlined } from '@ant-design/icons';
 
-// project import
 import MainCard from 'components/MainCard';
 import ScrollX from 'components/ScrollX';
 import IconButton from 'components/@extended/IconButton';
@@ -30,20 +30,22 @@ import { CSVExport, HeaderSort, IndeterminateCheckbox, TableRowSelection } from 
 
 import { dispatch, useSelector } from 'store';
 import { renderFilterTypes, GlobalFilter, DateColumnFilter } from 'utils/react-table';
+
 import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
 import { FormattedMessage } from 'react-intl';
 import { REQUEST_STATUS } from 'utils/apiConfig';
 import { format } from 'date-fns';
 import { getDetailCheckpoint } from 'store/reducers/checkpoints/detailSlice';
-import { getListAgentCheckpoints } from 'store/reducers/checkpoints/listAgentSlice';
-import { useNavigate } from 'react-router';
-import { initEditCheckpoint } from 'store/reducers/checkpoints/editSlice';
-import { initCreateCheckpoint } from 'store/reducers/checkpoints/createSlice';
+
+import { initCreateAxeparcours } from 'store/reducers/axeparcours/createAxeparcoursSlice';
+import { initEditAxeparcours } from 'store/reducers/axeparcours/editAxeparcoursSlice';
+import { useLocation } from "react-router";
 
 // ==============================|| REACT TABLE ||============================== //
 
-function ReactTable({ columns, data }) {
+function ReactTable({ columns, data, axe }) {
   const theme = useTheme();
+  const navigate = useNavigate()
   const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
   const defaultColumn = useMemo(() => ({ Filter: DateColumnFilter }), []);
   const filterTypes = useMemo(() => renderFilterTypes, []);
@@ -70,7 +72,8 @@ function ReactTable({ columns, data }) {
       data,
       filterTypes,
       defaultColumn,
-      initialState
+      initialState,
+      axe
     },
     useGlobalFilter,
     useFilters,
@@ -89,6 +92,11 @@ function ReactTable({ columns, data }) {
 
       <Stack direction={matchDownSM ? 'column' : 'row'} spacing={1} justifyContent="space-between" alignItems="center" sx={{ p: 3, pb: 3 }}>
         <Stack direction={matchDownSM ? 'column' : 'row'} spacing={2}>
+        <Typography variant="subtitle1">
+            { axe.libelle +" : "+ axe.description}
+        </Typography>
+        </Stack>
+        <Stack direction={matchDownSM ? 'column' : 'row'} spacing={2}>
           <GlobalFilter
             preGlobalFilteredRows={preGlobalFilteredRows}
             globalFilter={globalFilter}
@@ -98,7 +106,15 @@ function ReactTable({ columns, data }) {
         </Stack>
         <Stack direction={matchDownSM ? 'column' : 'row'} alignItems="center" spacing={matchDownSM ? 1 : 0}>
           <TableRowSelection selected={Object.keys(selectedRowIds).length} />
-          <CSVExport data={data} filename={'checkpoints-list.csv'} />
+
+          <Button variant="contained" startIcon={<PlusOutlined />} onClick={() => {
+            dispatch(initEditAxeparcours())
+            dispatch(initCreateAxeparcours())
+            navigate("/apps/axeparcours/create")
+          }} size="small">
+            <FormattedMessage id="add-axeparcours" />
+          </Button>
+          <CSVExport data={data} filename={'axeparcours-list.csv'} />
         </Stack>
       </Stack>
       <Box ref={componentRef}>
@@ -144,62 +160,39 @@ function ReactTable({ columns, data }) {
 
 ReactTable.propTypes = {
   columns: PropTypes.array,
-  data: PropTypes.array
+  data: PropTypes.array,
+  axe: PropTypes.object
 };
-
-// ==============================|| INVOICE - LIST ||============================== //
-
 
 const UserCell = ({ value }) => {
   return (
     <Typography variant="subtitle1">
-      {value.length > 0 ? (value.find((element) => element.responsable == true)).username : ""}
+      {value.length > 0 ? (value.find((element) => element.responsable == true))?.username : ""}
     </Typography>)
 };
 const DateCell = ({ value }) => { return (<Typography variant="subtitle1">{format(new Date(value), 'dd/MM/yyyy')}</Typography>) };
-const ActionCell = (row,  navigation, theme) => {
-  console.log(row)
+const ActionCell = (row, navigation, theme) => {
   return (
     <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
       <Tooltip title={<FormattedMessage id='view' />}>
         <IconButton
           color="secondary"
-          disabled={row.original.checkpoint ? false : true}
           onClick={(e) => {
             e.stopPropagation();
-            dispatch(initEditCheckpoint())
-            dispatch(initCreateCheckpoint())
-            dispatch(getDetailCheckpoint({ id: row.values['checkpoint.id']}))
-            navigation(`/apps/checkpoints/details/${row.values['checkpoint.id']}`);
+            dispatch(initEditAxeparcours())
+            dispatch(initCreateAxeparcours())
+            dispatch(getDetailCheckpoint({ id: row.values.id }))
+            navigation(`/apps/checkpoints/details/${row.values.id}`);
           }}
         >
           <EyeTwoTone twoToneColor={theme.palette.secondary.main} />
         </IconButton>
       </Tooltip>
-      <Tooltip title={<FormattedMessage id='edit' />}>
-        <IconButton
-          color="primary"
-          disabled={row.original.checkpoint ? false : true}
-          onClick={(e) => {
-            e.stopPropagation();
-            dispatch(initEditCheckpoint())
-            dispatch(initCreateCheckpoint({ id: row.values['checkpoint.id']}))
-            navigation(`/apps/checkpoints/edit/${row.values['checkpoint.id']}`);
-          }}
-        >
-          <EditTwoTone twoToneColor={theme.palette.primary.main} />
-        </IconButton>
-      </Tooltip>
+ 
     </Stack>
   );
 };
 
-
-UserCell.propTypes = { value: PropTypes.array };
-DateCell.propTypes = { value: PropTypes.string };
-
-
-// Action Cell
 
 ActionCell.propTypes = {
   row: PropTypes.array,
@@ -221,19 +214,20 @@ SelectionHeader.propTypes = {
   getToggleAllPageRowsSelectedProps: PropTypes.func
 };
 
-const AgentList = () => {
+const DetailAxeparcours = () => {
 
   const navigation = useNavigate();
   const theme = useTheme();
+  const { state } = useLocation();
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const { listStatus, agentsTab, nbPages, listError } = useSelector((state) => state.checkpoint.agentList)
+  const { status, DetailAxe, nbPages, error } = useSelector((state) => state.axeparcours.detail);
 
 
-  useEffect(() => { dispatch(getListAgentCheckpoints({ page: currentPage, nb: 5 })) }, [currentPage])
+//   useEffect(() => { dispatch(getDetailAxeparcours({id: state.id, page: currentPage, nbre_ligne: PAGE_ROWS})) }, [currentPage])
 
-  useEffect(() => { }, [listStatus])
+  useEffect(() => { }, [status])
 
   const handleChangePage = (event, newPage) => { setCurrentPage(newPage); };
 
@@ -249,35 +243,38 @@ const AgentList = () => {
         disableFilters: true
       },
       {
-        Header: ' Id Checkpoint',
-        accessor: 'checkpoint.id',
+        Header: ' Id',
+        accessor: 'id',
         className: 'cell-center',
         disableFilters: true
       },
       {
         Header: <FormattedMessage id='name' />,
-        accessor: 'username',
-      },
-      {
-        Header: <FormattedMessage id='email' />,
-        accessor: 'email',
-      },
-      {
-        Header: <FormattedMessage id='phone' />,
-        accessor: 'phone',
-      },
-      {
-        Header: <FormattedMessage id='chekpoint' />,
-        accessor: 'checkpoint.libelle',
+        accessor: 'libelle',
+        disableFilters: true,
       },
       {
         Header: <FormattedMessage id='city' />,
-        accessor: 'checkpoint.district[0].ville',
+        accessor: 'district[0].ville',
+        disableFilters: true,
       },
       {
-        Header: <FormattedMessage id='region' />,
-        accessor: 'checkpoint.district[0].region',
+        Header: <FormattedMessage id='code-checkpoint' />,
+        accessor: 'code',
+        disableFilters: true,
       },
+      {
+        Header: <FormattedMessage id='created-on' />,
+        accessor: 'createat',
+        Cell: DateCell
+      },
+      {
+        Header: <FormattedMessage id='responsable' />,
+        accessor: 'users',
+        disableFilters: true,
+        Cell: UserCell
+      },
+      
       {
         Header: 'Actions',
         className: 'cell-center',
@@ -288,41 +285,52 @@ const AgentList = () => {
     []
   );
 
-  if (listStatus == REQUEST_STATUS.loading) {
+  if (status == REQUEST_STATUS.loading) {
     return (
       <EmptyUserCard title={<FormattedMessage id='loading' />} />
     )
   }
 
-  if (listStatus == REQUEST_STATUS.error) {
+  if (status == REQUEST_STATUS.error) {
     return (
-      <EmptyUserCard title={<FormattedMessage id={listError} />} />
+      <EmptyUserCard title={<FormattedMessage id={error} />} />
     )
   }
+
 
   return (
     <>
       <MainCard content={false}>
         {
-          agentsTab?.length > 0 ?
+          DetailAxe?.length > 0 ?
             <>
-              <ScrollX>
-                <ReactTable columns={columns} data={agentsTab} />
-              </ScrollX>
-              <Grid sx={{ p: 2, py: 3 }} colSpan={9} >
-                <Grid item sx={{ mt: { xs: 2, sm: 0 } }}>
-                  <Pagination
-                    count={nbPages}
-                    page={currentPage}
-                    onChange={handleChangePage}
-                    color="primary"
-                    variant="combined"
-                  />
+                <ScrollX>
+                    <ReactTable columns={columns} data={DetailAxe} axe={state} />
+                </ScrollX>
+                <Grid sx={{ p: 2, py: 3 }} colSpan={9} >
+                    <Grid item sx={{ mt: { xs: 2, sm: 0 } }}>
+                    <Pagination
+                        count={nbPages}
+                        page={currentPage}
+                        onChange={handleChangePage}
+                        color="primary"
+                        variant="combined"
+                    />
+                    </Grid>
                 </Grid>
-              </Grid>
-            </>
+                </>
             :
-            <EmptyUserCard title={<FormattedMessage id='no-checkpoint' />} />
+            <>
+
+              <Stack direction="row" justifyContent="flex-end" spacing={1} sx={{ p: 2, }}>
+
+                <Button variant="contained" startIcon={<PlusOutlined />} onClick={() => navigation("/apps/axeparcours/create")} size="small">
+                  <FormattedMessage id="add-axeparcours" />
+                </Button>
+              </Stack>
+              <EmptyUserCard title={<FormattedMessage id='no-checkpoint' />} />
+
+            </>
 
         }
       </MainCard>
@@ -331,4 +339,4 @@ const AgentList = () => {
 };
 
 
-export default AgentList;
+export default DetailAxeparcours;

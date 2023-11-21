@@ -15,6 +15,7 @@ const AppBarStyled = styled(AppBar, { shouldForwardProp: (prop) => prop !== 'ope
     easing: theme.transitions.easing.sharp,
     duration: theme.transitions.duration.leavingScreen
   }),
+  backgroundColor: "primary",
   ...(!open && {
     width: `calc(100% - ${theme.spacing(7.5)})`
   }),

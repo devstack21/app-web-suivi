@@ -139,8 +139,8 @@ const Content = ({ list }) => {
               <Text style={[styles.tableCell, styles.flex17, { textOverflow: 'ellipsis' }]}>{row.name}</Text>
               <Text style={[styles.tableCell, styles.flex20]}>{row.description}</Text>
               <Text style={[styles.tableCell, styles.flex07]}>{row.qty}</Text>
-              <Text style={[styles.tableCell, styles.flex07]}>{`$${Number(row.price).toFixed(2)}`}</Text>
-              <Text style={[styles.tableCell, styles.flex07]}>{`$${Number(row.price * row.qty).toFixed(2)}`}</Text>
+              <Text style={[styles.tableCell, styles.flex07]}>{`$${Number(row.price)?.tofixed(2)}`}</Text>
+              <Text style={[styles.tableCell, styles.flex07]}>{`$${Number(row.price * row.qty)?.tofixed(2)}`}</Text>
             </View>
           );
         })}
@@ -148,25 +148,25 @@ const Content = ({ list }) => {
       <View style={[styles.row, { paddingTop: 25, margin: 0, paddingRight: 25, justifyContent: 'flex-end' }]}>
         <View style={[styles.row, styles.amountRow]}>
           <Text style={styles.caption}>Sub Total:</Text>
-          <Text style={styles.tableCell}>${subtotal?.toFixed(2)}</Text>
+          <Text style={styles.tableCell}>${subtotal?.tofixed(2)}</Text>
         </View>
       </View>
       <View style={[styles.row, styles.amountSection]}>
         <View style={[styles.row, styles.amountRow]}>
           <Text style={styles.caption}>Discount:</Text>
-          <Text style={[styles.caption, { color: theme.palette.success.main }]}>${discountRate?.toFixed(2)}</Text>
+          <Text style={[styles.caption, { color: theme.palette.success.main }]}>${discountRate.tofixed(2)}</Text>
         </View>
       </View>
       <View style={[styles.row, styles.amountSection]}>
         <View style={[styles.row, styles.amountRow]}>
           <Text style={styles.caption}>Tax:</Text>
-          <Text style={[styles.caption]}>${taxRate?.toFixed(2)}</Text>
+          <Text style={[styles.caption]}>${taxRate?.tofixed(2)}</Text>
         </View>
       </View>
       <View style={[styles.row, styles.amountSection]}>
         <View style={[styles.row, styles.amountRow]}>
           <Text style={styles.tableCell}>Grand Total:</Text>
-          <Text style={styles.tableCell}>${total % 1 === 0 ? total : total?.toFixed(2)}</Text>
+          <Text style={styles.tableCell}>${total % 1 === 0 ? total : (total)}</Text>
         </View>
       </View>
       <View style={[styles.row, { alignItems: 'flex-start', marginTop: 20, width: '95%' }]}>

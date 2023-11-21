@@ -53,7 +53,7 @@ const AddBetail = ({ setSelectedTab, selectedTab, hanldeModal }) => {
                         color="primary"
                       />
                     }
-                    label={`${item.name} - ${item.type} `}
+                    label={`${item.name} (${item.unit}) `}
                   />
                 ))}
               </>

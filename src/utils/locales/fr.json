@@ -311,7 +311,22 @@
   "alerte-confirm-active": "Voulez-vous vraiment activer ?",
   "alerte-confirm-deactive": "Voulez-vous vraiment désactiver ?",
   "alerte-form-maxmin": "La valeur minimale ne doit pas être supérieure à la valeur maximale",
-  "alerte-formRap-titre": "Télécharger le rapport sur une période"
+  "alerte-formRap-titre": "Télécharger le rapport sur une période", 
+
+  "add-axeparcours-succeed": "Axe d'approvisionement ajouté avec succès",
+  "edit-axeparcours-succeed": "Axe d'approvisionement modifié avec succès",
+  "axeparcours-formLibelle-required": "Le libelle est requis",
+  "axeparcours-formDescription-required": "La description est requise",
+  "axeparcours-formid_checkpoint-required": "Le checkpoint est requis",
+  "axeparcours-formLibelle": "Libelle",
+  "axeparcours-formDescription": "Description",
+  "axeparcours-formCheckpoint": "Checkpoint",
+  "no-axeparcours" : "Pas d'axe d'approvisionement",
+  "add-axeparcours": "Creer axe d'approvisionement",
+  "axeparcours-list": "Liste des axes d'approvisionement",
+  "axeparcours-create": "Creer axe d'approvisionement",
+  "axeparcours": "Axe d'approvisionement"
+  
 
 
   

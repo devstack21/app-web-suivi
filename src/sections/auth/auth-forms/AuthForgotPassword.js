@@ -67,16 +67,17 @@ const AuthForgotPassword = () => {
     <>
       <Formik
         initialValues={{
-          email: '',
+          phone: '',
           submit: null,
           resetSucced: "idle"
         }}
         validationSchema={Yup.object().shape({
-          email: Yup.string().email(<FormattedMessage id="email-invalid" />).max(255).required(<FormattedMessage id="email-required" />)
-        })}
+          phone: Yup.string().matches(/^[0-9]{9}$/, <FormattedMessage id='invalid-phone' />)
+          .max(9).required(<FormattedMessage id="phone-required" />),
+             })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            await resetPassword(values.email)
+            await resetPassword(values.phone)
           } catch (err) {
             console.error(err);
             if (scriptedRef.current) {
@@ -91,23 +92,22 @@ const AuthForgotPassword = () => {
           <form noValidate onSubmit={handleSubmit}>
             <Grid container spacing={3}>
               <Grid item xs={12}>
-                <Stack spacing={1}>
-                  <InputLabel htmlFor="email-forgot"><FormattedMessage id="email" /></InputLabel>
+              <Stack spacing={1}>
+                  <InputLabel htmlFor="phone-login"><FormattedMessage id="phone" /></InputLabel>
                   <OutlinedInput
-                    fullWidth
-                    error={Boolean(touched.email && errors.email)}
-                    id="email-forgot"
-                    type="email"
-                    value={values.email}
-                    name="email"
+                    id="phone-login"
+                    type="numeric"
+                    value={values.phone}
+                    name="phone"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    placeholder={<FormattedMessage id="enter-email" />}
-                    inputProps={{}}
+                    placeholder= {<FormattedMessage id="enter-phone" />}
+                    fullWidth
+                    error={Boolean(touched.phone && errors.phone)}
                   />
-                  {touched.email && errors.email && (
-                    <FormHelperText error id="helper-text-email-forgot">
-                      {errors.email}
+                  {touched.phone && errors.phone && (
+                    <FormHelperText error id="standard-weight-helper-text-email-login">
+                      {errors.phone}
                     </FormHelperText>
                   )}
                 </Stack>

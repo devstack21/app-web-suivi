@@ -22,6 +22,7 @@ import rejeterRapportReducer from './rapports/rejeterRapportReducer';
 import rapportdReducer from './rapports/rapportReducer';
 import rapportPdfReducer from './rapports/rapportPdfSlice';
 import transportReducer from './itineraire/transportReducer';
+import axeparcoursReducer from './axeparcours/axeparcoursReducer';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -141,6 +142,14 @@ const reducers = combineReducers({
       storage
     },
     rapportPdfReducer
+  ),
+
+  axeparcours: persistReducer(
+    {
+      key: 'axeparcours',
+      storage
+    },
+    axeparcoursReducer
   ),
 
 });

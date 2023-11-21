@@ -181,7 +181,7 @@ const RoleList = () => {
             <>
               <Stack direction="row" justifyContent="flex-end" spacing={1} sx={{ p: 2, }}>
 
-                <Button variant="contained" startIcon={<PlusOutlined />} onClick={() => navigation("/apps/role/create")} size="small">
+                <Button variant="contained" startIcon={<PlusOutlined />} onClick={() => navigation("/apps/users/role/create")} size="small">
                   <FormattedMessage id="add-role" />
                 </Button>
               </Stack>

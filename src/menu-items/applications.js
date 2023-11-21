@@ -89,6 +89,18 @@ const applications = {
           type: 'item',
           url: '/apps/checkpoints/agents'
         },
+        {
+          id: 'listAxeparcours',
+          title: <FormattedMessage id="axeparcours-list" />,
+          type: 'item',
+          url: '/apps/axeparcours/list'
+        },
+        // {
+        //   id: 'createAxeparcours',
+        //   title: <FormattedMessage id="axeparcours-create" />,
+        //   type: 'item',
+        //   url: '/apps/axeparcours/create'
+        // },
       ]
     },
     {
