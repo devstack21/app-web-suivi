@@ -310,8 +310,11 @@
   "add-axeparcours": "Create a supply route",
   "axeparcours-list": "List of supply routes",
   "axeparcours-create": "Create supply route",
-  "axeparcours": "Supply axis"
+  "axeparcours": "Supply axis",
 
+  "resetPwd-ListeDemande-titre": "List of passwords to reset",
+  "resetPwd-confirm-active": "Do you really want to validate ?",
+  "user-validatePassword": "Password change requests"
 
 
 }

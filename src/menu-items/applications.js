@@ -136,6 +136,13 @@ const applications = {
           type: 'item',
           url: '/apps/users/accounts',
           breadcrumbs: false
+        },
+        {
+          id: 'users-validatePassword',
+          title: <FormattedMessage id="user-validatePassword" />,
+          type: 'item',
+          url: '/apps/users/validatePassword',
+          breadcrumbs: false
         }
       ]
     },

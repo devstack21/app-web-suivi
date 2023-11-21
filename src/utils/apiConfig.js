@@ -49,6 +49,9 @@ export const API_URL = {
 	activerRapport: '/rapport/valider/',
 	rejeterRapport: '/rapport/rejeter/',
 
+	ListeValidatePassword: '/collecteur/demande/reset/password/',
+	CollecteurResetPassword: '/collecteur/reset/password/',
+
 	listeAxeparcours: '/axeparcours/list/',
 	createAxeparcours: '/axeparcours/create/',
 	updateAxeparcours: '/axeparcours/update/',
