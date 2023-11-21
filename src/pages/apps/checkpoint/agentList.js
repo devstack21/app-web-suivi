@@ -39,6 +39,7 @@ import { getListAgentCheckpoints } from 'store/reducers/checkpoints/listAgentSli
 import { useNavigate } from 'react-router';
 import { initEditCheckpoint } from 'store/reducers/checkpoints/editSlice';
 import { initCreateCheckpoint } from 'store/reducers/checkpoints/createSlice';
+import { NumberFormatCell } from '../users/accounts/list';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -265,14 +266,15 @@ const AgentList = () => {
       {
         Header: <FormattedMessage id='phone' />,
         accessor: 'phone',
+        Cell: NumberFormatCell
       },
       {
         Header: <FormattedMessage id='chekpoint' />,
         accessor: 'checkpoint.libelle',
       },
       {
-        Header: <FormattedMessage id='city' />,
-        accessor: 'checkpoint.district[0].ville',
+        Header: <FormattedMessage id='district' />,
+        accessor: 'checkpoint.district[0].name',
       },
       {
         Header: <FormattedMessage id='region' />,

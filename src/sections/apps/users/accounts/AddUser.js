@@ -68,13 +68,19 @@ const AddUser = ({ user, onCancel, page }) => {
 
   const isCreating = !user;
 
+  const phoneSchema = Yup.string()
+  .matches(/^6[5798]\d{7}$/, <FormattedMessage id='invalid-phone' />)
+  .required(<FormattedMessage id='phone-required' />);
+
+
   const UserSchema = Yup.object().shape({
     username: Yup.string().max(255).required(<FormattedMessage id='name-required' />),
     role: Yup.object().required(<FormattedMessage id='role-required' />),
-    phone: Yup.number().required(<FormattedMessage id='phone-required' />),
+    phone: phoneSchema,
     active: Yup.boolean(),
-    email: Yup.string().max(255).required(<FormattedMessage id='email-required' />).email(<FormattedMessage id='email-invalid' />),
+    email: Yup.string().max(255).email(<FormattedMessage id='email-invalid' />),
   });
+
 
 
   const formik = useFormik({

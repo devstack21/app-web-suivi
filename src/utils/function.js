@@ -18,6 +18,21 @@ export function getStartOfWeek() {
   return new Date(now.setDate(diff));
 }
 
+export function formatDateTime(originalDateString) {
+  const originalDate = new Date(originalDateString);
+
+  const day = originalDate.getDate().toString().padStart(2, '0');
+  const month = (originalDate.getMonth() + 1).toString().padStart(2, '0');
+  const year = originalDate.getFullYear();
+
+  const hours = originalDate.getHours().toString().padStart(2, '0');
+  const minutes = originalDate.getMinutes().toString().padStart(2, '0');
+
+  const formattedDateTime = `${day}/${month}/${year} ${hours}:${minutes}`;
+
+  return formattedDateTime;
+}
+
 export function getEndOfWeek() {
   const today = new Date();
   const endOfWeek = new Date(today);
