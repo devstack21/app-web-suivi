@@ -7,7 +7,7 @@ import TasksCard from './widgets/TasksCard';
 
 
 const ItineraireCamion = ({itineraireList, onCancel, startDate, endDate, matriculeCamion}) => {
-  console.log('ooooooo ', itineraireList);
+
   return (
     <>
     <Container maxWidth="xl">

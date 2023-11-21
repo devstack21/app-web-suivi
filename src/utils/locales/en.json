@@ -296,7 +296,15 @@
   "alerte-confirm-active": "Are you sure you want to activate ?",
   "alerte-confirm-deactive": "Are you sure you want to deactivate ?",
   "alerte-form-maxmin": "The minimum value must not be greater than the maximum value",
-  "alerte-formRap-titre": "Download the report over a period"
+  "alerte-formRap-titre": "Download the report over a period",
+  "alerte-form-minAnimal": "Min animal is required",
+  "alerte-form-maxAnimal": "Max animal is required",
+  "alerte-form-typeCanal": "Type canal is required",
+  "alerte-form-ville": "City is required",
+  "alerte-form-animal": "Animal is required",
+  "alerte-form-contact": "Contact is required"
+
+  
 
 
 

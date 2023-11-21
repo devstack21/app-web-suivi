@@ -70,6 +70,8 @@ export default function ListDetailRapport() {
         console.log("rapport dans detail", rapport);
     };
 
+    const allValid = selectedItems.every(item => item.status === 'VALIDE');
+
     console.log("rapport", rapport);
     if (loadR) {
       return (
@@ -93,9 +95,13 @@ export default function ListDetailRapport() {
             <FormattedMessage id='detailrapport-rejeter' />
           </Button>
         ) : (
-          <Button variant="contained" color="primary" onClick={handleActivate}>
-            <FormattedMessage id='detailrapport-valider' />
-          </Button>
+          <>
+            {!allValid && (
+              <Button variant="contained" color="primary" onClick={handleActivate}>
+                <FormattedMessage id='detailrapport-valider' />
+              </Button>
+            )}
+          </>
         )
       }
     >

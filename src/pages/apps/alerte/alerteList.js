@@ -41,7 +41,7 @@ export default function ListAlerte() {
   const [pageChange, setPageChange] = useState(1);
 
 
-  const { ListAlerte, status, nbPages } = useSelector((state) => state.alert.list);
+  const { ListAlerte, status, nbPages, error } = useSelector((state) => state.alert.list);
   const { deleteStatus } = useSelector((state) => state.alert.delete);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -88,6 +88,13 @@ export default function ListAlerte() {
   if (status == REQUEST_STATUS.loading || deleteStatus == REQUEST_STATUS.loading) {
     return (
       <EmptyUserCard title={<FormattedMessage id='loading' />} />
+    )
+  }
+
+
+  if (error) {
+    return (
+      <EmptyUserCard title={<FormattedMessage id={error} />} />
     )
   }
 
