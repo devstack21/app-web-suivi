@@ -52,6 +52,11 @@ const AuthCheckMail = Loadable(lazy(() => import('pages/auth/check-mail')));
 const RapportList = Loadable(lazy(()=> import('pages/apps/rapports/list')));
 const RapportDetail = Loadable(lazy(()=> import('pages/apps/rapports/detailRapport')));
 
+const AxeparcoursList = Loadable(lazy(()=> import('pages/apps/axeparcours/axeparcoursListe')))
+const AxeparcoursCreate = Loadable(lazy(()=> import('pages/apps/axeparcours/axeparcoursCreate')))
+const AxeparcoursEdit = Loadable(lazy(()=> import('pages/apps/axeparcours/axeparcoursEdit')))
+const AxeparcoursDetail = Loadable(lazy(()=> import('pages/apps/axeparcours/axeparcoursDetail')))
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
@@ -105,6 +110,27 @@ const MainRoutes = {
                 {
                   path: 'detail',
                   element: <AppItineraireDetail />
+                }
+              ]
+            },
+            {
+              path: 'axeparcours',
+              children: [
+                {
+                  path: 'create',
+                  element: <AxeparcoursCreate />
+                },
+                {
+                  path: 'edit', ///:id
+                  element: <AxeparcoursEdit />
+                },
+                {
+                  path: 'details', ///:id
+                  element: <AxeparcoursDetail />
+                },
+                {
+                  path: 'list',
+                  element: <AxeparcoursList />
                 }
               ]
             },

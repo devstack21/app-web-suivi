@@ -17,13 +17,13 @@ export const TendanceComponent = ({ percentage, total }) => {
                             <>
 
                                 <CaretUpOutlined style={{ color: theme.palette.success.main, paddingRight: '4px' }} />
-                                <Typography color={theme.palette.success.main}>{percentage}%</Typography>
+                                <Typography color={theme.palette.success.main}>{(percentage)}%</Typography>
                             </>
                             :
                             <>
 
                                 <CaretDownOutlined style={{ color: theme.palette.error.main, paddingRight: '4px' }} />
-                                <Typography color={theme.palette.error.main}>{percentage}%</Typography>
+                                <Typography color={theme.palette.error.main}>{(percentage)}%</Typography>
                             </>
                     }
                 </Stack>

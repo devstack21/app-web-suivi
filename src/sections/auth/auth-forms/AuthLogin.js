@@ -76,17 +76,18 @@ const AuthLogin = () => {
     <>
       <Formik
         initialValues={{
-          email: 'test@minepia.com',
-          password: '123456',
+          phone: '',
+          password: '',
           submit: null
         }}
         validationSchema={Yup.object().shape({
-          email: Yup.string().email(<FormattedMessage id="email-invalid" />).max(255).required(<FormattedMessage id="email-required" />),
+          phone: Yup.string().matches(/^[0-9]{9}$/, <FormattedMessage id='invalid-phone' />)
+          .max(9).required(<FormattedMessage id="phone-required" />),
           password: Yup.string().max(255).required(<FormattedMessage id="password-required" />)
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           try {
-            await login(values.email, values.password);
+            await login(values.phone, values.password);
             if (scriptedRef.current && isLoggedIn) {
               setStatus({ success: true });
               setSubmitting(false);
@@ -107,21 +108,21 @@ const AuthLogin = () => {
             <Grid container spacing={3}>
               <Grid item xs={12}>
                 <Stack spacing={1}>
-                  <InputLabel htmlFor="email-login"><FormattedMessage id="email" /></InputLabel>
+                  <InputLabel htmlFor="phone-login"><FormattedMessage id="phone" /></InputLabel>
                   <OutlinedInput
-                    id="email-login"
-                    type="email"
-                    value={values.email}
-                    name="email"
+                    id="phone-login"
+                    type="numeric"
+                    value={values.phone}
+                    name="phone"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    placeholder= {<FormattedMessage id="enter-email" />}
+                    placeholder= {<FormattedMessage id="enter-phone" />}
                     fullWidth
-                    error={Boolean(touched.email && errors.email)}
+                    error={Boolean(touched.phone && errors.phone)}
                   />
-                  {touched.email && errors.email && (
+                  {touched.phone && errors.phone && (
                     <FormHelperText error id="standard-weight-helper-text-email-login">
-                      {errors.email}
+                      {errors.phone}
                     </FormHelperText>
                   )}
                 </Stack>

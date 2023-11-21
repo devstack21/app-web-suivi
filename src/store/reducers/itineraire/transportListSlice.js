@@ -47,8 +47,8 @@ const listTransportSlice = createSlice({
             .addCase(getListTransport.fulfilled, (state, action) => {
                 const { success, results, nombre_page } = action.payload;
                 if (success) {
-                    state.status = REQUEST_STATUS.succeed,
-                        state.error = ''
+                    state.status = REQUEST_STATUS.succeed
+                    state.error = ''
                     state.ListCamion = results
                     state.nbPages = nombre_page
                 } else {

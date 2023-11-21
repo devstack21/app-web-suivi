@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { CloseOutlined } from '@ant-design/icons'
-import { Grid, Button, Box } from '@mui/material';
+import { Grid, Button, Box, Typography } from '@mui/material';
 import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
 import { FormattedMessage } from 'react-intl';
 import MainCard from 'components/MainCard';
@@ -18,7 +18,7 @@ export default function RapportFrom({ handleClose }) {
     const [startDate, setStartDate] = useState(formatDateToYYYYMMDD(getStartOfWeek()));
     const [endDate, setEndDate] = useState(formatDateToYYYYMMDD(new Date()));
 
-    const { pdf, status, error } = useSelector((state) => state.rapport.pdf);
+    const { status, error } = useSelector((state) => state.rapport.pdf);
 
 
 
@@ -45,18 +45,21 @@ export default function RapportFrom({ handleClose }) {
             <Grid container spacing={3} alignItems="center">
             <DateSelector startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} />
                 <Grid item>
-                    {pdf && (
-                        <a href={URL.createObjectURL(pdf)} download="monFichier.pdf">
-                            Télécharger le PDF
-                        </a>
-                    )}
+                   
                     <Button variant="contained" color="primary" onClick={handleSubmit}>
-                        <FormattedMessage id='detailrapport-valider' />
+                        <FormattedMessage id='download' />
                     </Button>
                 </Grid>
             </Grid>
 
             {status == REQUEST_STATUS.loading && <SpinnLoader title={'loading'} />}
+             {status == REQUEST_STATUS.succeed &&  (
+                       
+                        <Typography>
+                            Le PDF a été téléchargé avec succès
+
+                        </Typography>
+                    )}
 
             {status == REQUEST_STATUS.error && <EmptyUserCard title={<FormattedMessage id={error} />} />}
 

@@ -7,7 +7,7 @@ import { Grid, Pagination } from '@mui/material';
 import {  REQUEST_STATUS } from 'utils/apiConfig';
 import { PAGE_ROWS } from 'config';
 import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
-import { formatDateToYYYYMMDD, getStartOfWeek } from 'utils/function';
+import { formatDateToYYYYMMDD, getEndOfWeek, getStartOfWeek } from 'utils/function';
 import { getListTransport } from 'store/reducers/itineraire/transportListSlice';
 import { FormattedMessage } from 'react-intl';
 import DateSelector from 'components/cards/date/DateSelector';
@@ -20,7 +20,7 @@ const ListeCamion = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [startDate, setStartDate] = useState(formatDateToYYYYMMDD(getStartOfWeek()));
-  const [endDate, setEndDate] = useState(formatDateToYYYYMMDD(new Date()));
+  const [endDate, setEndDate] = useState(formatDateToYYYYMMDD(getEndOfWeek()));
 
   const { status, nbPages } = useSelector((state) => state.transport.list);
 

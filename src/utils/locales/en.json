@@ -296,7 +296,21 @@
   "alerte-confirm-active": "Are you sure you want to activate ?",
   "alerte-confirm-deactive": "Are you sure you want to deactivate ?",
   "alerte-form-maxmin": "The minimum value must not be greater than the maximum value",
-  "alerte-formRap-titre": "Download the report over a period"
+  "alerte-formRap-titre": "Download the report over a period",
+
+  "add-axeparcours-succeed": "Supply route added successfully",
+  "edit-axeparcours-succeed": "Supply route successfully modified",
+  "axeparcours-formLibelle-required": "The wording is required",
+  "axeparcours-formDescription-required": "Description is required",
+  "axeparcours-formid_checkpoint-required": "Checkpoint is required",
+  "axeparcours-formLibelle": "wording",
+  "axeparcours-formDescription": "Description",
+  "axeparcours-formCheckpoint": "Checkpoint",
+  "no-axeparcours" : "No supply route",
+  "add-axeparcours": "Create a supply route",
+  "axeparcours-list": "List of supply routes",
+  "axeparcours-create": "Create supply route",
+  "axeparcours": "Supply axis"
 
 
 

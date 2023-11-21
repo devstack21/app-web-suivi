@@ -48,6 +48,11 @@ export const API_URL = {
 	detailRapport: '/rapport/user/details/',
 	activerRapport: '/rapport/valider/',
 	rejeterRapport: '/rapport/rejeter/',
+
+	listeAxeparcours: '/axeparcours/list/',
+	createAxeparcours: '/axeparcours/create/',
+	updateAxeparcours: '/axeparcours/update/',
+	detailAxeparcours: '/axeparcours/detail/',
 };
 
 export const PERIODS = [
