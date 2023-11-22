@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
 // material-ui
-import { Chip, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Grid, Pagination } from '@mui/material';
+import { Typography, Chip, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Grid, Pagination } from '@mui/material';
 
 import MainCard from 'components/MainCard';
 import IconButton from 'components/@extended/IconButton';
 
 // assets
-import { UserSwitchOutlined } from '@ant-design/icons';
+import { PlayCircleFilled } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
 import {  REQUEST_STATUS } from 'utils/apiConfig';
 import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
@@ -17,6 +17,8 @@ import { getListValidatePassword_req } from 'store/reducers/validatePassword/lis
 import { validatePassword_req } from 'store/reducers/validatePassword/validatePasswordSlice';
 import AlertConfirmeActive from 'pages/apps/alerte/AlertConfirmeActive';
 import EffectComponentValideResetPwd from 'sections/auth/EffectComponentValideResetPwd';
+import { PatternFormat } from 'react-number-format';
+import { format } from 'date-fns';
 
 
 
@@ -63,7 +65,7 @@ export default function ListAlerte() {
     <EmptyUserCard title={<FormattedMessage id={restError} />} />
   }
 
-
+  console.log("ddddd", ListVP)
   return (
     <MainCard
       title={<FormattedMessage id='resetPwd-ListeDemande-titre' />}
@@ -76,6 +78,8 @@ export default function ListAlerte() {
               <TableCell sx={{ pl: 3 }}><FormattedMessage id='name' /></TableCell>
               <TableCell><FormattedMessage id='email' /></TableCell>
               <TableCell><FormattedMessage id='phone' /></TableCell>
+              <TableCell><FormattedMessage id='date' /></TableCell>
+              <TableCell><FormattedMessage id='date-validation' /></TableCell>
               <TableCell align="center"><FormattedMessage id='alerte-tableau-tatus' /></TableCell>
               <TableCell align="center" sx={{ pr: 3 }}>
                 Action
@@ -88,21 +92,28 @@ export default function ListAlerte() {
                 <TableCell sx={{ pl: 3 }}>{row.name}</TableCell>
                 <TableCell>{row.email}</TableCell>
                 <TableCell>
-                  <TableCell>{row.phone}</TableCell>
+                <TableCell>
+                  <PatternFormat displayType="text" format="+237 # ## ## ## ##" mask="_" defaultValue={row.phone} />
+                </TableCell>
+                </TableCell>
+                <TableCell>
+                  <Typography variant="subtitle1">{format(new Date(row.date), 'dd/MM/yyyy')}</Typography>
+                </TableCell>
+                <TableCell>
+                  <Typography variant="subtitle1">{row.date_validation ? format(new Date(row.date_validation), 'dd/MM/yyyy') : 'None'}</Typography>
                 </TableCell>
                 <TableCell>
                   {/* {row.status} */}
                   { row.status == "VALIDER" && <Chip color={'success'} label={"VALIDE"} size="small" /> }
                   { row.status == "REJETER" && <Chip color={'danger'} label={"REJETE"} size="small" /> }
                   { row.status == "BROUILLON" && <Chip color={'warning'} label={"BROUILLON"} size="small" /> }
-                  
                 </TableCell>
                 <TableCell align="center" sx={{ pr: 3 }}>
                   { row.status == "BROUILLON"
                   ?
                     <Stack direction="row" justifyContent="center" alignItems="center">
                     <IconButton color="primary" size="large" onClick={() => handleValidate(row)}>
-                      <UserSwitchOutlined />
+                      <PlayCircleFilled />
                     </IconButton>
                     </Stack>
                   :

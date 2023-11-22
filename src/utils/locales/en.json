@@ -313,8 +313,10 @@
   "axeparcours": "Supply axis",
 
   "resetPwd-ListeDemande-titre": "List of passwords to reset",
-  "resetPwd-confirm-active": "Do you really want to validate ?",
-  "user-validatePassword": "Password change requests"
+  "resetPwd-confirm-active": "By clicking on validate the user will receive a new code by SMS and email",
+  "user-validatePassword": "Password change requests",
+  "date": "Date",
+  "date-validation": "Validation date"
 
 
 }
