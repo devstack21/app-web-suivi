@@ -314,8 +314,10 @@
   "alerte-formRap-titre": "Télécharger le rapport sur une période",
 
   "resetPwd-ListeDemande-titre": "Liste des mots de passe a reinitialiser",
-  "resetPwd-confirm-active": "Voulez-vous vraiment valider ?",
+  "resetPwd-confirm-active": "En cliquant, sur valider l'utilisateur recevra un nouveau code par sms et mail ",
   "user-validatePassword": "Demandes de changement de mdp",
+  "date": "Date",
+  "date-validation": "Date de validation",
 
   "add-axeparcours-succeed": "Axe d'approvisionement ajouté avec succès",
   "edit-axeparcours-succeed": "Axe d'approvisionement modifié avec succès",
