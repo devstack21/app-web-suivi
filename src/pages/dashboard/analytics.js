@@ -50,9 +50,6 @@ const DashboardAnalytics = () => {
     dispatch(getRegions())
   }, [])
 
-  console.log(betailTab)
-
-
   useEffect(() => {
     dispatch(getAnalytics({ start: start, end: end }))
   }, [start,end])
