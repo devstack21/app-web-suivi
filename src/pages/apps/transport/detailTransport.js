@@ -5,23 +5,28 @@ import TransportItinary from '../../../sections/apps/itineraire/TransportItinary
 import { REQUEST_STATUS } from 'utils/apiConfig';
 import { SpinnLoader } from 'components/cards/SpinnLoader';
 import { CloseOutlined, PrinterFilled } from '@ant-design/icons';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import MainCard from 'components/MainCard';
 import { useSelector } from 'react-redux';
 import ReactToPrint from 'react-to-print';
 import { useTheme } from '@emotion/react';
+import { format } from 'date-fns';
 
+// const intl = useIntl();
 
-const TitleCard = ({ transport }) => (
+const TitleCard = ({ transport, debut, fin }) => (
+  
   <>
     <Typography>
-      <FormattedMessage id='itineraire' />{' '}{transport.type_transport}{' '}{transport.matricule}
+      <FormattedMessage id='itineraire' />{' '}{useIntl().locale=='fr'? transport.type_transport?.nom: transport.type_transport?.nom_en}{' '}{transport.matricule}
     </Typography>
     <Typography>
       <FormattedMessage id='from' />{' '}{transport.provenance}{' '}
       <FormattedMessage id='to' />{' '}{transport.destination}
     </Typography>
-
+    <Typography>
+      {(format(new Date(debut), 'dd/MM/yyyy'))}{' - '}{(format(new Date(fin), 'dd/MM/yyyy'))}
+    </Typography>
   </>
 )
 
@@ -45,7 +50,7 @@ const CardSecondary = ({ onCancel, componentRef, theme }) => (
 )
 
 
-const TransportDetail = ({ onCancel, transport }) => {
+const TransportDetail = ({ onCancel, transport, debut, fin }) => {
 
   const { status } = useSelector((state) => state.transport.detail);
 
@@ -55,7 +60,7 @@ const TransportDetail = ({ onCancel, transport }) => {
   return (
       <Box id="print" ref={componentRef} padding={2}>
         <MainCard
-          title={<TitleCard transport={transport} />}
+          title={<TitleCard transport={transport} debut={debut} fin={fin} />}
           content={false}
           secondary={<CardSecondary onCancel={onCancel} componentRef={componentRef} theme={theme} />}>
           {status == REQUEST_STATUS.succeed && <TransportItinary />}

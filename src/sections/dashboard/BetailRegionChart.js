@@ -11,6 +11,7 @@ import useConfig from 'hooks/useConfig';
 // third-party
 import ReactApexChart from 'react-apexcharts';
 import { useSelector } from 'react-redux';
+import { REQUEST_STATUS } from 'utils/apiConfig';
 
 // chart options
 const columnChartOptions = {
@@ -115,7 +116,7 @@ const ApproBetailRegionChart = () => {
   const successDark = theme.palette.success.dark;
 
   const { result } = useSelector((state) => state.dashboard.supply);
-  const { regionTab } = useSelector((state) => state.location.region);
+  const { regionTab, status } = useSelector((state) => state.location.region);
 
 
   const [options, setOptions] = useState(columnChartOptions);
@@ -123,21 +124,25 @@ const ApproBetailRegionChart = () => {
   
 
   useEffect(() => {
-    const tab_now = generateResult(regionTab, result.tab_current_period);
-    const tab_prev = generateResult(regionTab, result.tab_prev_period);
+    if (status == REQUEST_STATUS.succeed) {
 
-    setSeries([
-      {
-        name: `${(new Date(result?.date?.now?.debut)).toDateString() } - ${(new Date(result?.date?.now?.fin)).toDateString() }`,
-        data: tab_now
-      },
-      {
-        name: 'Période précédente',
-        data: tab_prev
-      }
-    ])
+      const tab_now = generateResult(regionTab, result.approvisionement.tab_current_period);
+      const tab_prev = generateResult(regionTab, result.approvisionement.tab_prev_period);
+  
+      setSeries([
+        {
+          name: `${(new Date(result?.date?.now?.debut)).toDateString() } - ${(new Date(result?.date?.now?.fin)).toDateString() }`,
+          data: tab_now
+        },
+        {
+          name: 'Période précédente',
+          data: tab_prev
+        }
+      ])
+    }
+   
 
-  }, [])
+  }, [status])
 
   useEffect(() => {
     setOptions((prevState) => ({

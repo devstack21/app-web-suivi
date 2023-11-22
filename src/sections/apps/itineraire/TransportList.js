@@ -9,11 +9,12 @@ import { PopupTransition } from 'components/@extended/Transitions';
 import { useEffect, useState } from 'react';
 import { getTransportDetails } from 'store/reducers/itineraire/transportDetailSlice';
 import TransportDetail from 'pages/apps/transport/detailTransport';
+import { useIntl } from 'react-intl';
 
-const TransportTable = () => {
+const TransportTable = ({ debut, fin }) => {
 
   const dispatch = useDispatch()
-
+  const intl = useIntl();
 
   const [add, setAdd] = useState(false)
   const [transport, setTransport] = useState('')
@@ -33,9 +34,14 @@ const TransportTable = () => {
   }
 
   useEffect(() => {
-    if (transport.matricule) dispatch(getTransportDetails({ id: transport.id_supply,
-       matricule: transport.matricule }))
+    if (transport.matricule) dispatch(
+      getTransportDetails({
+        debut: debut, fin: fin,
+        id: transport.id_supply,
+        matricule: transport.matricule
+      }))
   }, [transport])
+
 
   return (
 
@@ -46,22 +52,26 @@ const TransportTable = () => {
         <Table>
           <TableHead>
             <TableRow>
+              <TableCell sx={{ pl: 3 }}><FormattedMessage id='transport-type' /></TableCell>
               <TableCell sx={{ pl: 3 }}><FormattedMessage id='itineraire-matricule' /></TableCell>
               <TableCell><FormattedMessage id='itineraire-ville-provenance' /></TableCell>
               <TableCell><FormattedMessage id='itineraire-ville-destination' /></TableCell>
-              <TableCell><FormattedMessage id='itineraire-type' /></TableCell>
             </TableRow>
           </TableHead>
           {ListCamion.length > 0 ?
             <TableBody>
               {ListCamion.map((row, index) => (
                 <TableRow hover key={index} onClick={() => handleClick(row)} >
+                  <TableCell>
+                    {intl.locale == 'fr' && row.type_transport?.nom}
+                    {intl.locale == 'en' && row.type_transport?.nom_en}
+                  </TableCell>
+
                   <TableCell sx={{ pl: 3 }}>
-                    <Chip variant="outlined" color="secondary" label={row.matricule} size="small" />
+                    <Chip variant="outlined" color="primary" label={row.matricule} size="small" />
                   </TableCell>
                   <TableCell>{row.provenance}</TableCell>
                   <TableCell>{row.destination}</TableCell>
-                  <TableCell>{row.type_transport}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
@@ -82,14 +92,14 @@ const TransportTable = () => {
         sx={{ '& .MuiDialog-paper': { p: 0 }, transition: 'transform 225ms' }}
         aria-describedby="alert-dialog-slide-description"
       >
-        <TransportDetail onCancel={handleAdd} transport={transport}/>
+        <TransportDetail onCancel={handleAdd} transport={transport} debut={debut} fin={fin} />
       </Dialog>
 
     </>
 
   );
-};
 
+};
 
 export default TransportTable;
 

@@ -58,6 +58,7 @@ const AxeparcoursCreate = Loadable(lazy(()=> import('pages/apps/axeparcours/axep
 const AxeparcoursEdit = Loadable(lazy(()=> import('pages/apps/axeparcours/axeparcoursEdit')))
 const AxeparcoursDetail = Loadable(lazy(()=> import('pages/apps/axeparcours/axeparcoursDetail')))
 
+
 // ==============================|| MAIN ROUTING ||============================== //
 
 const MainRoutes = {
