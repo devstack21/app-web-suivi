@@ -20,10 +20,10 @@ import StatTypeBetail from 'sections/dashboard/StatTypeBetail';
 import { REQUEST_STATUS } from 'utils/apiConfig';
 import { getAnalytics } from 'store/reducers/dashboard/analyticsSlice';
 import Loader from 'components/Loader';
-import { getListTypeBetail } from 'store/reducers/betail/listeTypeBetailSlice';
 import { getRegions } from 'store/reducers/location/regionSlice';
 import DateSelector from 'components/cards/statistics/DateSelector';
 import { formatDateToYYYYMMDD, getEndOfWeek, getStartOfWeek } from 'utils/function';
+import { getListBetail } from 'store/reducers/betail/listBetailSlice';
 
 
 // ==============================|| DASHBOARD - ANALYTICS ||============================== //
@@ -38,17 +38,19 @@ const DashboardAnalytics = () => {
   const [end, setEnd] = useState(formatDateToYYYYMMDD(getEndOfWeek()))
 
 
-  const { typeBetail } = useSelector((state) => state.betail.type);
+  const { betailTab } = useSelector((state) => state.betail.list);
   const analyticStatus = useSelector((state) => state.dashboard.analytics.status);
   const statutsRegion = useSelector((state) => state.location.region.status);
-  const statusTypeBetail = useSelector((state) => state.betail.type.status);
+  const statusTypeBetail = useSelector((state) => state.betail.list.listStatus);
 
 
   useEffect(() => {
     dispatch(getAnalytics({ start: start, end: end }))
-    dispatch(getListTypeBetail())
+    dispatch(getListBetail())
     dispatch(getRegions())
   }, [])
+
+  console.log(betailTab)
 
 
   useEffect(() => {
@@ -57,7 +59,7 @@ const DashboardAnalytics = () => {
 
 
   useEffect(() => {
-    setType(typeBetail[0])
+    setType(betailTab[0])
   }, [statusTypeBetail])
 
   if (analyticStatus == REQUEST_STATUS.loading ||

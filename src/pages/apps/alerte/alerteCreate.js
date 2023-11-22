@@ -39,7 +39,7 @@ const AlertForm = () => {
     const { ListContact } = useSelector((state) => state.alert.contact);
     const totalPagesContact = useSelector((state) => state.alert.contact.nbPages);
 
-    const { listStatus, betailTab } = useSelector((state) => state.betail.listTout);
+    const { listStatus, betailTab } = useSelector((state) => state.betail.list);
 
     const [selectedContacts, setSelectedContacts] = useState([]);
     const [listeIdContacts, setlisteIdContacts] = useState([]);
@@ -47,7 +47,7 @@ const AlertForm = () => {
     // const rowsPerPage = PAGE_ROWS;
 
     useEffect(() => {
-        dispatch(getListBetail({ page: 1 }));
+        dispatch(getListBetail());
         dispatch(getContactList({page: page, nbre_ligne: PAGE_ROWS}));
         dispatch(getListVille());
     }, []);
@@ -136,7 +136,7 @@ const AlertForm = () => {
                 </Grid>
                 <Grid item xs={12}>
                 <FormControl fullWidth>
-                    <InputLabel>Type de canal</InputLabel>
+                    <InputLabel><FormattedMessage id='canal-type' /></InputLabel>
                     <Select name="type_canal" 
                     value={formik.values.type_canal} 
                     onChange={formik.handleChange}
@@ -181,7 +181,7 @@ const AlertForm = () => {
                             formik.setFieldValue('id_animal', newValue ? newValue.id : '');
                         }}
                         onBlur={() => formik.setFieldTouched('id_animal')}
-                        getOptionLabel={(option) => option ? option.name : ""}
+                        getOptionLabel={(option) => option ? option.name  : ""}
                         options={betailTab}
                         isOptionEqualToValue={(option, value) => option.id === value}
                         renderInput={(params) => (
