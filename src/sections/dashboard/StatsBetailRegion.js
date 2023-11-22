@@ -63,7 +63,7 @@ const StatApproBetailRegion = ({type, setType, start, end}) => {
       <MainCard content={false} sx={{ mt: 1.5 }}>
         <Grid item>
           <Grid container>
-            { result &&  <TendanceComponent percentage={result?.tendance_generale} total={result?.total_effectif_embarque} /> }
+            { result &&  <TendanceComponent percentage={result?.approvisionement?.tendance_generale} total={result?.approvisionement?.total_effectif_embarque} /> }
             <Grid item xs={12} sm={6}>
               <StatFilters
                 type={type}

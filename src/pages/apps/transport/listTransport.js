@@ -43,7 +43,7 @@ const ListeCamion = () => {
             secondary={<DateSelector startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} />}
           >
             {status == REQUEST_STATUS.loading && <EmptyUserCard title={<FormattedMessage id='loading' />} />}
-            {status == REQUEST_STATUS.succeed && <TransportTable />}
+            {status == REQUEST_STATUS.succeed && <TransportTable debut={startDate} fin={endDate}/>}
             {status == REQUEST_STATUS.error && <EmptyUserCard title={<FormattedMessage id='error-network' />} />}
           </MainCard>
         </Grid>

@@ -40,7 +40,7 @@ export default function ListAlerte() {
 
   const handleCloseValidate = (e) => {
     if (e) dispatch(
-      validatePassword_req({ 'email': userChangepassword.email})); 
+      validatePassword_req({ 'phone': userChangepassword.phone})); 
     setOpenActive(!openActive);
   };
 
@@ -65,7 +65,6 @@ export default function ListAlerte() {
     <EmptyUserCard title={<FormattedMessage id={restError} />} />
   }
 
-  console.log("ddddd", ListVP)
   return (
     <MainCard
       title={<FormattedMessage id='resetPwd-ListeDemande-titre' />}
@@ -104,9 +103,9 @@ export default function ListAlerte() {
                 </TableCell>
                 <TableCell>
                   {/* {row.status} */}
-                  { row.status == "VALIDER" && <Chip color={'success'} label={"VALIDE"} size="small" /> }
+                  { row.status == "VALIDER" && <Chip color={'success'} label={<FormattedMessage id='validated' />} size="small" /> }
                   { row.status == "REJETER" && <Chip color={'danger'} label={"REJETE"} size="small" /> }
-                  { row.status == "BROUILLON" && <Chip color={'warning'} label={"BROUILLON"} size="small" /> }
+                  { row.status == "BROUILLON" && <Chip color={'warning'} label={<FormattedMessage id='pending' />} size="small" /> }
                 </TableCell>
                 <TableCell align="center" sx={{ pr: 3 }}>
                   { row.status == "BROUILLON"

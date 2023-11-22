@@ -8,7 +8,8 @@ import axios from 'utils/axios';
 export const getTransportDetails = createAsyncThunk(
     "transport/detail",
     async (arg) => {
-        const URL = BASE_URL + API_URL.TransportItinary + `?matricule=${arg.matricule}&id_supply=${arg.id}`;
+        const URL = BASE_URL + API_URL.TransportItinary 
+        + `?matricule=${arg.matricule}&id_supply=${arg.id}&date_debut=${arg.debut}&date_fin=${arg.fin}`;
         let { data } = await axios.get(URL, { withCredentials: true })
         return data[0];
     }

@@ -188,7 +188,7 @@ export const JWTProvider = ({ children }) => {
       } else {
         let error_msg
         switch (errors[0].error_code) {
-          case "LO007":
+          case "LO005":
             error_msg = "user-not-found"
             break;
           default:

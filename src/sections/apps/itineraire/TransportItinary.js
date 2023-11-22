@@ -15,7 +15,7 @@ import { CarOutlined } from '@ant-design/icons';
 const TransportItinary = () => {
 
   const { result } = useSelector((state) => state.transport.detail);
-
+  
   return (
     <CardContent maxWidth="xl">
       <Grid
@@ -55,8 +55,7 @@ const TransportItinary = () => {
                     <Grid container spacing={0}>
                       <Grid item xs={12}>
                         <Typography align="left" variant="caption" color="secondary">
-                          {new Date(item.date).toLocaleDateString()}
-
+                          {new Date(item.date).toLocaleString()}
                         </Typography>
                       </Grid>
                       <Grid item xs={12}>
