@@ -22,9 +22,11 @@ const Edit = () => {
 
   if (detailStatus == REQUEST_STATUS.loading || editStatus == REQUEST_STATUS.loading) {
     return (
-      <EmptyUserCard id={<FormattedMessage id='loading' />} />
+      <EmptyUserCard title={<FormattedMessage id='loading' />} />
     )
   }
+
+  console.log(detailStatus, listStatus)
 
 
   if (listStatus == REQUEST_STATUS.error || districtsTab.length == 0) {

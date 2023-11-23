@@ -22,8 +22,8 @@ const AppAlertCreate = Loadable(lazy(() => import('pages/apps/alerte/alerteCreat
 const AppAlertEdit = Loadable(lazy(() => import('pages/apps/alerte/alerteEdit')));
 
 // Itineraire
-const AppItineraireList = Loadable(lazy(() => import('pages/apps/itineraire/listeCamions')));
-const AppItineraireDetail = Loadable(lazy(() => import('pages/apps/itineraire/itineraireCamions')));
+const AppItineraireList = Loadable(lazy(() => import('pages/apps/transport/listTransport')));
+const AppItineraireDetail = Loadable(lazy(() => import('pages/apps/transport/detailTransport')));
 
 // Role
 const RoleList = Loadable(lazy(() => import('pages/apps/users/roles/roleList')));
@@ -51,6 +51,14 @@ const AuthCheckMail = Loadable(lazy(() => import('pages/auth/check-mail')));
 //Rapport
 const RapportList = Loadable(lazy(()=> import('pages/apps/rapports/list')));
 const RapportDetail = Loadable(lazy(()=> import('pages/apps/rapports/detailRapport')));
+const ValidatePassword = Loadable(lazy(()=> import('pages/apps/users/valideChangePassword/ListeValidePassword')));
+const ListRapportCheckpoint = Loadable(lazy(()=> import('pages/apps/rapports/listRapportCheckpoint')));
+
+const AxeparcoursList = Loadable(lazy(()=> import('pages/apps/axeparcours/axeparcoursListe')))
+const AxeparcoursCreate = Loadable(lazy(()=> import('pages/apps/axeparcours/axeparcoursCreate')))
+const AxeparcoursEdit = Loadable(lazy(()=> import('pages/apps/axeparcours/axeparcoursEdit')))
+const AxeparcoursDetail = Loadable(lazy(()=> import('pages/apps/axeparcours/axeparcoursDetail')))
+
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -96,7 +104,7 @@ const MainRoutes = {
                 }
               ]
             }, {
-              path: 'itineraire',
+              path: 'transport',
               children: [
                 {
                   path: 'list',
@@ -105,6 +113,27 @@ const MainRoutes = {
                 {
                   path: 'detail',
                   element: <AppItineraireDetail />
+                }
+              ]
+            },
+            {
+              path: 'axeparcours',
+              children: [
+                {
+                  path: 'create',
+                  element: <AxeparcoursCreate />
+                },
+                {
+                  path: 'edit', ///:id
+                  element: <AxeparcoursEdit />
+                },
+                {
+                  path: 'details', ///:id
+                  element: <AxeparcoursDetail />
+                },
+                {
+                  path: 'list',
+                  element: <AxeparcoursList />
                 }
               ]
             },
@@ -144,6 +173,10 @@ const MainRoutes = {
                 {
                   path: 'details/:id',
                   element: <RapportDetail />
+                },
+                {
+                  path: 'listRapportCheckpoint',
+                  element: <ListRapportCheckpoint />
                 }
               ]
             },
@@ -189,9 +222,14 @@ const MainRoutes = {
                 {
                   path: 'role/edit/:id',
                   element: <RoleCreate />,
+                },
+                {
+                  path: 'validatePassword',
+                  element: <ValidatePassword />,
                 }
               ]
             },
+            
             
           ]
         },

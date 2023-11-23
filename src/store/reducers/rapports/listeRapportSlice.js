@@ -7,7 +7,7 @@ import axios from 'utils/axios';
 export const getAllReports = createAsyncThunk(
     "rapport/list", 
     async(args) =>{
-    const URL = BASE_URL + API_URL.listeRapports+`?page=${args.page}&nbre_ligne=${args.nbre_ligne}&start_date=${args.start}&end_date=${args.end}`;
+    const URL = BASE_URL + API_URL.ListReports+`?page=${args.page}&nbre_ligne=${args.nbre_ligne}&start_date=${args.start}&end_date=${args.end}&checkpoint_id=${args.chkpt_id}`;
     let { data } = await axios.get(URL, { withCredentials: true })
         return data[0];
     }

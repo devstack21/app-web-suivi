@@ -33,15 +33,40 @@ const Create = () => {
   useEffect(() => {
     setUserTab([])
     setAnimalTab([]); // Clear or initialize the selectedTab array
-    dispatch(getListDistricts())
+    if (listStatus != REQUEST_STATUS.succeed) dispatch(getListDistricts())
     dispatch(initCreateCheckpoint())
   }, []);
 
+
+  const coordinateValidator = (coordinateType) => {
+    return yup.number().test({
+      name: 'coordinate',
+      message: <FormattedMessage id={`${coordinateType}-invalid`} />,
+      test: (value) => {
+        if (!value) {
+          return false; // Required validation is handled separately
+        }
+
+        // Validate degrees based on your requirements
+        if (coordinateType === 'latitude' && (value < -90 || value > 90)) {
+          return false;
+        }
+
+        // Validate longitude based on your requirements
+        if (coordinateType === 'longitude' && (value < -180 || value > 180)) {
+          return false;
+        }
+
+        return true;
+      },
+    });
+  };
+
   const validationSchema = yup.object({
-    name: yup.string().required(<FormattedMessage id='checkpoint-name-required' />).matches(/^[a-zA-Z0-9\s]*[a-zA-Z][a-zA-Z0-9\s]*$/,<FormattedMessage id='checkpoint-name-characters' /> ),
+    name: yup.string().required(<FormattedMessage id='checkpoint-name-required' />).matches(/^[a-zA-Z0-9\s]*[a-zA-Z][a-zA-Z0-9\s]*$/, <FormattedMessage id='checkpoint-name-characters' />),
     district: yup.object().required(<FormattedMessage id='district-required' />),
-    latitude: yup.number().positive(<FormattedMessage id='latitude-positive' />).required(<FormattedMessage id='latitude-required' />),
-    longitude: yup.number().positive(<FormattedMessage id='longitude-positive' />).required(<FormattedMessage id='longitude-required' />),
+    latitude: coordinateValidator('latitude').required(<FormattedMessage id='latitude-required' />),
+    longitude: coordinateValidator('longitude').required(<FormattedMessage id='longitude-required' />),
     responsable: yup.string().when('userTab', {
       is: (userTab) => userTab && userTab.length > 0 && userTab.some(user => user.isR === true),
       then: yup.string().required(<FormattedMessage id='responsable-required' />),

@@ -39,6 +39,7 @@ import { getListAgentCheckpoints } from 'store/reducers/checkpoints/listAgentSli
 import { useNavigate } from 'react-router';
 import { initEditCheckpoint } from 'store/reducers/checkpoints/editSlice';
 import { initCreateCheckpoint } from 'store/reducers/checkpoints/createSlice';
+import { NumberFormatCell } from '../users/accounts/list';
 
 // ==============================|| REACT TABLE ||============================== //
 
@@ -158,11 +159,13 @@ const UserCell = ({ value }) => {
 };
 const DateCell = ({ value }) => { return (<Typography variant="subtitle1">{format(new Date(value), 'dd/MM/yyyy')}</Typography>) };
 const ActionCell = (row,  navigation, theme) => {
+  console.log(row)
   return (
     <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
       <Tooltip title={<FormattedMessage id='view' />}>
         <IconButton
           color="secondary"
+          disabled={row.original.checkpoint ? false : true}
           onClick={(e) => {
             e.stopPropagation();
             dispatch(initEditCheckpoint())
@@ -177,6 +180,7 @@ const ActionCell = (row,  navigation, theme) => {
       <Tooltip title={<FormattedMessage id='edit' />}>
         <IconButton
           color="primary"
+          disabled={row.original.checkpoint ? false : true}
           onClick={(e) => {
             e.stopPropagation();
             dispatch(initEditCheckpoint())
@@ -262,14 +266,15 @@ const AgentList = () => {
       {
         Header: <FormattedMessage id='phone' />,
         accessor: 'phone',
+        Cell: NumberFormatCell
       },
       {
         Header: <FormattedMessage id='chekpoint' />,
         accessor: 'checkpoint.libelle',
       },
       {
-        Header: <FormattedMessage id='city' />,
-        accessor: 'checkpoint.district[0].ville',
+        Header: <FormattedMessage id='district' />,
+        accessor: 'checkpoint.district[0].name',
       },
       {
         Header: <FormattedMessage id='region' />,

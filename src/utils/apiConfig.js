@@ -18,16 +18,20 @@ export const API_URL = {
 	EditAccount: '/user/update/',
 	EditCheckpoint: '/checkpoint/update/',
 	EditRole: '/role/update/',
-	GenerateReport: '/generate/rapport/',
+	GenerateReport: '/generate/note_flux/',
 	ListAccounts: '/user/list/',
 	ListBetail: '/betails/',
 	ListAgentCheckpoints: '/user/list/checkpoints',
 	ListCheckpoints: '/checkpoint/list/',
 	ListDistrcits: '/list/districts/',
 	ListModule: '/module/list/',
+	ListReports: '/rapport/user/historique/',
+	ListReportsCheckpoint: '/list/rapport/checkpoint',
 	ListRegions: '/list/regions/',
 	ListRole: '/role/list/',
-	ListeTypeBetail: '/betails/type/',
+	ListTypeBetail: '/betails/type/',
+	ListTransport: '/transport/list',
+
 	ListVilles: '/list/villes/',
 	Login: '/login/',
 	ResetPassword: '/reset/password/',
@@ -38,16 +42,21 @@ export const API_URL = {
 	StatTypeBetail: '/stat/type/betail/',
 	UpdatePassword: '/change/password/',
 	UpdateRole: '/role/update/',
+	TransportItinary: '/transport/itinary',
 
-
-	listeCamion: '/camions/liste',
-	itineraireCamion: '/camions/itineraire',
 
 	activeDesactiveAlerte: '/alerteActiveDeactive/',
-	listeRapports: '/rapport/user/historique/',
 	detailRapport: '/rapport/user/details/',
 	activerRapport: '/rapport/valider/',
 	rejeterRapport: '/rapport/rejeter/',
+
+	ListeValidatePassword: '/collecteur/demande/reset/password/',
+	CollecteurResetPassword: '/collecteur/reset/password/',
+
+	listeAxeparcours: '/axeparcours/list/',
+	createAxeparcours: '/axeparcours/create/',
+	updateAxeparcours: '/axeparcours/update/',
+	detailAxeparcours: '/axeparcours/detail/',
 };
 
 export const PERIODS = [

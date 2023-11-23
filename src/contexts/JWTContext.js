@@ -93,14 +93,14 @@ export const JWTProvider = ({ children }) => {
 
 
 
-  const login = async (email, pwd) => {
+  const login = async (phone, pwd) => {
 
 
     try {
       dispatch({ type: LOGOUT })
       const password = CryptoJS.AES.encrypt(pwd, REACT_APP_JWT_SECRET_KEY).toString();
 
-      const response = await axios.post(BASE_URL + API_URL.Login, { email, password });
+      const response = await axios.post(BASE_URL + API_URL.Login, { phone, password });
       const { success, results, errors } = response.data[0];
 
       if (success == 1) {
@@ -171,10 +171,10 @@ export const JWTProvider = ({ children }) => {
     })
   };
 
-  const resetPassword = async (email, phone) => {
+  const resetPassword = async (phone) => {
     try {
       dispatch({ type: RESET_PASSWORD, payload: { status: REQUEST_STATUS.loading } })
-      const response = await axios.post(BASE_URL + API_URL.ResetPassword, { email, phone });
+      const response = await axios.post(BASE_URL + API_URL.ResetPassword, { phone });
       const { success, errors } = response.data[0];
       if (success) {
         dispatch(
@@ -188,7 +188,7 @@ export const JWTProvider = ({ children }) => {
       } else {
         let error_msg
         switch (errors[0].error_code) {
-          case "LO007":
+          case "LO005":
             error_msg = "user-not-found"
             break;
           default:

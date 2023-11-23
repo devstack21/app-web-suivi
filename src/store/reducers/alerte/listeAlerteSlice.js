@@ -40,7 +40,7 @@ const listeAlerteSlice = createSlice({
                 state.error = ''
             })
             .addCase(getListAlerts.fulfilled, (state, action) => {
-                const { success, results, nombre_page, errors } = action.payload;
+                const { success, results, nombre_page ,errors} = action.payload;
                 if (success) {
                     state.status = REQUEST_STATUS.succeed
                     state.error = ''

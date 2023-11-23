@@ -35,7 +35,7 @@ const TypeAnimalTable = () => {
                   <Typography color={item.variation >= 0 ? 'green' : 'red'}>
                     {item.variation > 0 && <ArrowUpOutlined />}
                     {item.variation < 0 && <ArrowDownOutlined />}
-                    {item.variation}%
+                    {(item.variation)}%
                   </Typography>
                 </TableCell>
               </TableRow>
@@ -49,7 +49,7 @@ const TypeAnimalTable = () => {
                 <Typography color={result.tendance > 0 ? 'green' : 'red'}>
                   {result.tendance > 0 && <ArrowUpOutlined />}
                   {result.tendance < 0 && <ArrowDownOutlined />}
-                  {result.tendance}%
+                  {(result.tendance)}%
                 </Typography>
               </TableCell>
             </TableRow>

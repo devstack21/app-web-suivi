@@ -13,8 +13,6 @@ import checkpointsReducer from './checkpoints/checkpointsReducer';
 import betailReducer from './betail/betailReducer';
 
 import statCheckpointReducer from './dashboard/statCheckpointSlice';
-import listeDesCamionsReducer from './itineraire/listeDesCamionsReducer';
-import listeItineraireReducer from './itineraire/listeItineraireReducer';
 import dashboardReducer from './dashboard/dashboardReducer';
 import locationReducer from './location/locationReducer';
 
@@ -23,6 +21,9 @@ import activerRapportReducer from './rapports/activerRapportReducer';
 import rejeterRapportReducer from './rapports/rejeterRapportReducer';
 import rapportdReducer from './rapports/rapportReducer';
 import rapportPdfReducer from './rapports/rapportPdfSlice';
+import transportReducer from './itineraire/transportReducer';
+import validatePasswordReducer from './validatePassword/validatePasswordReducer';
+import axeparcoursReducer from './axeparcours/axeparcoursReducer';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -87,6 +88,13 @@ const reducers = combineReducers({
     },
     rapportdReducer
   ),
+  transport: persistReducer(
+    {
+      key: 'transport',
+      storage
+    },
+    transportReducer
+  ),
  
 
 
@@ -103,20 +111,7 @@ const reducers = combineReducers({
     statCheckpointReducer
   ),
 
-  listeCamion: persistReducer(
-    {
-      key: 'listeCamion',
-      storage
-    },
-    listeDesCamionsReducer
-  ),
-  listeCamionItineraire: persistReducer(
-    {
-      key: 'listeCamionItineraire',
-      storage
-    },
-    listeItineraireReducer
-  ),
+
 
   
   
@@ -148,6 +143,20 @@ const reducers = combineReducers({
       storage
     },
     rapportPdfReducer
+  ),
+
+  validatePassword: persistReducer(
+    {
+      key: 'validatePassword',
+      storage
+    },
+    validatePasswordReducer),
+  axeparcours: persistReducer(
+    {
+      key: 'axeparcours',
+      storage
+    },
+    axeparcoursReducer
   ),
 
 });

@@ -26,7 +26,7 @@ const StatFilters = ({ type, setType }) => {
 
     const theme = useTheme()
 
-    const { typeBetail } = useSelector((state) => state.betail.type);
+    const { betailTab } = useSelector((state) => state.betail.list);
 
     return (
 
@@ -39,9 +39,9 @@ const StatFilters = ({ type, setType }) => {
         >
 
             <Select size="small" value={type} onChange={(e) => setType(e.target.value)}>
-                {typeBetail?.map((item, index) => (
+                {betailTab?.map((item, index) => (
                     <MenuItem key={index} value={item}>
-                        {item.libelle}
+                        {item.name} / {item.name_english}
                     </MenuItem>
                 ))}
             </Select>
@@ -60,16 +60,3 @@ const StatFilters = ({ type, setType }) => {
 };
 
 export default StatFilters;
-
-//              <IncomeChart slot={slot} quantity={id_type_betail} dataRegion={dataStatTypeBetailRegion} />
-
-/*
- 
-            <Grid item>
-            <Select size="small" value={region} onChange={(e) => setRegion(e.target.value)} >
-                {regionTab.map((item, index) => (
-                    <MenuItem key={index} value={item}>
-                        {item.name}
-                    </MenuItem>
-                ))}
-            </Select>*/

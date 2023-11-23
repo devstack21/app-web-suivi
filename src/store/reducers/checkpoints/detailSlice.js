@@ -18,6 +18,7 @@ const initialState = {
 export const getDetailCheckpoint = createAsyncThunk(
     "checkpoints/detail",
     async (args) => {
+        console.log("aaaa")
         const { data } = await axios.get(`${BASE_URL}${API_URL.DetailCheckpoint}${args.id}`);
         return data[0]
     }

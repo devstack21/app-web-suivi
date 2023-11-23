@@ -63,7 +63,7 @@ const BetailCheckpoint = ({ selectedTab, setSelectedTab, setFormikAnimalTabs }) 
             <TableHead>
               <TableRow>
                 <TableCell sx={{ pl: 3 }} align="center"><FormattedMessage id='name' /></TableCell>
-                <TableCell align="center"><FormattedMessage id='type' /></TableCell>
+                <TableCell align="center"><FormattedMessage id='unit' /></TableCell>
                 <TableCell align="center"><FormattedMessage id='limit' /></TableCell>
               </TableRow>
             </TableHead>
@@ -75,10 +75,10 @@ const BetailCheckpoint = ({ selectedTab, setSelectedTab, setFormikAnimalTabs }) 
                     {selectedTab?.map((row, index) => (
                       <TableRow hover key={index}>
                         <TableCell sx={{ pl: 3 }} align="center">
-                          <span className={row.colorClass}>{row.name}</span>
+                          <span className={row.colorClass}>{row.name} / {row.name_english}</span>
                         </TableCell>
                         <TableCell align="center" sx={{ pr: 3 }}>
-                          <span>{row.type.name ? row.type.name : row.type}</span>
+                          <span>{row.unit}</span>
                         </TableCell>
                         <TableCell align="center">
                           <TextField

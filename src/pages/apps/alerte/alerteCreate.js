@@ -41,7 +41,7 @@ const AlertForm = () => {
     const { ListContact } = useSelector((state) => state.alert.contact);
     const totalPagesContact = useSelector((state) => state.alert.contact.nbPages);
 
-    const { listStatus, betailTab, listError } = useSelector((state) => state.betail.listTout);
+    const { listStatus, betailTab, listError } = useSelector((state) => state.betail.list);
 
     const [selectedContacts, setSelectedContacts] = useState([]);
     const [listeIdContacts, setlisteIdContacts] = useState([]);
@@ -212,7 +212,7 @@ const AlertForm = () => {
                             formik.setFieldValue('id_animal', newValue ? newValue.id : '');
                         }}
                         onBlur={() => formik.setFieldTouched('id_animal')}
-                        getOptionLabel={(option) => option ? option.name : ""}
+                        getOptionLabel={(option) => option ? option.name  : ""}
                         options={betailTab}
                         isOptionEqualToValue={(option, value) => option.id === value}
                         renderInput={(params) => (
@@ -250,6 +250,24 @@ const AlertForm = () => {
                     {selectedContacts.map((contact, index) => (
                         <Chip key={index} label={`${contact.email}-${contact.phone}`} onDelete={() => handleRemoveContact(contact)} />
                     ))}
+                </Grid> 
+
+                
+                
+
+                <Grid item xs={12}>
+                    <FormControl fullWidth>
+                        <InputLabel>Contact</InputLabel>
+                        <Select name="id_contact" 
+                        value={formik.values.id_contact} 
+                        onChange={(event) => { formik.handleChange(event); handleAddContact(event.target.value); }}
+                        error={formik.touched.id_contact && Boolean(formik.errors.id_contact)}
+                        helperText={formik.touched.id_contact && formik.errors.id_contact} >
+                            {ListContact.map((contact, index) => (
+                                <MenuItem key={index} value={contact.id}>{contact.email}-{contact.phone}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
                 </Grid>
                 
                     

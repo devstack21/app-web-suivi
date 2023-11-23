@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getAllReports } from 'store/reducers/rapports/listeRapportSlice';
 import { useNavigate } from 'react-router-dom';
 import DateSelector from 'components/cards/date/DateSelector';
-import { formatDateToYYYYMMDD, getStartOfWeek } from 'utils/function';
+import { formatDateToYYYYMMDD, getStartOfWeek, getEndOfWeek } from 'utils/function';
 import { FormattedMessage } from 'react-intl';
 import { REQUEST_STATUS } from 'utils/apiConfig';
 import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
@@ -26,7 +26,7 @@ export default function ListRapport() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const [start, setStart] = useState(formatDateToYYYYMMDD(getStartOfWeek()))
-  const [end, setEnd] = useState(formatDateToYYYYMMDD(new Date()))
+  const [end, setEnd] = useState(formatDateToYYYYMMDD(getEndOfWeek()))
   const [add, setAdd] = useState(false)
 
 
@@ -39,14 +39,13 @@ export default function ListRapport() {
   const handleChangePage = (event, newPage) => { setCurrentPage(newPage); };
 
   const goToDetail = (row) => {
-    navigate(`/apps/reports/details/${row.id}`, { state: row });
+    navigate(`/apps/reports/details/${row.date}`, { state: row });
   }
 
   const handleClose = () => {
     dispatch(initGetPdf())
     setAdd(!add);
   }
-
 
   return (
     <>
@@ -68,12 +67,12 @@ export default function ListRapport() {
             <Table sx={{ minWidth: 350 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <TableCell sx={{ pl: 3 }}><FormattedMessage id='user' /></TableCell>
-                  <TableCell><FormattedMessage id='destination' /></TableCell>
-                  <TableCell><FormattedMessage id='provenance' /></TableCell>
-                  <TableCell><FormattedMessage id='validator' /></TableCell>
-                  <TableCell align="right"><FormattedMessage id='matricule' /></TableCell>
                   <TableCell align="center"><FormattedMessage id='date' /></TableCell>
+                  <TableCell align="center"><FormattedMessage id='id-agent' /></TableCell>
+                  <TableCell sx={{ pl: 3 }}><FormattedMessage id='agent-collecte' /></TableCell>
+                  <TableCell><FormattedMessage id='effectif' /></TableCell>
+                  <TableCell><FormattedMessage id='validateur' /></TableCell>
+                  <TableCell><FormattedMessage id='status' /></TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -82,15 +81,17 @@ export default function ListRapport() {
                     <>
                       {ListRapport.map((row, index) => (
                         <TableRow hover key={index} onClick={() => { goToDetail(row) }} >
-                          <TableCell sx={{ pl: 3 }}>{row.agent}</TableCell>
-                          <TableCell>{row.delivery.ville}</TableCell>
-                          <TableCell>
-                            <TableCell>{row.supply.ville}</TableCell>
-                          </TableCell>
-                          <TableCell>{row.validateur}</TableCell>
-                          <TableCell align="right">{row.matricule}</TableCell>
                           <TableCell align="center">
-                            <Chip color={'info'} label={new Date(row.heure).toLocaleDateString()} size="small" />
+                            <Chip color={'info'} label={new Date(row.date).toLocaleDateString()} size="small" />
+                          </TableCell>
+                          <TableCell sx={{ pl: 3 }}>{row.id_agent}</TableCell>
+                          <TableCell sx={{ pl: 3 }}>{row.agent}</TableCell>
+                          <TableCell>{row.effectif} <FormattedMessage id='heads' /> </TableCell>
+                          <TableCell>{row.validateur}</TableCell>
+
+
+                          <TableCell align="center">
+                            <Chip color={row.status == 'VALIDE' ? 'success' : 'error' } label={row.status} size="small" />
                           </TableCell>
                         </TableRow>
                       ))}

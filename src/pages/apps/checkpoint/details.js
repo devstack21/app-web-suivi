@@ -56,13 +56,15 @@ const Details = () => {
 
   if (detailStatus == REQUEST_STATUS.loading) return <Loader />;
 
-  if (detailStatus == REQUEST_STATUS.error) return <EmptyUserCard id={detailError} />;
+  if (detailStatus == REQUEST_STATUS.error) return <EmptyUserCard title={ <FormattedMessage id={detailError}/> } />;
 
   const handleClick = () => {
     dispatch(initEditCheckpoint())
     dispatch(initCreateCheckpoint())
     navigation(`/apps/checkpoints/edit/${id}`)
   }
+
+  console.log(checkpoint)
 
   return (
     <MainCard content={false}>
@@ -162,9 +164,9 @@ const Details = () => {
                   <TableHead>
                     <TableRow>
                       <TableCell>#</TableCell>
+                      <TableCell align="center"><FormattedMessage id='code' /></TableCell>
                       <TableCell align="center"><FormattedMessage id='name' /></TableCell>
-                      <TableCell align="center"><FormattedMessage id='type' /></TableCell>
-                      <TableCell align="right"><FormattedMessage id='code' /></TableCell>
+                      <TableCell align="right"><FormattedMessage id='unit' /></TableCell>
                       <TableCell align="center"><FormattedMessage id='limit' /></TableCell>
                     </TableRow>
                   </TableHead>
@@ -172,9 +174,9 @@ const Details = () => {
                     {checkpoint?.animals?.map((row) => (
                       <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
                         <TableCell>{row.id}</TableCell>
-                        <TableCell align="center">{row.name}</TableCell>
-                        <TableCell align="center">{row.type?.name}</TableCell>
-                        <TableCell align="right">{row.type?.code}</TableCell>
+                        <TableCell align="right">{row.code}</TableCell>
+                        <TableCell align="center">{row.name} / {row.name_english}</TableCell>
+                        <TableCell align="center">{row.unit}</TableCell>
                         <TableCell align="center">{row.max_animal}</TableCell>
 
                       </TableRow>

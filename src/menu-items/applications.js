@@ -89,19 +89,31 @@ const applications = {
           type: 'item',
           url: '/apps/checkpoints/agents'
         },
+        {
+          id: 'listAxeparcours',
+          title: <FormattedMessage id="axeparcours-list" />,
+          type: 'item',
+          url: '/apps/axeparcours/list'
+        },
+        // {
+        //   id: 'createAxeparcours',
+        //   title: <FormattedMessage id="axeparcours-create" />,
+        //   type: 'item',
+        //   url: '/apps/axeparcours/create'
+        // },
       ]
     },
     {
-      id: 'itineraire',
+      id: 'transport',
       title: <FormattedMessage id="itineraire" />,
       icon: icons.CompassOutlined,
       type: 'collapse',
       children: [
         {
           id: 'list',
-          title: <FormattedMessage id="truck-list" />, // <FormattedMessage id="listecamion" />,
+          title: <FormattedMessage id="transport-list" />, 
           type: 'item',
-          url: 'apps/itineraire/list',
+          url: 'apps/transport/list',
         }
       ]
     },
@@ -124,6 +136,13 @@ const applications = {
           type: 'item',
           url: '/apps/users/accounts',
           breadcrumbs: false
+        },
+        {
+          id: 'users-validatePassword',
+          title: <FormattedMessage id="user-validatePassword" />,
+          type: 'item',
+          url: '/apps/users/validatePassword',
+          breadcrumbs: false
         }
       ]
     },
@@ -138,6 +157,13 @@ const applications = {
           title: <FormattedMessage id="report-list" />,
           type: 'item',
           url: '/apps/reports/list',
+          breadcrumbs: false
+        },
+        {
+          id: 'reports',
+          title: <FormattedMessage id="report-list-checkpoint" />,
+          type: 'item',
+          url: '/apps/reports/listRapportCheckpoint',
           breadcrumbs: false
         },
       ]

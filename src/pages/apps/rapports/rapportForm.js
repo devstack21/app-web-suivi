@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { CloseOutlined } from '@ant-design/icons'
-import { Grid, Button, Box } from '@mui/material';
+import { Grid, Button, Box, Typography } from '@mui/material';
 import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
 import { FormattedMessage } from 'react-intl';
 import MainCard from 'components/MainCard';
 import { REQUEST_STATUS } from 'utils/apiConfig';
 import { formatDateToYYYYMMDD, getStartOfWeek } from 'utils/function';
-import { DatePicker } from 'components/cards/date/DateSelector';
+import DateSelector from 'components/cards/date/DateSelector';
 import { useDispatch, useSelector } from 'react-redux';
 import { getRapportPDF } from 'store/reducers/rapports/rapportPdfSlice';
 import { SpinnLoader } from 'components/cards/SpinnLoader';
@@ -18,7 +18,7 @@ export default function RapportFrom({ handleClose }) {
     const [startDate, setStartDate] = useState(formatDateToYYYYMMDD(getStartOfWeek()));
     const [endDate, setEndDate] = useState(formatDateToYYYYMMDD(new Date()));
 
-    const { pdf, status, error } = useSelector((state) => state.rapport.pdf);
+    const { status, error } = useSelector((state) => state.rapport.pdf);
 
 
 
@@ -43,21 +43,23 @@ export default function RapportFrom({ handleClose }) {
         >
 
             <Grid container spacing={3} alignItems="center">
-                <DatePicker date={startDate} setDate={setStartDate} label={"start-date"} />
-                <DatePicker date={endDate} setDate={setEndDate} label={'end-date'} />
+            <DateSelector startDate={startDate} setStartDate={setStartDate} endDate={endDate} setEndDate={setEndDate} />
                 <Grid item>
-                    {pdf && (
-                        <a href={URL.createObjectURL(pdf)} download="monFichier.pdf">
-                            Télécharger le PDF
-                        </a>
-                    )}
+                   
                     <Button variant="contained" color="primary" onClick={handleSubmit}>
-                        <FormattedMessage id='detailrapport-valider' />
+                        <FormattedMessage id='download' />
                     </Button>
                 </Grid>
             </Grid>
 
             {status == REQUEST_STATUS.loading && <SpinnLoader title={'loading'} />}
+             {status == REQUEST_STATUS.succeed &&  (
+                       
+                        <Typography>
+                            Le PDF a été téléchargé avec succès
+
+                        </Typography>
+                    )}
 
             {status == REQUEST_STATUS.error && <EmptyUserCard title={<FormattedMessage id={error} />} />}
 

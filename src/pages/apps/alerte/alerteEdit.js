@@ -44,7 +44,7 @@ const EditAlert = ({ alert, onCancel }) => {
     const { ListContact } = useSelector((state) => state.alert.contact);
     const totalPagesContact = useSelector((state) => state.alert.contact.nbPages);
 
-    const { betailTab } = useSelector((state) => state.betail.listTout);
+    const { betailTab } = useSelector((state) => state.betail.list);
 
     useEffect(() => {
         if (betailTab.length < 0) dispatch(getListBetail({ page: 1}));
@@ -275,7 +275,37 @@ const EditAlert = ({ alert, onCancel }) => {
                             {selectedContacts.map((contact, index) => (
                                 <Chip key={index} label={`${contact.email}-${contact.phone}`} onDelete={() => handleRemoveContact(contact)} />
                             ))}
+                        </Grid> 
+
+
+
+
+
+
+                        <Grid item xs={12}>
+                            <FormControl fullWidth>
+                                <InputLabel>Contact</InputLabel>
+                                <Select name="id_contact" 
+                                value={formik.values.id_contact} 
+                                onChange={(event) => { formik.handleChange(event); handleAddContact(event.target.value); }}
+                                error={formik.touched.id_contact && Boolean(formik.errors.id_contact)}
+                                helperText={formik.touched.id_contact && formik.errors.id_contact} >
+                                    {ListContact.map((contact, index) => (
+                                        <MenuItem key={index} value={contact.id}>{contact.email}-{contact.phone}</MenuItem>
+                                    ))}
+                                </Select>
+                            </FormControl>
                         </Grid>
+                        <Grid item xs={12}>
+                            <Pagination count={totalPagesContact} page={page} onChange={handleChangePage} />
+                        </Grid>
+                        <Grid item xs={12}>
+                            {selectedContacts.map((contact, index) => (
+                                <Chip key={index} label={`${contact.email}-${contact.phone}`} onDelete={() => handleRemoveContact(contact)} />
+                            ))}
+                        </Grid>
+
+
 
 
 

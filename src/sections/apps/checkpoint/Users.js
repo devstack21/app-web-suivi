@@ -21,7 +21,6 @@ const UserCheckpoint = ({ selectedTab, setSelectedTab }) => {
   const [add, setAdd] = useState(false)
 
   const handleAdd = () => {
-    //dispatch(initListBetail())
     setAdd(!add);
   };
 
