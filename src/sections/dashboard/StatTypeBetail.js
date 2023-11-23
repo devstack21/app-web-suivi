@@ -12,6 +12,7 @@ import { REQUEST_STATUS } from 'utils/apiConfig';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
+import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
 
 const StatTypeBetail = ({ start, end }) => {
   const dispatch = useDispatch();
@@ -38,13 +39,15 @@ const StatTypeBetail = ({ start, end }) => {
         <Grid item>
         </Grid>
       </Grid>
-        {status === REQUEST_STATUS.loading && <SpinnLoader title="loading-chart" />}
-        {status === REQUEST_STATUS.succeed && (
-          <Grid container item xs={12} justifyContent="center" alignItems="center">
-            <TypeBetailPieChart />
-            <TypeAnimalTable />
-          </Grid>
-        )}
+      {status === REQUEST_STATUS.loading && <SpinnLoader title="loading-chart" />}
+      {status === REQUEST_STATUS.succeed && (
+        <Grid container item xs={12} justifyContent="center" alignItems="center">
+          <TypeBetailPieChart />
+          <TypeAnimalTable />
+        </Grid>
+      )}
+      {status === REQUEST_STATUS.error && <EmptyUserCard title="error-network" />}
+
     </Grid>
   );
 };

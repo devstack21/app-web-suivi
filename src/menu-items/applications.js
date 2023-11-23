@@ -159,6 +159,13 @@ const applications = {
           url: '/apps/reports/list',
           breadcrumbs: false
         },
+        {
+          id: 'reports',
+          title: <FormattedMessage id="report-list-checkpoint" />,
+          type: 'item',
+          url: '/apps/reports/listRapportCheckpoint',
+          breadcrumbs: false
+        },
       ]
 
     },

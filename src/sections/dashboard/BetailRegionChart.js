@@ -88,7 +88,7 @@ const columnChartOptions = {
 };
 
 function generateResult(regions, tab_values) {
-  if (tab_values.length === 0) {
+  if (tab_values?.length === 0) {
     // If tab_current_period is empty, return an array of 10 zeros
     return new Array(10).fill(0);
   }
