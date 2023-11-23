@@ -42,7 +42,7 @@ const EditAlert = ({ alert, onCancel }) => {
     const { ListContact } = useSelector((state) => state.alert.contact);
     const totalPagesContact = useSelector((state) => state.alert.contact.nbPages);
 
-    const { betailTab } = useSelector((state) => state.betail.listTout);
+    const { betailTab } = useSelector((state) => state.betail.list);
 
     useEffect(() => {
         if (betailTab.length < 0) dispatch(getListBetail({ page: 1}));

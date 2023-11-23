@@ -25,6 +25,7 @@ export default function ListDetailRapport() {
     const { state } = useLocation();
     // const [listeDetailRaps, setListeDetailRaps] = useState([])
     const [add, setAdd] = useState(false)
+    const [hideValidate, setHideValidate] = useState(false)
     const [currentPage, setCurrentPage] = useState(1);
     const [changePage, setChangePage] = useState(1);
     const [rapport, setRapport] = useState({})
@@ -38,17 +39,27 @@ export default function ListDetailRapport() {
   
     }, [currentPage, changePage]);
 
+
+    useEffect(() => {
+      if (ListdetailRapport.every(item => item.status === 'VALIDE') && ListdetailRapport.length > 0) {
+          setHideValidate(true);
+      }else{
+        setHideValidate(false);
+      }
+    }, [ListdetailRapport]);
+
     const handleChangePage = (event, newPage) => {setCurrentPage(newPage);};
 
     const handleActivate = () => {
-        setChangePage(changePage+1)
-        dispatch(activerRapport_req({date: state.heure, id_agent: state.id_agent}));
+        dispatch(activerRapport_req({date: state.date, id_agent: state.id_agent})); 
+        setChangePage(changePage+1);
+        
     };
 
     const handleDesactivate = () => {
-        setChangePage(changePage+1)
-        setSelectedItems([])
         dispatch(rejeterRapport_req({ids: selectedItems}));
+        setSelectedItems([])
+        setChangePage(changePage+1)
     };
 
     const handleSelect = (id, isSelected) => {
@@ -67,10 +78,10 @@ export default function ListDetailRapport() {
           setRapport({})
         }
         setAdd(!add);
-        console.log("rapport dans detail", rapport);
+        // console.log("rapport dans detail", rapport);
     };
 
-    console.log("rapport", rapport);
+    
     if (loadR) {
       return (
         <EmptyUserCard title={<FormattedMessage id='loading' />} />
@@ -93,9 +104,15 @@ export default function ListDetailRapport() {
             <FormattedMessage id='detailrapport-rejeter' />
           </Button>
         ) : (
-          <Button variant="contained" color="primary" onClick={handleActivate}>
-            <FormattedMessage id='detailrapport-valider' />
-          </Button>
+          <>
+          {hideValidate ?
+            null
+            :
+            <Button variant="contained" color="primary" onClick={handleActivate}>
+              <FormattedMessage id='detailrapport-valider' />
+            </Button>
+          }
+          </>
         )
       }
     >
@@ -108,8 +125,8 @@ export default function ListDetailRapport() {
                     <Checkbox />
                 </TableCell>
                 <TableCell sx={{ pl: 3 }}><FormattedMessage id='detailrapport-utilisateur' /></TableCell>
-                <TableCell><FormattedMessage id='detailrapport-ville-destination' /></TableCell>
                 <TableCell><FormattedMessage id='detailrapport-ville-provenance' /></TableCell>
+                <TableCell><FormattedMessage id='detailrapport-ville-destination' /></TableCell>
                 <TableCell><FormattedMessage id='detailrapport-Validateur' /></TableCell>
                 <TableCell align="right"><FormattedMessage id='detailrapport-matricule' /></TableCell>
                 <TableCell align="center"><FormattedMessage id='detailrapport-date' /></TableCell>
@@ -131,8 +148,8 @@ export default function ListDetailRapport() {
                         />
                     </TableCell>
                     <TableCell sx={{ pl: 3 }} onClick={() => handleDetail(row)}>{row.agent}</TableCell>
-                    <TableCell onClick={() => handleDetail(row)}>{row.delivery.ville}</TableCell>
-                    <TableCell onClick={() => handleDetail(row)}>{row.delivery.ville}</TableCell>
+                    <TableCell onClick={() => handleDetail(row)}>{row.supply.ville}</TableCell>
+                    <TableCell onClick={() => handleDetail(row)}>{row.delivery}</TableCell>
                     <TableCell onClick={() => handleDetail(row)}>{row.validateur}</TableCell>
                     <TableCell align="right" onClick={() => handleDetail(row)}>{row.matricule}</TableCell>
                     <TableCell align="right" onClick={() => handleDetail(row)}>{new Date(row.heure).toLocaleDateString()}</TableCell>

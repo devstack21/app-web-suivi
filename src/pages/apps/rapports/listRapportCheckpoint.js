@@ -6,7 +6,6 @@ import { PAGE_ROWS } from 'config';
 // assets
 // import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { getAllReports } from 'store/reducers/rapports/listeRapportSlice';
 import { useNavigate } from 'react-router-dom';
 import DateSelector from 'components/cards/date/DateSelector';
 import { formatDateToYYYYMMDD, getStartOfWeek, getEndOfWeek } from 'utils/function';
@@ -17,10 +16,12 @@ import { EmptyTable } from 'components/third-party/ReactTable';
 import RapportFrom from './rapportForm';
 import { PopupTransition } from 'components/@extended/Transitions';
 import { initGetPdf } from 'store/reducers/rapports/rapportPdfSlice';
+import CheckpointFilters from 'sections/dashboard/checkpointFilter';
+import { getAllReportsCheckpoint } from 'store/reducers/rapports/listeRapportCheckpoint';
 
 
 
-export default function ListRapport() {
+export default function ListRapportCheckpoint() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -28,13 +29,18 @@ export default function ListRapport() {
   const [start, setStart] = useState(formatDateToYYYYMMDD(getStartOfWeek()))
   const [end, setEnd] = useState(formatDateToYYYYMMDD(getEndOfWeek()))
   const [add, setAdd] = useState(false)
+  const [chkp, setChkp] = useState({})
 
 
-  const { ListRapport, nbPages, status } = useSelector((state) => state.rapport.listRapport);
+  const { ListRapport, nbPages, status } = useSelector((state) => state.rapport.checkpoint);
+
+  const { listStatus } = useSelector((state) => state.checkpoint.list)
+
 
   useEffect(() => {
-    dispatch(getAllReports({ page: currentPage, nbre_ligne: PAGE_ROWS, start: start, end: end }));
-  }, [currentPage, start, end]);
+    dispatch(getAllReportsCheckpoint({ page: currentPage, nbre_ligne: PAGE_ROWS, start: start, end: end, chkpt_id: chkp.id }));
+  }, [currentPage, start, end, chkp]);
+
 
   const handleChangePage = (event, newPage) => { setCurrentPage(newPage); };
 
@@ -47,19 +53,27 @@ export default function ListRapport() {
     setAdd(!add);
   }
 
-  console.log("mes ListRapport ", ListRapport)
+
   return (
     <>
       <Button variant="contained" color="primary" onClick={handleClose}>
         <FormattedMessage id='alerte-formRap-titre' />
       </Button>
 
+
       <MainCard
         title={<FormattedMessage id='report-list' />}
         content={false}
-        secondary={<DateSelector startDate={start} setStartDate={setStart} endDate={end} setEndDate={setEnd} />}
-      >
-        {status == REQUEST_STATUS.loading && <EmptyUserCard title={<FormattedMessage id='loading' />} />}
+        secondary={
+            <>
+                <DateSelector startDate={start} setStartDate={setStart} endDate={end} setEndDate={setEnd} />
+                <CheckpointFilters chkp={chkp} setChkp={setChkp} />
+            </>
+            }
+            
+    >
+        {status == REQUEST_STATUS.loading || listStatus == REQUEST_STATUS.loading
+         && <EmptyUserCard title={<FormattedMessage id='loading' />} />}
         {status == REQUEST_STATUS.error && <EmptyUserCard title={<FormattedMessage id='error-network' />} />}
 
         {

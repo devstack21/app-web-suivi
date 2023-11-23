@@ -2,12 +2,11 @@ import React from 'react';
 import { Card, CardContent, Typography, CardMedia, Grid, Chip,
   ListItemButton,
   ListItemText, List, ListItem} from '@mui/material';
-  import { FormattedMessage } from 'react-intl';
+  import { FormattedMessage, useIntl } from 'react-intl';
   import MainCard from 'components/MainCard';
 
 function DetailUnRapport({ data }) {
 
-  console.log("le data", data);
 
   return (
     <Card>
@@ -46,13 +45,13 @@ function DetailUnRapport({ data }) {
                 <ListItemText primary={<Typography variant="body2"><span  style={{fontWeight: 'bold', textTransform: 'uppercase'}}><FormattedMessage id='detailrapport-Validateur' /> : </span>{data.validateur}</Typography>} />
               </ListItem>
               <ListItem>
-                <ListItemText primary={<Typography variant="body2"><span  style={{fontWeight: 'bold', textTransform: 'uppercase'}}><FormattedMessage id='detailrapport-type-transport' /> : </span>{data.type_transport}</Typography>} />
+                <ListItemText primary={<Typography variant="body2"><span  style={{fontWeight: 'bold', textTransform: 'uppercase'}}><FormattedMessage id='detailrapport-type-transport' /> : </span>{useIntl().locale == 'fr'? data.type_trans: data.type_trans_en}</Typography>} />
               </ListItem>
               <ListItem>
                 <ListItemText primary={<Typography variant="body2"><span  style={{fontWeight: 'bold', textTransform: 'uppercase'}}><FormattedMessage id='detailrapport-ville-provenance' /> : </span>{data.supply?.ville}</Typography>} />
               </ListItem>
               <ListItem>
-                <ListItemText primary={<Typography variant="body2"><span  style={{fontWeight: 'bold', textTransform: 'uppercase'}}><FormattedMessage id='detailrapport-ville-destination' /> : </span>{data.delivery?.ville}</Typography>} />
+                <ListItemText primary={<Typography variant="body2"><span  style={{fontWeight: 'bold', textTransform: 'uppercase'}}><FormattedMessage id='detailrapport-ville-destination' /> : </span>{data.delivery}</Typography>} />
               </ListItem>
             </List>
           </Grid>

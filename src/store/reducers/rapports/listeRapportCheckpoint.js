@@ -4,10 +4,10 @@ import { API_URL, REQUEST_STATUS } from 'utils/apiConfig';
 import axios from 'utils/axios';
 
 
-export const getAllReports = createAsyncThunk(
-    "rapport/list", 
+export const getAllReportsCheckpoint = createAsyncThunk(
+    "checkpoint/rapport/list", 
     async(args) =>{
-    const URL = BASE_URL + API_URL.ListReports+`?page=${args.page}&nbre_ligne=${args.nbre_ligne}&start_date=${args.start}&end_date=${args.end}&checkpoint_id=${args.chkpt_id}`;
+    const URL = BASE_URL + API_URL.ListReportsCheckpoint+`?page=${args.page}&nbre_ligne=${args.nbre_ligne}&start_date=${args.start}&end_date=${args.end}&checkpoint_id=${args.chkpt_id}`;
     let { data } = await axios.get(URL, { withCredentials: true })
         return data[0];
     }
@@ -15,7 +15,7 @@ export const getAllReports = createAsyncThunk(
 )
 
 
-const listeRapportSlice = createSlice({
+const listeRapportCheckpointSlice = createSlice({
     name: 'listeRapport',
     initialState:{
         status: REQUEST_STATUS.idle,
@@ -27,12 +27,12 @@ const listeRapportSlice = createSlice({
     reducers: {},
     extraReducers: (builder)=>{
         builder
-        .addCase(getAllReports.pending, (state)=>{
+        .addCase(getAllReportsCheckpoint.pending, (state)=>{
             state.status = REQUEST_STATUS.loading
             state.ListRapport = []
             state.error = ''
         })
-        .addCase(getAllReports.fulfilled, (state, action)=>{
+        .addCase(getAllReportsCheckpoint.fulfilled, (state, action)=>{
             const { success, results, nombre_page } = action.payload;
 
             if (success) {
@@ -47,7 +47,7 @@ const listeRapportSlice = createSlice({
                 state.error = 'error-reports-list'
             }
         })
-        .addCase(getAllReports.rejected, (state)=>{
+        .addCase(getAllReportsCheckpoint.rejected, (state)=>{
           
             state.ListRapport = []
             state.status = REQUEST_STATUS.error
@@ -56,4 +56,4 @@ const listeRapportSlice = createSlice({
     }
 })
 
-export default listeRapportSlice.reducer;
+export default listeRapportCheckpointSlice.reducer;
