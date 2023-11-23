@@ -13,7 +13,7 @@ import { FormattedMessage } from 'react-intl';
 
 // ==============================|| CUSTOMER - DELETE ||============================== //
 
-export default function AlertConfirmeActive({ title, open, handleClose }) {
+export default function AlertConfirmeActive({ title, open, handleClose, act }) {
   return (
     <Dialog
       open={open}
@@ -26,7 +26,7 @@ export default function AlertConfirmeActive({ title, open, handleClose }) {
     >
       <DialogContent sx={{ mt: 2, my: 1 }}>
         <Stack alignItems="center" spacing={3.5}>
-          <Avatar color="success" sx={{ width: 72, height: 72, fontSize: '1.75rem' }}>
+          <Avatar color={act? 'success': 'warning'} sx={{ width: 72, height: 72, fontSize: '1.75rem' }}>
             <CheckCircleFilled />
           </Avatar>
           <Stack spacing={2}>
@@ -47,7 +47,7 @@ export default function AlertConfirmeActive({ title, open, handleClose }) {
             <Button fullWidth onClick={() => handleClose(false)} color="secondary" variant="outlined">
               <FormattedMessage id='cancel' />
             </Button>
-            <Button fullWidth color="success" variant="contained" onClick={() => handleClose(true)} autoFocus>
+            <Button fullWidth color={act? 'success': 'warning'} variant="contained" onClick={() => handleClose(true)} autoFocus>
               <FormattedMessage id='detailrapport-valider' />
             </Button>
           </Stack>

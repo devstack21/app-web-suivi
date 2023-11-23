@@ -8,7 +8,6 @@ export const deleteAlert = createAsyncThunk(
     "alerte/delete",
     async (args) => {
         const URL = BASE_URL + API_URL.Alert ;
-        console.log("dddddd", args)
         let { data } = await axios.delete(URL, { data: args })
         return data[0];
     }
