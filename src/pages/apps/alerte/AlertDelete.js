@@ -34,7 +34,7 @@ export default function AlertDelete({ title, open, handleClose }) {
               <FormattedMessage id='confirm-delete' />
             </Typography> */}
             <Typography align="center">
-              <FormattedMessage id='by-delete' />
+              {/* <FormattedMessage id='by-delete' /> */}
               <Typography variant="subtitle1" component="span">
                 {' '}
                 &quot;{title}&quot;{' '}

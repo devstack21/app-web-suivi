@@ -8,7 +8,8 @@ export const deleteAlert = createAsyncThunk(
     "alerte/delete",
     async (args) => {
         const URL = BASE_URL + API_URL.Alert ;
-        let { data } = await axios.put(URL, args)
+        console.log("dddddd", args)
+        let { data } = await axios.delete(URL, { data: args })
         return data[0];
     }
 
@@ -34,13 +35,13 @@ const deleteAlerteSlice = createSlice({
                 state.deleteError = ''
             })
             .addCase(deleteAlert.fulfilled, (state, action) => {
-                const { success } = action.payload;
+                const { success, errors } = action.payload;
                 if (success) {
                     state.deleteStatus = REQUEST_STATUS.succeed
                     state.deleteError = ''
                 } else {
                     state.deleteStatus = REQUEST_STATUS.error
-                    state.deleteError = 'error-edit-alert'
+                    state.deleteError = errors[0].error_msg //'error-edit-alert'
                 }
             })
             .addCase(deleteAlert.rejected, (state) => {
