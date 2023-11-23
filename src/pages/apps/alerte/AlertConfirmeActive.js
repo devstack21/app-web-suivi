@@ -8,7 +8,7 @@ import Avatar from 'components/@extended/Avatar';
 import { PopupTransition } from 'components/@extended/Transitions';
 
 // assets
-import { DeleteFilled } from '@ant-design/icons';
+import { CheckCircleFilled  } from '@ant-design/icons';
 import { FormattedMessage } from 'react-intl';
 
 // ==============================|| CUSTOMER - DELETE ||============================== //
@@ -27,7 +27,7 @@ export default function AlertConfirmeActive({ title, open, handleClose }) {
       <DialogContent sx={{ mt: 2, my: 1 }}>
         <Stack alignItems="center" spacing={3.5}>
           <Avatar color="success" sx={{ width: 72, height: 72, fontSize: '1.75rem' }}>
-            <DeleteFilled />
+            <CheckCircleFilled />
           </Avatar>
           <Stack spacing={2}>
             {/* <Typography variant="h4" align="center">

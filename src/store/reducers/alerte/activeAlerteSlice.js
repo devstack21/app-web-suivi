@@ -34,13 +34,13 @@ const activeAlerteSlice = createSlice({
                 state.activeError = ''
             })
             .addCase(activeAlert.fulfilled, (state, action) => {
-                const { success } = action.payload;
+                const { success, errors } = action.payload;
                 if (success) {
                     state.activeStatus = REQUEST_STATUS.succeed
                     state.activeError = ''
                 } else {
                     state.activeStatus = REQUEST_STATUS.error
-                    state.activeError = 'error-edit-alert'
+                    state.activeError = errors[0].error_msg //'error-edit-alert'
                 }
             })
             .addCase(activeAlert.rejected, (state) => {

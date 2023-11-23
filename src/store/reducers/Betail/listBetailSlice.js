@@ -19,7 +19,7 @@ const initialState = {
 export const getListBetail = createAsyncThunk(
     "betail/list",
     async (args) => {
-        const { data } = await axios.get(`${BASE_URL}${API_URL.ListBetail}?page=${args.page}&nbre_ligne=5`);
+        const { data } = await axios.get(`${BASE_URL}${API_URL.ListBetail}?page=${args.page}&nbre_ligne=100`);
         return data[0]
     }
 
