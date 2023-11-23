@@ -142,7 +142,7 @@ export default function ListAlerte() {
                     <IconButton color="inherit" size="large" onClick={() => handleDelete(row)}>
                       <DeleteOutlined />
                     </IconButton>
-                    <Button variant="contained" color="primary"  onClick={() => handleActivateDeactivate(row)}>
+                    <Button variant="contained" color={!row.status? 'primary': 'warning'} onClick={() => handleActivateDeactivate(row)}>
                       {!row.status ? 'Activer' : 'Désactiver'}
                     </Button>
                   </Stack>
@@ -155,9 +155,9 @@ export default function ListAlerte() {
 
       <AlertDelete title={<FormattedMessage id='alerte-confirm-suppression' />} open={open} handleClose={handleClose} />
       {active ?
-        <AlertConfirmeActive title={<FormattedMessage id='alerte-confirm-active' />} open={openActive} handleClose={handleCloseActive} />
+        <AlertConfirmeActive title={<FormattedMessage id='alerte-confirm-active' />} open={openActive} handleClose={handleCloseActive} act={true} />
         :
-        <AlertConfirmeActive title={<FormattedMessage id='alerte-confirm-deactive' />} open={openActive} handleClose={handleCloseActive} />
+        <AlertConfirmeActive title={<FormattedMessage id='alerte-confirm-deactive' />} open={openActive} handleClose={handleCloseActive} act={false} />
         }
 
 
