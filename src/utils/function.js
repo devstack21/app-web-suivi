@@ -50,3 +50,17 @@ export function getEndOfWeek() {
 }
 
 
+export function formatDateRange(dateRange) {
+  const startDate = new Date(dateRange.debut);
+  const endDate = new Date(dateRange.fin);
+
+  // Format day and month with leading zeros
+  const formattedStartDate = startDate.getDate().toString().padStart(2, '0');
+  const formattedEndDate = (endDate.getDate()).toString().padStart(2, '0');
+
+  // Format the complete date range string
+  const formattedString = `${formattedStartDate} - ${formattedEndDate}/${endDate.getMonth() + 1}/${endDate.getFullYear()}`;
+
+  return formattedString;
+}
+

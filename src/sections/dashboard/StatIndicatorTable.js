@@ -30,9 +30,9 @@ const StatIndicator = () => {
 
                 <TableCell>
                   <Typography style={{fontWeight: 'bold'}} color={(item.qte_actuelle >= item.max_animal || item.qte_actuelle <= item.min_animal )? 'red' : 'green'}>
-                    {item.qte_actuelle > 0 && <ArrowUpOutlined />}
-                    {item.qte_actuelle < 0 && <ArrowDownOutlined />}
-                    {(item.qte_actuelle)}
+                    {item.qte_actuelle > item.max_animal && <ArrowUpOutlined />}
+                    {item.qte_actuelle < item.min_animal && <ArrowDownOutlined />}
+                    {(item.qte_actuelle)} {(item.unit)}
                   </Typography>
                 </TableCell>
               </TableRow>

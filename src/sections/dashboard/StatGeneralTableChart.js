@@ -3,11 +3,14 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
+import { formatDateRange } from 'utils/function';
 
 const TypeAnimalTable = ({type}) => {
   const { result } = useSelector((state) => state.dashboard.type);
 
   const tab = type == 'animals' ? result.result.animals : result.result.transport
+
+  console.log(result)
 
   return (
     <Grid item xs={7} md={6}  >
@@ -17,8 +20,8 @@ const TypeAnimalTable = ({type}) => {
           <TableHead>
             <TableRow>
               <TableCell><FormattedMessage id={type} /></TableCell>
-              <TableCell><FormattedMessage id='previous-period' /></TableCell>
-              <TableCell><FormattedMessage id='current-period' /></TableCell>
+              <TableCell> {formatDateRange(result.date.prev)} </TableCell>
+              <TableCell>{formatDateRange(result.date.now)}</TableCell>
               <TableCell><FormattedMessage id='variation' /></TableCell>
             </TableRow>
           </TableHead>
