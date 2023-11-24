@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 
 // material-ui
-import { Chip, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Grid, Pagination } from '@mui/material';
+import { Chip, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Grid, Pagination, Button } from '@mui/material';
 
 // project imports
 import MainCard from 'components/MainCard';
@@ -41,7 +41,7 @@ export default function ListAlerte() {
   const [pageChange, setPageChange] = useState(1);
 
 
-  const { ListAlerte, status, nbPages } = useSelector((state) => state.alert.list);
+  const { ListAlerte, status, nbPages, error } = useSelector((state) => state.alert.list);
   const { deleteStatus } = useSelector((state) => state.alert.delete);
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -51,7 +51,7 @@ export default function ListAlerte() {
 
   const handleEdit = (event) => {
     setAdd(!add);
-    setPageChange(pageChange+1);
+    // setPageChange(pageChange+1);
     if (event != '') setAlerte(event);
   };
 
@@ -62,7 +62,7 @@ export default function ListAlerte() {
   };
 
   const handleClose = (e) => {
-    if (e) dispatch(deleteAlert({ 'pk': idAlert }))
+    if (e) dispatch(deleteAlert({ pk: idAlert }))
     setOpen(!open);
   };
 
@@ -92,21 +92,28 @@ export default function ListAlerte() {
   }
 
 
+  if (error) {
+    return (
+      <EmptyUserCard title={<FormattedMessage id={error} />} />
+    )
+  }
+
+
   return (
     <MainCard
-      title="Liste des alertes"
+      title={<FormattedMessage id='alerte-titre' />}
       content={false}
     >
       <TableContainer>
         <Table sx={{ minWidth: 350 }} aria-label="simple table">
           <TableHead>
             <TableRow>
+              <TableCell align="center"><FormattedMessage id='alerte-tableau-tatus' /></TableCell>
               <TableCell sx={{ pl: 3 }}><FormattedMessage id='alerte-tableau-bornInf' /></TableCell>
               <TableCell><FormattedMessage id='alerte-tableau-bornSup' /></TableCell>
               <TableCell><FormattedMessage id='alerte-tableau-ville' /></TableCell>
               <TableCell><FormattedMessage id='alerte-tableau-animal' /></TableCell>
               <TableCell align="right"><FormattedMessage id='alerte-tableau-typeCanal' /></TableCell>
-              <TableCell align="center"><FormattedMessage id='alerte-tableau-tatus' /></TableCell>
               <TableCell align="center" sx={{ pr: 3 }}>
                 Action
               </TableCell>
@@ -115,15 +122,17 @@ export default function ListAlerte() {
           <TableBody>
             {ListAlerte.map((row, index) => (
               <TableRow hover key={index}>
+              <TableCell align="center">
+                <Chip color={row.status ? 'success' : 'warning'} label={row.status ? "Activé" : "Désactivé"} size="small" />
+              </TableCell>
                 <TableCell sx={{ pl: 3 }}>{row.min_animal}</TableCell>
                 <TableCell>{row.max_animal}</TableCell>
                 <TableCell>
                   <TableCell>{row.ville}</TableCell>
                 </TableCell>
                 <TableCell>{row.animal}</TableCell>
-                <TableCell align="right">{row.type_canal}</TableCell>
-                <TableCell align="center" onClick={() => handleActivateDeactivate(row)}>
-                  <Chip color={row.status ? 'success' : 'warning'} label={row.status ? "Activé" : "Désactivé"} size="small" />
+                <TableCell align="right">{row.type_canal}
+                {row.type_sms && "SMS"} {row.type_email && row.type_sms? ",":null}  {row.type_email && " EMAIL"}
                 </TableCell>
                 <TableCell align="center" sx={{ pr: 3 }}>
                   <Stack direction="row" justifyContent="center" alignItems="center">
@@ -133,6 +142,9 @@ export default function ListAlerte() {
                     <IconButton color="inherit" size="large" onClick={() => handleDelete(row)}>
                       <DeleteOutlined />
                     </IconButton>
+                    <Button variant="contained" color={!row.status? 'primary': 'warning'} onClick={() => handleActivateDeactivate(row)}>
+                      {!row.status ? 'Activer' : 'Désactiver'}
+                    </Button>
                   </Stack>
                 </TableCell>
               </TableRow>
@@ -143,9 +155,9 @@ export default function ListAlerte() {
 
       <AlertDelete title={<FormattedMessage id='alerte-confirm-suppression' />} open={open} handleClose={handleClose} />
       {active ?
-        <AlertConfirmeActive title={<FormattedMessage id='alerte-confirm-active' />} open={openActive} handleClose={handleCloseActive} />
+        <AlertConfirmeActive title={<FormattedMessage id='alerte-confirm-active' />} open={openActive} handleClose={handleCloseActive} act={true} />
         :
-        <AlertConfirmeActive title={<FormattedMessage id='alerte-confirm-deactive' />} open={openActive} handleClose={handleCloseActive} />
+        <AlertConfirmeActive title={<FormattedMessage id='alerte-confirm-deactive' />} open={openActive} handleClose={handleCloseActive} act={false} />
         }
 
 

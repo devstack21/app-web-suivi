@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { Button, TextField, Grid, Chip, FormControl, InputLabel, Select, MenuItem, Container, Autocomplete, useTheme } from '@mui/material';
+import { Button, TextField, Grid, Chip, FormControl, InputLabel, Select, MenuItem, Container,
+     Autocomplete, useTheme, FormControlLabel, Checkbox } from '@mui/material';
 
 import MainCard from 'components/MainCard';
 import { useSelector, useDispatch } from 'react-redux';
@@ -17,15 +18,16 @@ import Pagination from '@mui/material/Pagination';
 import { PAGE_ROWS } from 'config';
 
 
-const ListTypeCanal = ["SMS", "EMAIL"]
+// const ListTypeCanal = ["SMS", "EMAIL"]
 
 const validationSchema = yup.object({
-  min_animal: yup.number().required('Min animal is required'),
-  max_animal: yup.number().required('Max animal is required'),
-  type_canal: yup.string().required('Type canal is required'),
-  id_ville: yup.string().required('Ville is required'),
-  id_animal: yup.string().required('Animal is required'),
-  id_contact: yup.string().required('Contact is required')
+  min_animal: yup.number().required(<FormattedMessage id='alerte-form-minAnimal'/>),
+  max_animal: yup.number().required(<FormattedMessage id='alerte-form-maxAnimal'/>),
+//   type_canal: yup.string().required(<FormattedMessage id='alerte-form-typeSms'/>),
+//   type_canal: yup.string().required(<FormattedMessage id='alerte-form-typeCanal'/>),
+  id_ville: yup.string().required(<FormattedMessage id='alerte-form-ville'/>),
+  id_animal: yup.string().required(<FormattedMessage id='alerte-form-animal'/>),
+  id_contact: yup.string().required(<FormattedMessage id='alerte-form-contact'/>)
 });
 
 const AlertForm = () => {
@@ -39,7 +41,7 @@ const AlertForm = () => {
     const { ListContact } = useSelector((state) => state.alert.contact);
     const totalPagesContact = useSelector((state) => state.alert.contact.nbPages);
 
-    const { listStatus, betailTab } = useSelector((state) => state.betail.list);
+    const { listStatus, betailTab, listError } = useSelector((state) => state.betail.list);
 
     const [selectedContacts, setSelectedContacts] = useState([]);
     const [listeIdContacts, setlisteIdContacts] = useState([]);
@@ -47,17 +49,18 @@ const AlertForm = () => {
     // const rowsPerPage = PAGE_ROWS;
 
     useEffect(() => {
-        dispatch(getListBetail());
+        dispatch(getListBetail({ page: 1 }));
         dispatch(getContactList({page: page, nbre_ligne: PAGE_ROWS}));
         dispatch(getListVille());
     }, []);
 
-
+    
     const formik = useFormik({
         initialValues: {
           min_animal: '',
           max_animal: '',
-          type_canal: '',
+          type_sms: false,
+          type_email: false,
           id_ville: '',
           id_animal: '',
           id_contact: ''
@@ -72,6 +75,7 @@ const AlertForm = () => {
                 ...values,
                 contacts: listeIdContacts
             };
+            console.log("vvvv", dataToSend)
             dispatch(createAlert(dataToSend)) 
         }
     });
@@ -104,7 +108,12 @@ const AlertForm = () => {
         )
     }
 
-
+    // console.log("****** ", statutListContact, listStatus, statutListVille, listError)
+    if (listError) {
+        return (
+          <EmptyUserCard title={<FormattedMessage id={listError} />} />
+        )
+      }
 
   return (
     <Container maxWidth="sm">
@@ -135,17 +144,40 @@ const AlertForm = () => {
                     />
                 </Grid>
                 <Grid item xs={12}>
+                
                 <FormControl fullWidth>
-                    <InputLabel><FormattedMessage id='canal-type' /></InputLabel>
-                    <Select name="type_canal" 
-                    value={formik.values.type_canal} 
-                    onChange={formik.handleChange}
-                    error={formik.touched.type_canal && Boolean(formik.errors.type_canal)}
-                    helperText={formik.touched.type_canal && formik.errors.type_canal}>
-                    {ListTypeCanal.map((type, index) => (
-                        <MenuItem key={index} value={type}>{type}</MenuItem>
-                    ))}
-                    </Select>
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                name="type_sms"
+                                checked={formik.values.type_sms}
+                                onChange={(e) => {
+                                    formik.setFieldValue('type_sms', e.target.checked);
+                                }}
+                                error={formik.touched.type_sms && Boolean(formik.errors.type_sms)}
+                            />
+                        }
+                        label="Notification SMS"
+                    />
+                    {formik.touched.type_sms && formik.errors.type_sms && (
+                        <div>{formik.errors.type_sms}</div>
+                    )}
+                    <FormControlLabel
+                        control={
+                            <Checkbox
+                                name="type_email"
+                                checked={formik.values.type_email}
+                                onChange={(e) => {
+                                    formik.setFieldValue('type_email', e.target.checked);
+                                }}
+                                error={formik.touched.type_email && Boolean(formik.errors.type_email)}
+                            />
+                        }
+                        label="Notification Email"
+                    />
+                    {formik.touched.type_email && formik.errors.type_email && (
+                        <div>{formik.errors.type_email}</div>
+                    )}
                 </FormControl>
                 </Grid>
 
@@ -197,28 +229,6 @@ const AlertForm = () => {
 
                 </Grid>
 
-                {/* <Grid item xs={12}>
-                    <FormControl fullWidth>
-                        <InputLabel>Contact</InputLabel>
-                        <Select name="id_contact" 
-                        value={formik.values.id_contact} 
-                        onChange={(event) => { formik.handleChange(event); handleAddContact(event.target.value); }}
-                        error={formik.touched.id_ville && Boolean(formik.errors.id_ville)}
-                        helperText={formik.touched.id_ville && formik.errors.id_ville} >
-                            {ListContact.map((contact, index) => (
-                                <MenuItem key={index} value={contact.id}>{contact.email}-{contact.phone}</MenuItem>
-                            ))}
-                        </Select>
-                    </FormControl>
-                </Grid>
-                <Grid item xs={12}>
-                    {selectedContacts.map((contact, index) => (
-                        <Chip key={index} label={`${contact.email}-${contact.phone}`} onDelete={() => handleRemoveContact(contact)} />
-                    ))}
-                </Grid> */}
-
-                
-                
 
                 <Grid item xs={12}>
                     <FormControl fullWidth>
@@ -241,11 +251,29 @@ const AlertForm = () => {
                     {selectedContacts.map((contact, index) => (
                         <Chip key={index} label={`${contact.email}-${contact.phone}`} onDelete={() => handleRemoveContact(contact)} />
                     ))}
-                </Grid>
+                </Grid> 
+
+                
+                
+
+                {/* <Grid item xs={12}>
+                    <FormControl fullWidth>
+                        <InputLabel>Contact</InputLabel>
+                        <Select name="id_contact" 
+                        value={formik.values.id_contact} 
+                        onChange={(event) => { formik.handleChange(event); handleAddContact(event.target.value); }}
+                        error={formik.touched.id_contact && Boolean(formik.errors.id_contact)}
+                        helperText={formik.touched.id_contact && formik.errors.id_contact} >
+                            {ListContact.map((contact, index) => (
+                                <MenuItem key={index} value={contact.id}>{contact.email}-{contact.phone}</MenuItem>
+                            ))}
+                        </Select>
+                    </FormControl>
+                </Grid> */}
                 
                     
                 <Grid item xs={12}>
-                <Button type="submit" variant="contained" color="primary">Submit</Button>
+                    <Button type="submit" variant="contained" color="primary"><FormattedMessage id='detailrapport-Validateur'/></Button>
                 </Grid>
                 <EffectComponent   />
 

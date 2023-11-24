@@ -92,7 +92,7 @@ const StatImportBetail = ({ type, isLocal }) => {
 
                                 :
                                 <>
-                                    <Typography style={{ textAlign: 'center' }} variant="h6">
+                                    <Typography style={{ textAlign: 'center' , padding:10}} variant="h6">
                                         <FormattedMessage id={isLocal ? 'no-importation' : 'no-transit'} />
                                     </Typography>
                                 </>
