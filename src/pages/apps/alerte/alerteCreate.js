@@ -59,8 +59,8 @@ const AlertForm = () => {
         initialValues: {
           min_animal: '',
           max_animal: '',
-          type_sms: '',
-          type_email: '',
+          type_sms: false,
+          type_email: false,
           id_ville: '',
           id_animal: '',
           id_contact: ''
@@ -75,6 +75,7 @@ const AlertForm = () => {
                 ...values,
                 contacts: listeIdContacts
             };
+            console.log("vvvv", dataToSend)
             dispatch(createAlert(dataToSend)) 
         }
     });
