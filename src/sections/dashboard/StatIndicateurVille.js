@@ -40,7 +40,7 @@ const StatIndicateurVille = ({ start, end }) => {
 
     return (
 
-        <Grid item  xs={12} md={12}>
+        <Grid item xs={12}>
             <Grid container alignItems="center" justifyContent="space-between">
 
                 <Grid item />
