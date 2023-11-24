@@ -21,6 +21,7 @@ import DateSelector from 'components/cards/statistics/DateSelector';
 import { formatDateToYYYYMMDD, getEndOfWeek, getStartOfWeek } from 'utils/function';
 import { getListBetail } from 'store/reducers/betail/listBetailSlice';
 import StatGeneral from 'sections/dashboard/StatGeneral';
+import StatApproDistricRegion from 'sections/dashboard/StatsBetailDistrct';
 
 
 // ==============================|| DASHBOARD - ANALYTICS ||============================== //
@@ -72,15 +73,14 @@ const DashboardAnalytics = () => {
 
         <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
 
-        
+
 
         <StatGeneral start={start} end={end} />
+        <StatIndicateurVille start={start} end={end} />
         <StatApproBetailRegion type={type} setType={setType} start={start} end={end} />
-        <Grid item xs={12} md={6} >
-          <StatIndicateurVille start={start} end={end} />
-          <StatImportBetail type={type} isLocal={true} />
-          <StatImportBetail type={type} isLocal={false} />
-        </Grid>
+        <StatApproDistricRegion type={type} setType={setType} start={start} end={end} />
+        <StatImportBetail type={type} isLocal={true} />
+        <StatImportBetail type={type} isLocal={false} />        
       </Grid>
     </Box>
   );
