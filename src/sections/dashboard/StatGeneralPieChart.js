@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Box, Grid } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 
 // project import
 import { ThemeMode } from 'config';
@@ -11,7 +11,8 @@ import useConfig from 'hooks/useConfig';
 // third-party
 import ReactApexChart from 'react-apexcharts';
 import { useSelector } from 'react-redux';
-import { tabColor } from 'utils/getColors';
+import { tabColor, tabColor1 } from 'utils/getColors';
+import { FormattedMessage } from 'react-intl';
 
 // chart options
 const columnChartOptions = {
@@ -80,7 +81,7 @@ const columnChartOptions = {
 
 
 
-const TypeBetailPieChart = () => {
+const StatGeneralPieChart = ({ type }) => {
   const theme = useTheme();
   const { mode, fontFamily } = useConfig();
 
@@ -100,16 +101,17 @@ const TypeBetailPieChart = () => {
 
 
   useEffect(() => {
-    const seriesData = result.tab_current_period.map((item) => item.quantity);
+    const data = type == 'animals' ? result.result.animals : result.result.transport
+    const seriesData = data.map((item) => item.quantity);
     setSeries(seriesData);
-    setLabels(result.tab_current_period.map((item) => item.type_animal));
-  }, [result.tab_current_period]);
+    setLabels(data.map((item) => item.name));
+  }, [result.result]);
 
 
   useEffect(() => {
     setOptions((prevState) => ({
       ...prevState,
-      colors: tabColor,
+      colors: type == 'animals' ? tabColor : tabColor1,
       labels: labels,
       dataLabels: {
         offsetY: 5
@@ -136,6 +138,13 @@ const TypeBetailPieChart = () => {
   }, [mode, primary, secondary, line, warning, primaryMain, successDark, fontFamily, labels]);
   return (
     <Grid item xs={5} md={6} >
+
+      <Grid container alignItems={type == 'animals' ? 'right' : 'left'} justifyContent="space-between">
+
+        <Typography variant="h5" textAlign={type == 'animals' ? 'right' : 'left'} ><FormattedMessage id='statistics'/> <FormattedMessage id={type}/> </Typography>
+        <Grid item>
+        </Grid>
+      </Grid>
       <Box id="chart" sx={{ bgcolor: 'transparent' }}>
         <ReactApexChart options={options} series={series} type="donut" height={250} />
       </Box>
@@ -144,4 +153,4 @@ const TypeBetailPieChart = () => {
   );
 };
 
-export default TypeBetailPieChart;
+export default StatGeneralPieChart;

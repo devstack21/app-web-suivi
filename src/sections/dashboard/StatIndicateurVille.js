@@ -6,31 +6,54 @@ import {
 } from '@mui/material';
 
 // project import
-import MainCard from 'components/MainCard';
+import { SpinnLoader } from 'components/cards/SpinnLoader';
+import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
+import { useEffect } from 'react';
+import { FormattedMessage } from 'react-intl';
+import { useDispatch, useSelector } from 'react-redux';
+import { getIndicateurVilles } from 'store/reducers/dashboard/statIndicateurVilleSlice';
+import StatIndicator from './StatIndicatorTable';
+import { REQUEST_STATUS } from 'utils/apiConfig';
 
 
+const StatIndicateurVille = ({ start, end }) => {
+
+    const dispatch = useDispatch();
 
 
-const StatIndicateurVille = () => {
+    const { status } = useSelector((state) => state.dashboard.indicator);
+
+    useEffect(() => {
+        if (start && end) {
+            dispatch(
+                getIndicateurVilles({
+                    debut: start,
+                    end: end,
+                })
+            );
+        } else {
+            console.log('Not entering condition');
+        }
+    }, [start, end]);
 
 
 
     return (
 
-        <Grid item xs={12} md={7} lg={8}>
+        <Grid item  xs={12} md={12}>
             <Grid container alignItems="center" justifyContent="space-between">
-                <Grid item>
-                    <Typography variant="h5">Tendance des alertes par ville</Typography>
-                </Grid>
+
                 <Grid item />
+                <Typography variant="h5"  ><FormattedMessage id="stat-alerts" /></Typography>
+
             </Grid>
-            <MainCard sx={{ mt: 2 }} content={false}>
-            </MainCard>
+            {status === REQUEST_STATUS.loading && <SpinnLoader title="loading-chart" />}
+            {status === REQUEST_STATUS.error && <EmptyUserCard title="error-network" />}
+            {status === REQUEST_STATUS.succeed && (<StatIndicator />)}
         </Grid>
     );
 };
 
 export default StatIndicateurVille;
 
-//                <OrdersList ListTendanceVille={[]} />
 

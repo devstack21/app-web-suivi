@@ -52,17 +52,17 @@ const StatApproBetailRegion = ({ type, setType, start, end }) => {
 
   return (
 
-    <Grid item xs={12} md={7} lg={8}>
+    <Grid item xs={5} md={6}>
       <Grid container alignItems="center" justifyContent="space-between">
 
-        <Typography variant="h5"><FormattedMessage id='statistics-supply' /> {type?.libelle} </Typography>
+        <Typography variant="h5"><FormattedMessage id='statistics-supply' /> {type?.name} / {type?.name_english} </Typography>
         <Grid item>
         </Grid>
       </Grid>
       <MainCard content={false} sx={{ mt: 1.5 }}>
         <Grid item>
           <Grid container>
-            <TendanceComponent percentage={result ? result?.approvisionement?.tendance_generale : 0} total={result ? result?.approvisionement?.total_effectif_embarque : 0} />
+            <TendanceComponent percentage={result ? result?.approvisionement?.tendance_generale : 0} total={result ? result?.approvisionement?.total_effectif_embarque : 0} type={type}/>
             <Grid item xs={12} sm={6}>
               <StatFilters
                 type={type}

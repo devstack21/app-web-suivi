@@ -4,7 +4,7 @@ import { Grid, Stack, Typography } from "@mui/material"
 import { FormattedMessage } from "react-intl";
 
 
-export const TendanceComponent = ({ percentage, total }) => {
+export const TendanceComponent = ({ percentage, total, type }) => {
 
     const theme = useTheme();
 
@@ -28,7 +28,7 @@ export const TendanceComponent = ({ percentage, total }) => {
                     }
                 </Stack>
                 <Typography color="textSecondary" sx={{ display: 'block' }}>
-                    <FormattedMessage id="effectif-total" /> {total} <FormattedMessage id="heads" />
+                    <FormattedMessage id="effectif-total" /> {total} {type?.unit}
                 </Typography>
             </Stack>
         </Grid>
