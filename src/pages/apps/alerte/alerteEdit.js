@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { Button, TextField, Pagination, Grid, FormControl, Chip, InputLabel, Select, MenuItem, Container, Autocomplete, useTheme } from '@mui/material';
+import { Button, TextField, Pagination, Grid, FormControl, Chip, InputLabel, Select, MenuItem, 
+    Container, Autocomplete, useTheme, FormControlLabel, Checkbox } from '@mui/material';
 import MainCard from 'components/MainCard';
 // import axios from 'utils/axios';
 // import { BASE_URL } from 'config'; 
@@ -15,16 +16,17 @@ import { FormattedMessage } from 'react-intl';
 import { SpinnLoader } from 'components/cards/SpinnLoader';
 import { PAGE_ROWS } from 'config';
 import { editAlert } from 'store/reducers/alerte/editAlerteSlice';
+import EffectComponent from 'sections/apps/alert/EffectComponent';
 
-const ListTypeCanal = ["SMS", "EMAIL"]
+// const ListTypeCanal = ["SMS", "EMAIL"]
 
 const validationSchema = yup.object({
-    min_animal: yup.number().required('Min animal is required'),
-    max_animal: yup.number().required('Max animal is required'),
-    type_canal: yup.string().required('Type canal is required'),
-    id_ville: yup.string().required('Ville is required'),
-    id_animal: yup.string().required('Animal is required'),
-    id_contact: yup.string().required('Contact is required')
+    min_animal: yup.number().required(<FormattedMessage id='alerte-form-minAnimal'/>),
+    max_animal: yup.number().required(<FormattedMessage id='alerte-form-maxAnimal'/>),
+    // type_canal: yup.string().required(<FormattedMessage id='alerte-form-typeCanal'/>),
+    id_ville: yup.string().required(<FormattedMessage id='alerte-form-ville'/>),
+    id_animal: yup.string().required(<FormattedMessage id='alerte-form-animal'/>),
+    id_contact: yup.string().required(<FormattedMessage id='alerte-form-contact'/>)
 });
 
 const EditAlert = ({ alert, onCancel }) => {
@@ -53,11 +55,12 @@ const EditAlert = ({ alert, onCancel }) => {
         formik.setFieldValue('pk', alert.pk);
         formik.setFieldValue('min_animal', alert.min_animal);
         formik.setFieldValue('max_animal', alert.max_animal);
-        formik.setFieldValue('type_canal', alert.type_canal);
+        formik.setFieldValue('type_sms', alert.type_sms);
+        formik.setFieldValue('type_email', alert.type_email);
         formik.setFieldValue('id_ville', alert.id_ville);
         formik.setFieldValue('id_animal', alert.id_animal);
         formik.setFieldValue('id_contact', 1);
-        console.log("w  alerte", alert)
+        // console.log("w  alerte", alert)
         let idList = alert.contacts ? alert.contacts.map(item => item.id) : [];
         setlisteIdContacts(idList)
         setSelectedContacts(alert.contacts ? alert.contacts : [])
@@ -68,7 +71,8 @@ const EditAlert = ({ alert, onCancel }) => {
             pk: '',
             min_animal: '',
             max_animal: '',
-            type_canal: '',
+            type_sms: false,
+            type_email: false,
             id_ville: '',
             id_animal: '',
             id_contact: '',
@@ -81,7 +85,7 @@ const EditAlert = ({ alert, onCancel }) => {
                 contacts: listeIdContacts
             };
             // const URL = BASE_URL + API_URL.Alert;
-            console.log("les dats qui partent ", dataToSend);
+            // console.log("les dats qui partent ", dataToSend);
             if(values.min_animal > values.max_animal) {
                 formik.setErrors({ min_animal: <FormattedMessage id='alerte-form-maxmin'/>, max_animal: <FormattedMessage id='alerte-form-maxmin'/> }); 
                 return;
@@ -92,14 +96,7 @@ const EditAlert = ({ alert, onCancel }) => {
         }
     });
 
-    // const handleAddContact = (id) => {
-    //     const contact = ListContact.find(contact => contact.id === id);
-    //     if (!selectedContacts.includes(contact)) {
-    //         setSelectedContacts((prevContacts) => [...prevContacts, contact]);
-    //         setlisteIdContacts((prevIds) => [...prevIds, id]);
-    //     }
-    // };
-
+    
     const handleAddContact = (id) => {
         const contact = ListContact.find(contact => contact.id === id);
         if (!selectedContacts.some(selectedContact => selectedContact.id === id)) {
@@ -169,31 +166,56 @@ const EditAlert = ({ alert, onCancel }) => {
                             />
                         </Grid>
                         <Grid item xs={12}>
-                            <FormControl fullWidth>
-                                <InputLabel>Type de canal</InputLabel>
-                                <Select name="type_canal"
-                                    value={formik.values.type_canal}
-                                    onChange={formik.handleChange}
-                                    error={formik.touched.type_canal && Boolean(formik.errors.type_canal)}
-                                    helperText={formik.touched.type_canal && formik.errors.type_canal}>
-                                    {ListTypeCanal.map((type, index) => (
-                                        <MenuItem key={index} value={type}>{type}</MenuItem>
-                                    ))}
-                                </Select>
+                         
+
+                            <FormControl fullWidth style={{ marginLeft: '20px' }}>
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            name="type_sms"
+                                            checked={formik.values.type_sms}
+                                            onChange={(e) => {
+                                                formik.setFieldValue('type_sms', e.target.checked);
+                                            }}
+                                            error={formik.touched.type_sms && Boolean(formik.errors.type_sms)}
+                                        />
+                                    }
+                                    label="Notification SMS"
+                                />
+                                {formik.touched.type_sms && formik.errors.type_sms && (
+                                    <div>{formik.errors.type_sms}</div>
+                                )}
+                                <FormControlLabel
+                                    control={
+                                        <Checkbox
+                                            name="type_email"
+                                            checked={formik.values.type_email}
+                                            onChange={(e) => {
+                                                formik.setFieldValue('type_email', e.target.checked);
+                                            }}
+                                            error={formik.touched.type_email && Boolean(formik.errors.type_email)}
+                                        />
+                                    }
+                                    label="Notification Email"
+                                />
+                                {formik.touched.type_email && formik.errors.type_email && (
+                                    <div>{formik.errors.type_email}</div>
+                                )}
                             </FormControl>
+
                         </Grid>
 
                         <Grid item xs={12} >
                             <Autocomplete
                                 id="id_ville"
-                                value={ListVille.find(ville => ville.id === formik.values.id_ville) || null}
+                                value={ListVille.find(ville => ville.pk === formik.values.id_ville) || null}
                                 onChange={(event, newValue) => {
-                                    formik.setFieldValue('id_ville', newValue ? newValue.id : '');
+                                    formik.setFieldValue('id_ville', newValue ? newValue.pk : '');
                                 }}
                                 onBlur={() => formik.setFieldTouched('id_ville')}
                                 getOptionLabel={(option) => option ? option.name : ""}
                                 options={ListVille}
-                                isOptionEqualToValue={(option, value) => option.id === value}
+                                isOptionEqualToValue={(option, value) => option.pk === value}
                                 renderInput={(params) => (
                                     <TextField
                                         {...params}
@@ -231,14 +253,15 @@ const EditAlert = ({ alert, onCancel }) => {
 
                         </Grid>
 
-                        {/* <Grid item xs={12}>
+
+                        <Grid item xs={12}>
                             <FormControl fullWidth>
                                 <InputLabel>Contact</InputLabel>
-                                <Select name="id_contact"
-                                    value={formik.values.id_contact}
-                                    onChange={(event) => { formik.handleChange(event); handleAddContact(event.target.value); }}
-                                    error={formik.touched.id_contact && Boolean(formik.errors.id_contact)}
-                                    helperText={formik.touched.id_contact && formik.errors.id_contact} >
+                                <Select name="id_contact" 
+                                value={formik.values.id_contact} 
+                                onChange={(event) => { formik.handleChange(event); handleAddContact(event.target.value); }}
+                                error={formik.touched.id_contact && Boolean(formik.errors.id_contact)}
+                                helperText={formik.touched.id_contact && formik.errors.id_contact} >
                                     {ListContact.map((contact, index) => (
                                         <MenuItem key={index} value={contact.id}>{contact.email}-{contact.phone}</MenuItem>
                                     ))}
@@ -246,10 +269,13 @@ const EditAlert = ({ alert, onCancel }) => {
                             </FormControl>
                         </Grid>
                         <Grid item xs={12}>
+                            <Pagination count={totalPagesContact} page={page} onChange={handleChangePage} />
+                        </Grid>
+                        <Grid item xs={12}>
                             {selectedContacts.map((contact, index) => (
                                 <Chip key={index} label={`${contact.email}-${contact.phone}`} onDelete={() => handleRemoveContact(contact)} />
                             ))}
-                        </Grid> */}
+                        </Grid> 
 
 
 
@@ -281,9 +307,12 @@ const EditAlert = ({ alert, onCancel }) => {
 
 
 
+
+
                         <Grid item xs={12}>
-                            <Button type="submit" variant="contained" color="primary">Submit</Button>
+                            <Button type="submit" variant="contained" color="primary"><FormattedMessage id='detailrapport-Validateur'/></Button>
                         </Grid>
+                        <EffectComponent   />
                     </Grid>
                 </form>
             </MainCard>

@@ -49,17 +49,16 @@ const StatApproDistricRegion = ({ type }) => {
     }
     setData(regionData)
 
-  }, [region])
+  }, [region, type, result])
 
 
   return (
 
     <Grid item xs={5} md={6}>
       <Grid container alignItems="center" justifyContent="space-between">
+      <Grid item></Grid>
 
-        <Typography variant="h5"><FormattedMessage id='statistics-supply' /> {type?.name} / {type?.name_english} </Typography>
-        <Grid item>
-        </Grid>
+        <Typography variant="h5">{type?.name} / {type?.name_english}<FormattedMessage id='statistics-delivery' />  </Typography>
       </Grid>
       <MainCard content={false} sx={{ mt: 1.5 }}>
         <Grid item>
@@ -94,7 +93,7 @@ const StatApproDistricRegion = ({ type }) => {
           {status === REQUEST_STATUS.succeed && result && <StatDistrictDelivery type={type} data={data.ville_destination} />}
           {status === REQUEST_STATUS.succeed && result == undefined &&
             <>
-              <Typography style={{ textAlign: 'center' }} variant="h6">
+              <Typography style={{ textAlign: 'center', padding: 10 }} variant="h6">
                 <FormattedMessage id='no-data' />
               </Typography>
             </>

@@ -55,7 +55,7 @@ const StatApproBetailRegion = ({ type, setType, start, end }) => {
     <Grid item xs={5} md={6}>
       <Grid container alignItems="center" justifyContent="space-between">
 
-        <Typography variant="h5"><FormattedMessage id='statistics-supply' /> {type?.name} / {type?.name_english} </Typography>
+        <Typography variant="h5"> {type?.name} / {type?.name_english} : <FormattedMessage id='statistics-supply' /></Typography>
         <Grid item>
         </Grid>
       </Grid>
@@ -76,7 +76,7 @@ const StatApproBetailRegion = ({ type, setType, start, end }) => {
           {status === REQUEST_STATUS.succeed && result && <ApproBetailRegionChart />}
           {status === REQUEST_STATUS.succeed && result == undefined &&
             <>
-              <Typography style={{ textAlign: 'center' }} variant="h6">
+              <Typography style={{ textAlign: 'center', padding: 10 }} variant="h6">
                 <FormattedMessage id='no-data' />
               </Typography>
             </>

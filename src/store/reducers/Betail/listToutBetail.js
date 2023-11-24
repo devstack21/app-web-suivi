@@ -12,54 +12,60 @@ const initialState = {
 
     listStatus: REQUEST_STATUS.idle,
     listError: '',
-    accountsTab: [],
+    betailTab: [],
     nbPages: ''
 };
 
-export const getListAccounts = createAsyncThunk(
-    "accounts/list",
+export const getListToutBetail = createAsyncThunk(
+    "betail/list",
     async (args) => {
-        let filter = ''
-        if (args.role) filter = `&role=${args.role}`
-        const { data } = await axios.get(`${BASE_URL}${API_URL.ListAccounts}?page=${args.page}&nbre_line=${args.nb}${filter}`);
+        const { data } = await axios.get(`${BASE_URL}${API_URL.ListBetail}?page=${args.page}&nbre_ligne=1000`);
         return data[0]
     }
 
 )
 
-const ListAccountslice = createSlice({
-    name: 'account',
+const ListToutBetailslice = createSlice({
+    name: 'betailTout',
     initialState: initialState,
+    reducers: {
+        initListBetail: (state) => {
+            state.listStatus = REQUEST_STATUS.idle
+            state.betailTab = []
+        }
+    }
+    ,
     extraReducers: (builder) => {
         builder
-            .addCase(getListAccounts.pending, (state) => {
+            .addCase(getListToutBetail.pending, (state) => {
                 state.listStatus = REQUEST_STATUS.loading
                 state.listError = ''
-                state.accountsTab = []
+                state.betailTab = []
             })
 
-            .addCase(getListAccounts.fulfilled, (state, action) => {
-                const { success, results, nombre_page, errors } = action.payload;
+            .addCase(getListToutBetail.fulfilled, (state, action) => {
+                const { success, results,nombre_page } = action.payload;
                 if (success) {
                     state.listStatus = REQUEST_STATUS.succeed,
                     state.listError = ''
-                    state.accountsTab = results
+                    state.betailTab = results
                     state.nbPages = nombre_page
                 } else {
                     state.listStatus = REQUEST_STATUS.error,
-                    state.listError = errors[0].error_msg
-                    state.accountsTab = []
+                    state.listError = 'error-list-betails'
+                    state.betailTab = []
                 }
             })
 
-            .addCase(getListAccounts.rejected, (state) => {
+            .addCase(getListToutBetail.rejected, (state) => {
                 state.listStatus = REQUEST_STATUS.error,
                 state.listError = 'error-network'
-                state.accountsTab = []
+                state.betailTab = []
             })
     }
 });
 
 // Reducer
-export default ListAccountslice.reducer;
+export default ListToutBetailslice.reducer;
 
+export const { initListToutBetail } = ListToutBetailslice.actions
