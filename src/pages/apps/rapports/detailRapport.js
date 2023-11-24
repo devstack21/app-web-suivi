@@ -26,7 +26,7 @@ const TitleCard = ({ state }) => (
       {state.checkpoint}
     </Typography>
     <Typography>
-      <FormattedMessage id='agent' /> {' '} {state.agent}
+      <FormattedMessage id='Agent' /> {' '} {state.agent}
     </Typography>
     <Typography>
       <FormattedMessage id='detailrapport-Detail-rapports-du' /> {format(new Date(state.date), 'dd/MM/yyyy')}
