@@ -8,7 +8,7 @@ export const getStatTypeBetail = createAsyncThunk(
     "dashboard/stat/type/betail",
     async (arg) => {
         const urlSuite = `?date_debut=${arg.debut}&date_fin=${arg.end}`;
-        const URL = BASE_URL + API_URL.StatTypeBetail + urlSuite;
+        const URL = BASE_URL + API_URL.StatGeneral + urlSuite;
 
         let { data } = await axios.get(URL, { withCredentials: true })
 

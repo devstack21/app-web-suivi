@@ -7,9 +7,10 @@ import axios from 'utils/axios';
 
 export const getIndicateurVilles = createAsyncThunk(
     "dashboard/indicateurs",
-    async () => {
-        const URL = BASE_URL + API_URL.StatIndicateur;
+    async (arg) => {
+        const urlSuite = `?date_debut=${arg.debut}&date_fin=${arg.end}`;
 
+        const URL = BASE_URL + API_URL.StatIndicateur + urlSuite;
         let { data } = await axios.get(URL, { withCredentials: true })
         return data[0];
     }
@@ -37,7 +38,7 @@ const indicateurVilleSlice = createSlice({
                 const { success, results } = action.payload;
                 if (success) {
                     state.status = REQUEST_STATUS.succeed
-                    state.result = results[0]
+                    state.result = results
                     state.error = ''
                 } else {
                     state.result = []

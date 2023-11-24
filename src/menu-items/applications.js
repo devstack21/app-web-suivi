@@ -45,7 +45,6 @@ const applications = {
       icon: icons.AreaChartOutlined,
       breadcrumbs: true,
       url: '/dashboard/analytics',
-
     },
     {
       id: 'alerts',

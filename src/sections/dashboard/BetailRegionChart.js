@@ -126,7 +126,7 @@ const ApproBetailRegionChart = () => {
   useEffect(() => {
     if (status == REQUEST_STATUS.succeed) {
 
-      const tab_now = generateResult(regionTab, result.approvisionement.tab_current_period);
+      const tab_now = generateResult(regionTab, result.approvisionement.tab);
       const tab_prev = generateResult(regionTab, result.approvisionement.tab_prev_period);
   
       setSeries([

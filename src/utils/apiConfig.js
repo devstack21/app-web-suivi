@@ -39,7 +39,7 @@ export const API_URL = {
 	statCkeckpoint: '/stat/checkpoint',
 	StatImportTypeBetail: '/stat/importation/betail/',
 	StatIndicateur: '/stat/indicateur/',
-	StatTypeBetail: '/stat/type/betail/',
+	StatGeneral: '/stat/general/',
 	UpdatePassword: '/change/password/',
 	UpdateRole: '/role/update/',
 	TransportItinary: '/transport/itinary',
