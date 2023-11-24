@@ -68,12 +68,14 @@ export default function ListRapport() {
             <Table sx={{ minWidth: 350 }} aria-label="simple table">
               <TableHead>
                 <TableRow>
-                  <TableCell align="center"><FormattedMessage id='date' /></TableCell>
+                <TableCell><FormattedMessage id='checkpoint' /></TableCell>
                   <TableCell align="center"><FormattedMessage id='id-agent' /></TableCell>
                   <TableCell sx={{ pl: 3 }}><FormattedMessage id='agent-collecte' /></TableCell>
                   <TableCell><FormattedMessage id='effectif' /></TableCell>
                   <TableCell><FormattedMessage id='validateur' /></TableCell>
                   <TableCell><FormattedMessage id='status' /></TableCell>
+                  <TableCell align="center"><FormattedMessage id='date' /></TableCell>
+
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -82,9 +84,8 @@ export default function ListRapport() {
                     <>
                       {ListRapport.map((row, index) => (
                         <TableRow hover key={index} onClick={() => { goToDetail(row) }} >
-                          <TableCell align="center">
-                            <Chip color={'info'} label={new Date(row.date).toLocaleDateString()} size="small" />
-                          </TableCell>
+                          <TableCell>{row.checkpoint}</TableCell>
+                          
                           <TableCell sx={{ pl: 3 }}>{row.id_agent}</TableCell>
                           <TableCell sx={{ pl: 3 }}>{row.agent}</TableCell>
                           <TableCell>{row.effectif} <FormattedMessage id='heads' /> </TableCell>
@@ -93,6 +94,9 @@ export default function ListRapport() {
 
                           <TableCell align="center">
                             <Chip color={row.status == 'VALIDE' ? 'success' : 'error' } label={row.status} size="small" />
+                          </TableCell>
+                          <TableCell align="center">
+                            <Chip variant='outline' color={'info'} label={new Date(row.date).toLocaleDateString()} size="small" />
                           </TableCell>
                         </TableRow>
                       ))}

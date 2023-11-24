@@ -48,7 +48,7 @@ const DashboardAnalytics = () => {
 
 
   useEffect(() => {
-    setType(betailTab[0])
+    if (statusTypeBetail == REQUEST_STATUS.succeed) setType(betailTab[0])
   }, [statusTypeBetail])
 
   if (
