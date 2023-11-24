@@ -255,7 +255,7 @@ const AlertForm = () => {
                 
                 
 
-                <Grid item xs={12}>
+                {/* <Grid item xs={12}>
                     <FormControl fullWidth>
                         <InputLabel>Contact</InputLabel>
                         <Select name="id_contact" 
@@ -268,7 +268,7 @@ const AlertForm = () => {
                             ))}
                         </Select>
                     </FormControl>
-                </Grid>
+                </Grid> */}
                 
                     
                 <Grid item xs={12}>
