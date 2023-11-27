@@ -29,9 +29,11 @@ const StatItem = ({ item, type, isLocal, percentage }) => (
                 <>
                     {
                         isLocal &&
+                        <>
                         <Typography color="textSecondary" sx={{ display: 'inline' }}>
                              ({percentage}%  <FormattedMessage id='current-effectif' />)
                         </Typography>
+                        </>
                     }
                 </>
             }

@@ -4,17 +4,16 @@ import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { formatDateRange } from 'utils/function';
+import { EmptyTable } from 'components/third-party/ReactTable';
 
-const TypeAnimalTable = ({type}) => {
+const TypeAnimalTable = ({ type }) => {
   const { result } = useSelector((state) => state.dashboard.type);
 
   const tab = type == 'animals' ? result.result.animals : result.result.transport
 
-  console.log(result)
-
   return (
     <Grid item xs={7} md={6}  >
-      
+
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -26,22 +25,30 @@ const TypeAnimalTable = ({type}) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {tab.map((item, index) => (
-              <TableRow key={index}>
-                <TableCell>{item.name}</TableCell>
-                <TableCell>{item.prev_effectif} {type == 'animals' && item.unit }</TableCell>
-                <TableCell>{item.quantity} {type == 'animals' && item.unit }</TableCell>
-                <TableCell>
-                  <Typography color={item.variation >= 0 ? 'green' : 'red'}>
-                    {item.variation > 0 && <ArrowUpOutlined />}
-                    {item.variation < 0 && <ArrowDownOutlined />}
-                    {(item.variation)}%
-                  </Typography>
-                </TableCell>
-              </TableRow>
-            ))}
+            {
+              tab.length > 0 ?
+                <>
+                  {tab.map((item, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{item.name}</TableCell>
+                      <TableCell>{item.prev_effectif} {type == 'animals' && item.unit}</TableCell>
+                      <TableCell>{item.quantity} {type == 'animals' && item.unit}</TableCell>
+                      <TableCell>
+                        <Typography color={item.variation >= 0 ? 'green' : 'red'}>
+                          {item.variation > 0 && <ArrowUpOutlined />}
+                          {item.variation < 0 && <ArrowDownOutlined />}
+                          {(item.variation)}%
+                        </Typography>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </>
+                :
+                <EmptyTable msg={<FormattedMessage id='no-reports' />} colSpan={6} />
+            }
+
             {/* Total row */}
-           
+
           </TableBody>
         </Table>
       </TableContainer>

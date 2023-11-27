@@ -28,6 +28,7 @@ const StatGenralChart = ({ start, end }) => {
   return (
       
       <Grid container item xs={12} justifyContent="center" alignItems="center">
+        
         <StatGeneralPieChart type={"animals"}/>
         <StatGeneralPieChart type={"transports"}/>
 
