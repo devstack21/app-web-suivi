@@ -7,7 +7,6 @@ import { BASE_URL } from 'config';
 import { API_URL, REQUEST_STATUS } from 'utils/apiConfig';
 import { PAGE_ROWS } from 'config';
 
-// ----------------------------------------------------------------------
 
 const initialState = {
 

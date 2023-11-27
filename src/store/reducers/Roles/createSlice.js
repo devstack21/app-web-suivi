@@ -6,7 +6,6 @@ import axios from 'utils/axios';
 import { BASE_URL } from 'config';
 import { API_URL, REQUEST_STATUS } from 'utils/apiConfig';
 
-// ----------------------------------------------------------------------
 
 const initialState = {
 
