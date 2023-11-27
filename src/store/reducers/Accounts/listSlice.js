@@ -39,7 +39,7 @@ const ListAccountslice = createSlice({
             })
 
             .addCase(getListAccounts.fulfilled, (state, action) => {
-                const { success, results, nombre_page } = action.payload;
+                const { success, results, nombre_page, errors } = action.payload;
                 if (success) {
                     state.listStatus = REQUEST_STATUS.succeed,
                     state.listError = ''
@@ -47,7 +47,7 @@ const ListAccountslice = createSlice({
                     state.nbPages = nombre_page
                 } else {
                     state.listStatus = REQUEST_STATUS.error,
-                    state.listError = 'error-list-accounts'
+                    state.listError = errors[0].error_msg
                     state.accountsTab = []
                 }
             })

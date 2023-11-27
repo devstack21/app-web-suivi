@@ -11,8 +11,6 @@ import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Pagination from '@mui/material/Pagination';
 import { REQUEST_STATUS } from 'utils/apiConfig';
-import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
-import { FormattedMessage } from 'react-intl';
 import { getListCheckpoints } from 'store/reducers/checkpoints/listSlice';
 
 
@@ -25,7 +23,7 @@ const CheckpointFilters = ({ chkp, setChkp }) => {
     const dispatch = useDispatch()
     const [page, setPage] = useState(1);
 
-    const { listStatus, checkpointsTab, nbPages, listError } = useSelector((state) => state.checkpoint.list)
+    const { listStatus, checkpointsTab, nbPages } = useSelector((state) => state.checkpoint.list)
 
     useEffect(() => { dispatch(getListCheckpoints({ page: page })) }, [page])
 
@@ -36,13 +34,6 @@ const CheckpointFilters = ({ chkp, setChkp }) => {
         if (listStatus == REQUEST_STATUS.succeed) setChkp(checkpointsTab[0])
     },[listStatus])
     
-      if (listStatus == REQUEST_STATUS.error) {
-        return (
-          <EmptyUserCard title={<FormattedMessage id={listError} />} />
-        )
-      }
-
-
 
     return (
 

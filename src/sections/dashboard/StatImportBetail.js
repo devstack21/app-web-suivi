@@ -29,9 +29,11 @@ const StatItem = ({ item, type, isLocal, percentage }) => (
                 <>
                     {
                         isLocal &&
+                        <>
                         <Typography color="textSecondary" sx={{ display: 'inline' }}>
                              ({percentage}%  <FormattedMessage id='current-effectif' />)
                         </Typography>
+                        </>
                     }
                 </>
             }
@@ -92,7 +94,7 @@ const StatImportBetail = ({ type, isLocal }) => {
 
                                 :
                                 <>
-                                    <Typography style={{ textAlign: 'center' }} variant="h6">
+                                    <Typography style={{ textAlign: 'center' , padding:10}} variant="h6">
                                         <FormattedMessage id={isLocal ? 'no-importation' : 'no-transit'} />
                                     </Typography>
                                 </>

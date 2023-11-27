@@ -4,7 +4,7 @@ import { Grid } from '@mui/material';
 import { getStatTypeBetail } from 'store/reducers/dashboard/statTypeBetailSlice';
 import { SpinnLoader } from 'components/cards/SpinnLoader';
 import { REQUEST_STATUS } from 'utils/apiConfig';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
 import StatGenralChart from './StatGeneralChart';
@@ -12,7 +12,6 @@ import StatGeneralTables from './StatGeneralTable';
 
 const StatGeneral = ({ start, end }) => {
   const dispatch = useDispatch();
-  const { status } = useSelector((state) => state.dashboard.type);
 
   useEffect(() => {
     if (start && end) {

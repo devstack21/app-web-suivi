@@ -74,7 +74,7 @@ export default function ListRapportCheckpoint() {
     >
         {status == REQUEST_STATUS.loading || listStatus == REQUEST_STATUS.loading
          && <EmptyUserCard title={<FormattedMessage id='loading' />} />}
-        {status == REQUEST_STATUS.error && <EmptyUserCard title={<FormattedMessage id='error-network' />} />}
+        {status == REQUEST_STATUS.error ||listStatus == REQUEST_STATUS.loading && <EmptyUserCard title={<FormattedMessage id='error-network' />} />}
 
         {
           status == REQUEST_STATUS.succeed &&
