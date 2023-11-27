@@ -13,7 +13,7 @@ const roleReducer = combineReducers({
   module: moduleList,
   edit: editSlice,
   detail: detailSlice
-  // Add other slices here...
+  // Add other slices
 });
 
 export default roleReducer;
