@@ -3,7 +3,23 @@ version: "3"
 services:
   react-app:
     build:
-      context: ./app-web-minepia
+      context: .
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
+    volumes:
+      - .:/app/react
+
+  nginx:
+    build: ./nginx/
+    restart: always
+    depends_on:
+      - react-app
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - staticfiles:/usr/src/app/static/
+
+volumes:
+  staticfiles: {}

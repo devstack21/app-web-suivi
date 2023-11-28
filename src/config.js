@@ -9,7 +9,10 @@ export const HORIZONTAL_MAX_ITEM = 6;
 export const DRAWER_WIDTH = 260;
 export const PAGE_ROWS = 10;
 
-export const BASE_URL = 'https://elogews.iccsoft.cm/ws/api/v1'
+export const BASE_URL = 'http://127.0.0.1:8000/ws/api/v1'
+
+//export const BASE_URL = 'https://elogews.iccsoft.cm/ws/api/v1'
+
 
 export const REACT_APP_JWT_SECRET_KEY='mabanqueiccsoft1'
 

@@ -123,6 +123,7 @@
   "error-edit-account": "Unable to update user information",
   "error-edit-checkpoint": "Unable to update checkpoint informations",
   "error-detail-checkpoint": "Unable to load checkpoint information",
+  "error-habilitations": "You are not authorized to perform this operation",
   "error-list-agent-checkpoint": "Unable to load agents",
   "error-list-role": "Unable to load user roles",
   "error-loading-district": "Unable to load districts",

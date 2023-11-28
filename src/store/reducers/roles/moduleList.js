@@ -33,14 +33,24 @@ const ListModuleSlice = createSlice({
             })
 
             .addCase(getListModule.fulfilled, (state, action) => {
-                const { success, results } = action.payload;
+                const { success, results, errors } = action.payload;
                 if (success) {
                     state.listStatus = REQUEST_STATUS.succeed,
                     state.listError = ''
                     state.moduleTab = results
                 } else {
+                    let msg
+                    switch (errors[0].error_code) {
+                        case "ATK000":
+                            msg = 'error-habilitations'
+                            break;
+                    
+                        default:
+                            msg = 'error-network'
+                            break;
+                    }
                     state.listStatus = REQUEST_STATUS.error,
-                    state.listError = 'error-list-modules'
+                    state.listError = msg
                     state.moduleTab = []
                 }
             })

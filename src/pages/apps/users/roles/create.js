@@ -27,7 +27,7 @@ const Create = () => {
 
 
   const [selectedModule, setSelectedModule] = useState([])
-  const { listStatus, moduleTab } = useSelector((state) => state.role.module)
+  const { listStatus, moduleTab , listError} = useSelector((state) => state.role.module)
   const { createStatus } = useSelector((state) => state.role.create)
   const { editStatus } = useSelector((state) => state.role.edit)
   const { detailStatus, role, detailError } = useSelector((state) => state.role.detail)
@@ -164,7 +164,7 @@ const Create = () => {
     detailStatus == REQUEST_STATUS.loading ||
     editStatus == REQUEST_STATUS.loading) {
     return (
-      <EmptyUserCard id={<FormattedMessage id='loading' />} />
+      <EmptyUserCard title={<FormattedMessage id='loading' />} />
     )
   }
 
@@ -172,10 +172,9 @@ const Create = () => {
 
   if (listStatus == REQUEST_STATUS.error || detailStatus == REQUEST_STATUS.error) {
     return (
-      <EmptyUserCard id={<FormattedMessage id={detailError ? "detailError" : 'error-loading-district'} />} />
+      <EmptyUserCard title={<FormattedMessage id={detailError ? "detailError" : listError} />} />
     )
   }
-
 
 
   const { handleSubmit, getFieldProps, setStatus, setSubmitting, errors, touched, setErrors, resetForm } = formik;

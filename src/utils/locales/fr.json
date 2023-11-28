@@ -125,6 +125,7 @@
   "error-edit-account": "Impossible de mattre à jour les informations d el'utilisateur",
   "error-edit-checkpoint": "Impossible de mettre à jour les informations du checkpoint",
   "error-detail-checkpoint": "Impossible de charger les informations du checkpoint",
+  "error-habilitations": "Vous n'êtes pas habilité à éffectuer cette opération",
   "error-list-agent-checkpoint": "Impossible de charger les agents de collecte",
   "error-list-role": "Impossible de charger les rôles utilisateurs",
   "error-loading-district": "Impossible de charger les arrondissement",
