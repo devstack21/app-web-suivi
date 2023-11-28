@@ -5,13 +5,13 @@ FROM node:14 as build
 WORKDIR /app/react
 
 # Copy package.json and package-lock.json to the working directory
-COPY ./app-web-minepia/package*.json ./
+COPY ./package*.json ./
 
 # Install dependencies
 RUN npm install
 
 # Copy the rest of the application code to the working directory
-COPY ./app-web-minepia ./
+COPY . .
 
 # Build the React app
 RUN npm run build
