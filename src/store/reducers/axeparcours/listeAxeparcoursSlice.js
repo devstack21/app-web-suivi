@@ -47,8 +47,20 @@ const listeAxeparcoursSlice = createSlice({
                     state.ListAxe = results
                     state.nbPages = nombre_page
                 } else {
+                    
+
+                    let msg
+                    switch (errors[0].error_code) {
+                        case "ATK000":
+                            msg = 'no-habilitations'
+                            break;
+                    
+                        default:
+                            msg = 'error-list-agent-checkpoint'
+                            break;
+                    }
                     state.status = REQUEST_STATUS.error
-                    state.error = errors[0].error_msg //'error-list-alert'
+                    state.error = msg//'error-list-alert'
                     state.ListAxe = []
                 }
             })

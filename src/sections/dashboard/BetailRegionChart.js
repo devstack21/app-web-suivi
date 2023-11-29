@@ -85,6 +85,8 @@ const columnChartOptions = {
       }
     }
   ]
+
+
 };
 
 function generateResult(regions, tab_values) {
@@ -92,7 +94,7 @@ function generateResult(regions, tab_values) {
     // If tab_current_period is empty, return an array of 10 zeros
     return new Array(10).fill(0);
   }
-  const effectifEmbarqueDict = tab_values.reduce((acc, entry) => {
+  const effectifEmbarqueDict = tab_values?.reduce((acc, entry) => {
     acc[entry.region_approvisionement] = entry.effectif_embarque;
     return acc;
   }, {});

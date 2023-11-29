@@ -53,12 +53,15 @@ const EditAccountslice = createSlice({
                         case "US003":
                             error_msg = 'user-number-exist'
                             break;
+                        case "ATK000":
+                            error_msg = 'no-habilitations'
+                            break;
                         default:
                             error_msg = 'error-edit-account'
                             break;
                     }
-                    state.editStatus = REQUEST_STATUS.error,
-                    state.editError = error_msg
+                    state.editStatus = REQUEST_STATUS.error
+                    state.listError = error_msg
                     state.accountsTab = []
                 }
             })

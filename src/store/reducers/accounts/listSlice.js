@@ -46,7 +46,7 @@ const ListAccountslice = createSlice({
                     state.nbPages = nombre_page
                 } else {
                     state.listStatus = REQUEST_STATUS.error,
-                    state.listError = errors[0].error_msg
+                    state.listError = errors[0].error_code == 'ATK000' ? errors[0].error_msg : 'error-network'
                     state.accountsTab = []
                 }
             })

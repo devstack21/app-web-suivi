@@ -63,7 +63,7 @@ const StatApproDistricRegion = ({ type }) => {
       <MainCard content={false} sx={{ mt: 1.5 }}>
         <Grid item>
           <Grid container>
-            <TendanceComponent percentage={data ? data.tendance_regionale : 0} total={data ? data.effectif_embarque : 0} type={type} />
+            <TendanceComponent percentage={data?.tendance_regionale ?? 0} total={data?.effectif_embarque ?? 0} type={type} />
             <Grid item xs={12} sm={6}>
 
               <Stack

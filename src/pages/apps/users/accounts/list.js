@@ -143,7 +143,6 @@ const AccountListPage = () => {
     [theme]
   );
 
-console.log(columns)  
   useEffect(() => {
     dispatch(getListAccounts({ page: currentPage, nb: PAGE_ROWS }))
   }, [currentPage])

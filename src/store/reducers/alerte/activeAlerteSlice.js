@@ -40,7 +40,8 @@ const activeAlerteSlice = createSlice({
                     state.activeError = ''
                 } else {
                     state.activeStatus = REQUEST_STATUS.error
-                    state.activeError = errors[0].error_msg //'error-edit-alert'
+                    state.activeError =  errors[0].error_code == 'ATK000' ? errors[0].error_msg : 'error-network'
+
                 }
             })
             .addCase(activeAlert.rejected, (state) => {

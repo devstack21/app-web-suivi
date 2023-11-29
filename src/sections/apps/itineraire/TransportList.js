@@ -77,7 +77,7 @@ const TransportTable = ({ debut, fin }) => {
             </TableBody>
             :
             <TableBody>
-              <EmptyTable msg={<FormattedMessage id='no-reports' />} colSpan={4} />
+              <EmptyTable msg={<FormattedMessage id='no-transport' />} colSpan={4} />
             </TableBody>
           }
         </Table>

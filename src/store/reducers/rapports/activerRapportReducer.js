@@ -8,12 +8,6 @@ import axios from 'utils/axios';
 export const activerRapport_req = createAsyncThunk(
     "rapport/activerRapport", 
     async(args) =>{
-    // const config = {
-    //     headers: {
-    //     'Authorization ': 'Token ' + getToken(),
-    //     'Content-Type': 'application/json'
-    // }
-    // };
     const URL = BASE_URL + API_URL.activerRapport;
     let datas = {date: args.date, id_agent: args.id_agent}
     let { data } = await axios.post(URL, datas, { withCredentials: true })

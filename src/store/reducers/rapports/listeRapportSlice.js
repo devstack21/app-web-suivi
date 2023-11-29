@@ -33,7 +33,7 @@ const listeRapportSlice = createSlice({
             state.error = ''
         })
         .addCase(getAllReports.fulfilled, (state, action)=>{
-            const { success, results, nombre_page } = action.payload;
+            const { success, results, nombre_page, errors } = action.payload;
 
             if (success) {
                 // invalid credentials
@@ -44,7 +44,7 @@ const listeRapportSlice = createSlice({
             } else  {
                 state.ListRapport = []
                 state.status = REQUEST_STATUS.error
-                state.error = 'error-reports-list'
+                state.error = errors[0].error_msg == 'ATK000' ? errors[0].error_msg : 'error-network'
             }
         })
         .addCase(getAllReports.rejected, (state)=>{

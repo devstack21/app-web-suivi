@@ -49,7 +49,6 @@ const StatApproBetailRegion = ({ type, setType, start, end }) => {
 
   }, [type, start, end])
 
-
   return (
 
     <Grid item xs={5} md={6}>
@@ -62,7 +61,11 @@ const StatApproBetailRegion = ({ type, setType, start, end }) => {
       <MainCard content={false} sx={{ mt: 1.5 }}>
         <Grid item>
           <Grid container>
-            <TendanceComponent percentage={result ? result?.approvisionement?.tendance_generale : 0} total={result ? result?.approvisionement?.total_effectif_embarque : 0} type={type}/>
+            <TendanceComponent
+              percentage={result?.approvisionement?.tendance_generale ?? 0}
+              total={result?.approvisionement?.total_effectif_embarque ?? 0}
+              type={type}
+            />
             <Grid item xs={12} sm={6}>
               <StatFilters
                 type={type}
@@ -73,7 +76,7 @@ const StatApproBetailRegion = ({ type, setType, start, end }) => {
         </Grid>
         <Box sx={{ pt: 1 }}>
           {status === REQUEST_STATUS.loading && <SpinnLoader title="loading-chart" />}
-          {status === REQUEST_STATUS.succeed && result && <ApproBetailRegionChart />}
+          {status === REQUEST_STATUS.succeed && result && result.approvisionement.tendance_generale && <ApproBetailRegionChart />}
           {status === REQUEST_STATUS.succeed && result == undefined &&
             <>
               <Typography style={{ textAlign: 'center', padding: 10 }} variant="h6">

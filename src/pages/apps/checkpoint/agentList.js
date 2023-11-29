@@ -159,7 +159,6 @@ const UserCell = ({ value }) => {
 };
 const DateCell = ({ value }) => { return (<Typography variant="subtitle1">{format(new Date(value), 'dd/MM/yyyy')}</Typography>) };
 const ActionCell = (row,  navigation, theme) => {
-  console.log(row)
   return (
     <Stack direction="row" alignItems="center" justifyContent="center" spacing={0}>
       <Tooltip title={<FormattedMessage id='view' />}>
@@ -231,6 +230,7 @@ const AgentList = () => {
 
   const { listStatus, agentsTab, nbPages, listError } = useSelector((state) => state.checkpoint.agentList)
 
+  console.log("listError", listError, listStatus)
 
   useEffect(() => { dispatch(getListAgentCheckpoints({ page: currentPage, nb: 5 })) }, [currentPage])
 

@@ -35,14 +35,14 @@ const indicateurVilleSlice = createSlice({
                 state.error = ''
             })
             .addCase(getIndicateurVilles.fulfilled, (state, action) => {
-                const { success, results } = action.payload;
+                const { success, results, errors } = action.payload;
                 if (success) {
                     state.status = REQUEST_STATUS.succeed
                     state.result = results
                     state.error = ''
                 } else {
                     state.result = []
-                    state.error = 'error-stat-appro-type-betail'
+                    state.error = errors[0].error_code == 'ATK000' ? errors[0].error_msg : 'error-network'
                     state.status = REQUEST_STATUS.error
                 }
             })

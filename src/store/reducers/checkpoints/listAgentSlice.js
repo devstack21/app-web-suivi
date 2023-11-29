@@ -39,15 +39,25 @@ const ListAgentCheckpointslice = createSlice({
             })
 
             .addCase(getListAgentCheckpoints.fulfilled, (state, action) => {
-                const { success, results,nombre_page } = action.payload;
+                const { success, results,nombre_page, errors } = action.payload;
                 if (success) {
                     state.listStatus = REQUEST_STATUS.succeed,
                     state.listError = ''
                     state.agentsTab = results
                     state.nbPages = nombre_page
                 } else {
+                    let msg
+                    switch (errors[0].error_code) {
+                        case "ATK000":
+                            msg = 'no-habilitations'
+                            break;
+                    
+                        default:
+                            msg = 'error-list-agent-checkpoint'
+                            break;
+                    }
                     state.listStatus = REQUEST_STATUS.error,
-                    state.listError = 'error-list-agent-checkpoint'
+                    state.listError = msg
                     state.agentsTab = []
                 }
             })

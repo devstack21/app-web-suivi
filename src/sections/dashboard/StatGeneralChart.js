@@ -5,7 +5,7 @@ import { Grid } from '@mui/material';
 import StatGeneralPieChart from './StatGeneralPieChart';
 
 // assets
-import { getStatTypeBetail } from 'store/reducers/dashboard/statTypeBetailSlice';
+import { getStatGeneral } from 'store/reducers/dashboard/statTypeBetailSlice';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 
@@ -15,7 +15,7 @@ const StatGenralChart = ({ start, end }) => {
   useEffect(() => {
     if (start && end) {
       dispatch(
-        getStatTypeBetail({
+        getStatGeneral({
           debut: start,
           end: end,
         })

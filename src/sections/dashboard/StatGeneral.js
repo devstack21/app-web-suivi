@@ -1,22 +1,25 @@
 // material-ui
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 
-import { getStatTypeBetail } from 'store/reducers/dashboard/statTypeBetailSlice';
+import { getStatGeneral } from 'store/reducers/dashboard/statTypeBetailSlice';
 import { SpinnLoader } from 'components/cards/SpinnLoader';
 import { REQUEST_STATUS } from 'utils/apiConfig';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
 import StatGenralChart from './StatGeneralChart';
 import StatGeneralTables from './StatGeneralTable';
+import { FormattedMessage } from 'react-intl';
 
 const StatGeneral = ({ start, end }) => {
   const dispatch = useDispatch();
 
+  const { status , result, error} = useSelector((state) => state.dashboard.type);
+
+
   useEffect(() => {
     if (start && end) {
       dispatch(
-        getStatTypeBetail({
+        getStatGeneral({
           debut: start,
           end: end,
         })
@@ -30,14 +33,21 @@ const StatGeneral = ({ start, end }) => {
     <Grid container item xs={12}>
       
       {status === REQUEST_STATUS.loading && <SpinnLoader title="loading-chart" />}
-      {status === REQUEST_STATUS.succeed && (
+      {status === REQUEST_STATUS.succeed && result.result.transport?.length > 0 && (
         <>
           <StatGenralChart />
           <StatGeneralTables />
         </>
 
       )}
-      {status === REQUEST_STATUS.error && <EmptyUserCard title="error-network" />}
+      {status === REQUEST_STATUS.error && 
+
+       <>
+           <Typography style={{ textAlign: 'center', padding: 10 }} variant="h6">
+               <FormattedMessage id={error} />
+           </Typography>
+       </>
+      }
 
     </Grid>
   );

@@ -32,9 +32,9 @@ export default function ListRapportCheckpoint() {
   const [chkp, setChkp] = useState({})
 
 
-  const { ListRapport, nbPages, status } = useSelector((state) => state.rapport.checkpoint);
+  const { ListRapport, nbPages, status, error } = useSelector((state) => state.rapport.checkpoint);
 
-  const { listStatus } = useSelector((state) => state.checkpoint.list)
+  const { listStatus , listError} = useSelector((state) => state.checkpoint.list)
 
 
   useEffect(() => {
@@ -72,9 +72,8 @@ export default function ListRapportCheckpoint() {
             }
             
     >
-        {status == REQUEST_STATUS.loading || listStatus == REQUEST_STATUS.loading
-         && <EmptyUserCard title={<FormattedMessage id='loading' />} />}
-        {status == REQUEST_STATUS.error ||listStatus == REQUEST_STATUS.loading && <EmptyUserCard title={<FormattedMessage id='error-network' />} />}
+        {(status == REQUEST_STATUS.loading || listStatus == REQUEST_STATUS.loading ) && <EmptyUserCard title={<FormattedMessage id='loading' />} />}
+        {(status == REQUEST_STATUS.error || listStatus == REQUEST_STATUS.error) && <EmptyUserCard title={<FormattedMessage id={error ? error : listError} />} />}
 
         {
           status == REQUEST_STATUS.succeed &&

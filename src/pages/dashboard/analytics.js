@@ -39,7 +39,6 @@ const DashboardAnalytics = () => {
   const { betailTab } = useSelector((state) => state.betail.list);
   const statutsRegion = useSelector((state) => state.location.region.status);
   const statusTypeBetail = useSelector((state) => state.betail.list.listStatus);
-  const { result } = useSelector((state) => state.dashboard.type);
 
 
   useEffect(() => {
@@ -74,7 +73,7 @@ const DashboardAnalytics = () => {
 
         <Grid item md={8} sx={{ display: { sm: 'none', md: 'block', lg: 'none' } }} />
 
-        {result.result?.transport && <StatGeneral start={start} end={end} />}
+         <StatGeneral start={start} end={end} />
 
         <StatIndicateurVille start={start} end={end} />
         <StatApproBetailRegion type={type} setType={setType} start={start} end={end} />

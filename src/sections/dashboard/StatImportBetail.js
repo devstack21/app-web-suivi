@@ -54,8 +54,8 @@ const StatImportBetail = ({ type, isLocal }) => {
 
     const { status, result } = useSelector((state) => state.dashboard.supply);
 
-    const appro = result?.approvisionement ? result.approvisionement.total_effectif_embarque : 0
-    const importation = result?.import ? result.import.total_effectif_embarque : 0
+    const appro = result?.approvisionement?.total_effectif_embarque ?? 0
+    const importation = result?.import?.total_effectif_embarque ?? 0
 
     const percentage = Math.round((importation / (appro + importation)) * 100)
 

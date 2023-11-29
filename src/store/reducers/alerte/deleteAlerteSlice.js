@@ -40,7 +40,7 @@ const deleteAlerteSlice = createSlice({
                     state.deleteError = ''
                 } else {
                     state.deleteStatus = REQUEST_STATUS.error
-                    state.deleteError = errors[0].error_msg //'error-edit-alert'
+                    state.deleteError = errors[0].error_code == 'ATK000' ? errors[0].error_msg : 'error-network'
                 }
             })
             .addCase(deleteAlert.rejected, (state) => {

@@ -33,7 +33,7 @@ const listeRapportCheckpointSlice = createSlice({
             state.error = ''
         })
         .addCase(getAllReportsCheckpoint.fulfilled, (state, action)=>{
-            const { success, results, nombre_page } = action.payload;
+            const { success, results, nombre_page, errors } = action.payload;
 
             if (success) {
                 // invalid credentials
@@ -42,9 +42,19 @@ const listeRapportCheckpointSlice = createSlice({
                 state.nbPages = nombre_page
                 state.error = ''
             } else  {
+                let msg
+                    switch (errors[0].error_code) {
+                        case "ATK000":
+                            msg = 'no-habilitations'
+                            break;
+                    
+                        default:
+                            msg = 'error-reports-list'
+                            break;
+                    }
                 state.ListRapport = []
                 state.status = REQUEST_STATUS.error
-                state.error = 'error-reports-list'
+                state.error = msg
             }
         })
         .addCase(getAllReportsCheckpoint.rejected, (state)=>{

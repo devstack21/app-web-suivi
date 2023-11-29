@@ -40,14 +40,14 @@ const TransportDetailSlice = createSlice({
                 state.error = null
             })
             .addCase(getTransportDetails.fulfilled, (state, action) => {
-                const { success, results } = action.payload;
+                const { success, results, errors } = action.payload;
                 if (success) {
                     state.status = REQUEST_STATUS.succeed
                     state.error = ''
                     state.result = results
                 } else {
                     state.status = REQUEST_STATUS.error
-                    state.error = 'error-detail-transports'
+                    state.error = errors[0].error_msg == 'ATK000' ? errors[0].error_msg : 'error-network'
                     state.result = []
                 }
             })

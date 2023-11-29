@@ -53,6 +53,9 @@ const CreateAccountslice = createSlice({
                         case "US003":
                             error_msg = 'user-number-exist'
                             break;
+                            case "ATK000":
+                                error_msg = 'no-habilitations'
+                                break;
                         default:
                             error_msg = 'error-create-account'
                             break;
