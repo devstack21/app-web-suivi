@@ -10,7 +10,7 @@ export const getListValidatePassword_req = createAsyncThunk(
     "validatePassword/list",
     async (args) => {
         const URL = BASE_URL + API_URL.ListeValidatePassword + `?page=${args.page}&nbre_ligne=${args.nbre_ligne}`;
-        let { data } = await axios.get(URL, { withCredentials: true })
+        let { data } = await axios.get(URL)
         return data[0];
     }
 

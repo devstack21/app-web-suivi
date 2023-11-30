@@ -69,7 +69,7 @@ const AddUser = ({ user, onCancel, page }) => {
   const isCreating = !user;
 
   const phoneSchema = Yup.string()
-  .matches(/^6[5798]\d{7}$/, <FormattedMessage id='invalid-phone' />)
+  .matches(/^6[56798]\d{7}$/, <FormattedMessage id='invalid-phone' />)
   .required(<FormattedMessage id='phone-required' />);
 
 
