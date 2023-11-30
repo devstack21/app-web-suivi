@@ -15,7 +15,7 @@ import { PopupTransition } from 'components/@extended/Transitions';
 import { Dialog } from '@mui/material';
 import EditAlert from './alerteEdit';
 // import { BASE_URL } from 'config';
-import {  REQUEST_STATUS } from 'utils/apiConfig'; //API_URL,
+import { REQUEST_STATUS } from 'utils/apiConfig'; //API_URL,
 // import axios from 'utils/axios';
 import { getListAlerts } from 'store/reducers/alerte/listeAlerteSlice';
 import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
@@ -26,6 +26,7 @@ import AlertDelete from './AlertDelete';
 import AlertConfirmeActive from './AlertConfirmeActive';
 import { activeAlert } from 'store/reducers/alerte/activeAlerteSlice';
 import { PAGE_ROWS } from 'config';
+import { EmptyTable } from 'components/third-party/ReactTable';
 
 
 
@@ -46,8 +47,8 @@ export default function ListAlerte() {
   const [currentPage, setCurrentPage] = useState(1);
 
 
-  useEffect(() => { dispatch(getListAlerts({ page: currentPage, nbre_ligne: PAGE_ROWS})) },
-   [pageChange, currentPage])
+  useEffect(() => { dispatch(getListAlerts({ page: currentPage, nbre_ligne: PAGE_ROWS })) },
+    [pageChange, currentPage])
 
   const handleEdit = (event) => {
     setAdd(!add);
@@ -69,8 +70,8 @@ export default function ListAlerte() {
 
 
   const handleCloseActive = (e) => {
-    if (e) dispatch(activeAlert({ 'pk': alert.pk, 'status': !alert.status })); setPageChange(pageChange+1);
-    
+    if (e) dispatch(activeAlert({ 'pk': alert.pk, 'status': !alert.status })); setPageChange(pageChange + 1);
+
     setOpenActive(!openActive);
   };
 
@@ -83,7 +84,7 @@ export default function ListAlerte() {
   };
 
 
-  const handleChangePage = (event, newPage) => {setCurrentPage(newPage);};
+  const handleChangePage = (event, newPage) => { setCurrentPage(newPage); };
 
   if (status == REQUEST_STATUS.loading || deleteStatus == REQUEST_STATUS.loading) {
     return (
@@ -120,35 +121,43 @@ export default function ListAlerte() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {ListAlerte.map((row, index) => (
-              <TableRow hover key={index}>
-              <TableCell align="center">
-                <Chip color={row.status ? 'success' : 'warning'} label={row.status ? "Activé" : "Désactivé"} size="small" />
-              </TableCell>
-                <TableCell sx={{ pl: 3 }}>{row.min_animal}</TableCell>
-                <TableCell>{row.max_animal}</TableCell>
-                <TableCell>
-                  <TableCell>{row.ville}</TableCell>
-                </TableCell>
-                <TableCell>{row.animal}</TableCell>
-                <TableCell align="right">{row.type_canal}
-                {row.type_sms && "SMS"} {row.type_email && row.type_sms? ",":null}  {row.type_email && " EMAIL"}
-                </TableCell>
-                <TableCell align="center" sx={{ pr: 3 }}>
-                  <Stack direction="row" justifyContent="center" alignItems="center">
-                    <IconButton color="primary" size="large" onClick={() => handleEdit(row)}>
-                      <EditOutlined />
-                    </IconButton>
-                    <IconButton color="inherit" size="large" onClick={() => handleDelete(row)}>
-                      <DeleteOutlined />
-                    </IconButton>
-                    <Button variant="contained" color={!row.status? 'primary': 'warning'} onClick={() => handleActivateDeactivate(row)}>
-                      {!row.status ? 'Activer' : 'Désactiver'}
-                    </Button>
-                  </Stack>
-                </TableCell>
-              </TableRow>
-            ))}
+            {
+              ListAlerte.lenght > 0 ?
+                <>
+                  {ListAlerte.map((row, index) => (
+                    <TableRow hover key={index}>
+                      <TableCell align="center">
+                        <Chip color={row.status ? 'success' : 'warning'} label={row.status ? "Activé" : "Désactivé"} size="small" />
+                      </TableCell>
+                      <TableCell sx={{ pl: 3 }}>{row.min_animal}</TableCell>
+                      <TableCell>{row.max_animal}</TableCell>
+                      <TableCell>
+                        <TableCell>{row.ville}</TableCell>
+                      </TableCell>
+                      <TableCell>{row.animal}</TableCell>
+                      <TableCell align="right">{row.type_canal}
+                        {row.type_sms && "SMS"} {row.type_email && row.type_sms ? "," : null}  {row.type_email && " EMAIL"}
+                      </TableCell>
+                      <TableCell align="center" sx={{ pr: 3 }}>
+                        <Stack direction="row" justifyContent="center" alignItems="center">
+                          <IconButton color="primary" size="large" onClick={() => handleEdit(row)}>
+                            <EditOutlined />
+                          </IconButton>
+                          <IconButton color="inherit" size="large" onClick={() => handleDelete(row)}>
+                            <DeleteOutlined />
+                          </IconButton>
+                          <Button variant="contained" color={!row.status ? 'primary' : 'warning'} onClick={() => handleActivateDeactivate(row)}>
+                            {!row.status ? 'Activer' : 'Désactiver'}
+                          </Button>
+                        </Stack>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </>
+                :
+                <EmptyTable  msg='no-alert' colSpan={7} />
+            }
+
           </TableBody>
         </Table>
       </TableContainer>
@@ -158,18 +167,18 @@ export default function ListAlerte() {
         <AlertConfirmeActive title={<FormattedMessage id='alerte-confirm-active' />} open={openActive} handleClose={handleCloseActive} act={true} />
         :
         <AlertConfirmeActive title={<FormattedMessage id='alerte-confirm-deactive' />} open={openActive} handleClose={handleCloseActive} act={false} />
-        }
+      }
 
 
       <Grid item sx={{ mt: { xs: 2, sm: 0 } }}>
-          <Pagination
-            count={nbPages}
-            page={currentPage}
-            onChange={handleChangePage}
-            color="primary"
-            variant="combined"
-          />
-        </Grid>
+        <Pagination
+          count={nbPages}
+          page={currentPage}
+          onChange={handleChangePage}
+          color="primary"
+          variant="combined"
+        />
+      </Grid>
 
 
       <Dialog

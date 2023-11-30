@@ -38,6 +38,7 @@ const ListCheckpointslice = createSlice({
 
             .addCase(getListCheckpoints.fulfilled, (state, action) => {
                 const { success, results,nombre_page } = action.payload;
+                console.log(action.payload)
                 if (success) {
                     state.listStatus = REQUEST_STATUS.succeed,
                     state.listError = ''

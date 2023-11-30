@@ -53,7 +53,7 @@ function ReactTable({ columns, data }) {
     () => ({
       filters: [{ id: 'status', value: '' }],
       pageIndex: 0,
-      pageSize: 5
+      pageSize: 10
     }),
     []
   );
