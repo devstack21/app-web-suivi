@@ -165,10 +165,9 @@ const EditAlert = ({ alert, onCancel }) => {
                                 helperText={formik.touched.max_animal && formik.errors.max_animal}
                             />
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} marginLeft={1}>
                          
 
-                            <FormControl fullWidth style={{ marginLeft: '20px' }}>
                                 <FormControlLabel
                                     control={
                                         <Checkbox
@@ -201,7 +200,6 @@ const EditAlert = ({ alert, onCancel }) => {
                                 {formik.touched.type_email && formik.errors.type_email && (
                                     <div>{formik.errors.type_email}</div>
                                 )}
-                            </FormControl>
 
                         </Grid>
 
@@ -280,37 +278,8 @@ const EditAlert = ({ alert, onCancel }) => {
 
 
 
-
-
                         <Grid item xs={12}>
-                            <FormControl fullWidth>
-                                <InputLabel>Contact</InputLabel>
-                                <Select name="id_contact" 
-                                value={formik.values.id_contact} 
-                                onChange={(event) => { formik.handleChange(event); handleAddContact(event.target.value); }}
-                                error={formik.touched.id_contact && Boolean(formik.errors.id_contact)}
-                                helperText={formik.touched.id_contact && formik.errors.id_contact} >
-                                    {ListContact.map((contact, index) => (
-                                        <MenuItem key={index} value={contact.id}>{contact.email}-{contact.phone}</MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl>
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Pagination count={totalPagesContact} page={page} onChange={handleChangePage} />
-                        </Grid>
-                        <Grid item xs={12}>
-                            {selectedContacts.map((contact, index) => (
-                                <Chip key={index} label={`${contact.email}-${contact.phone}`} onDelete={() => handleRemoveContact(contact)} />
-                            ))}
-                        </Grid>
-
-
-
-
-
-                        <Grid item xs={12}>
-                            <Button type="submit" variant="contained" color="primary"><FormattedMessage id='detailrapport-Validateur'/></Button>
+                            <Button type="submit" variant="contained" color="primary"><FormattedMessage id='validate'/></Button>
                         </Grid>
                         <EffectComponent   />
                     </Grid>

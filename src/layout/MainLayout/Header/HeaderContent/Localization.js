@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 
 // material-ui
 import { useTheme } from '@mui/material/styles';
-import { Box, ClickAwayListener, Grid, List, ListItemButton, ListItemText, Paper, Popper, Typography, useMediaQuery } from '@mui/material';
+import { Box, ClickAwayListener, Grid, List, ListItemButton, ListItemText, Paper, Popper, Tooltip, Typography, useMediaQuery } from '@mui/material';
 
 // project import
 import IconButton from 'components/@extended/IconButton';
@@ -12,6 +12,7 @@ import useConfig from 'hooks/useConfig';
 
 // assets
 import { TranslationOutlined } from '@ant-design/icons';
+import { FormattedMessage } from 'react-intl';
 
 // ==============================|| HEADER CONTENT - LOCALIZATION ||============================== //
 
@@ -44,18 +45,21 @@ const Localization = () => {
 
   return (
     <Box sx={{ flexShrink: 0, ml: 0.75 }}>
-      <IconButton
-        color="secondary"
-        variant="light"
-        sx={{ color: 'text.primary', bgcolor: open ? iconBackColorOpen : iconBackColor }}
-        aria-label="open localization"
-        ref={anchorRef}
-        aria-controls={open ? 'localization-grow' : undefined}
-        aria-haspopup="true"
-        onClick={handleToggle}
-      >
-        <TranslationOutlined />
-      </IconButton>
+      <Tooltip title={<FormattedMessage id='language'/>} >
+        <IconButton
+          color="secondary"
+          variant="light"
+          sx={{ color: 'text.primary', bgcolor: open ? iconBackColorOpen : iconBackColor }}
+          aria-label="open localization"
+          ref={anchorRef}
+          aria-controls={open ? 'localization-grow' : undefined}
+          aria-haspopup="true"
+          onClick={handleToggle}
+        >
+          <TranslationOutlined />
+        </IconButton>
+      </Tooltip>
+
       <Popper
         placement={matchesXs ? 'bottom-start' : 'bottom'}
         open={open}
@@ -96,7 +100,7 @@ const Localization = () => {
                     <ListItemText
                       primary={
                         <Grid container>
-                          <Typography color="textPrimary">English</Typography>
+                          <Typography color="textPrimary"><FormattedMessage id='english' /></Typography>
                           <Typography variant="caption" color="textSecondary" sx={{ ml: '8px' }}>
                             (UK)
                           </Typography>
@@ -108,9 +112,9 @@ const Localization = () => {
                     <ListItemText
                       primary={
                         <Grid container>
-                          <Typography color="textPrimary">Français</Typography>
+                          <Typography color="textPrimary"><FormattedMessage id='french' /></Typography>
                           <Typography variant="caption" color="textSecondary" sx={{ ml: '8px' }}>
-                            (French)
+                            (<FormattedMessage id='fr' />)
                           </Typography>
                         </Grid>
                       }

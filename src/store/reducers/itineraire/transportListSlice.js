@@ -53,7 +53,7 @@ const listTransportSlice = createSlice({
                     state.nbPages = nombre_page
                 } else {
                     state.status = REQUEST_STATUS.error,
-                        state.error = errors[0].error_msg == 'ATK000' ? errors[0].error_msg : 'error-network'
+                        state.error = errors[0].error_code == 'ATK000' ? errors[0].error_msg : 'error-network'
                     state.ListCamion = []
                 }
             })

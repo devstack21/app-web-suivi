@@ -11,6 +11,7 @@ const TypeAnimalTable = ({ type }) => {
 
   const tab = type == 'animals' ? result.result.animals : result.result.transport
 
+
   return (
     <Grid item xs={7} md={6}  >
 

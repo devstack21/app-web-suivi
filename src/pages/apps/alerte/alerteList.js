@@ -99,6 +99,7 @@ export default function ListAlerte() {
     )
   }
 
+  console.log(ListAlerte.lenght)
 
   return (
     <MainCard
@@ -122,7 +123,7 @@ export default function ListAlerte() {
           </TableHead>
           <TableBody>
             {
-              ListAlerte.lenght > 0 ?
+              ListAlerte.length > 0 ?
                 <>
                   {ListAlerte.map((row, index) => (
                     <TableRow hover key={index}>

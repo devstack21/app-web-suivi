@@ -22,7 +22,7 @@ const ListeCamion = () => {
   const [startDate, setStartDate] = useState(formatDateToYYYYMMDD(getStartOfWeek()));
   const [endDate, setEndDate] = useState(formatDateToYYYYMMDD(getEndOfWeek()));
 
-  const { status, nbPages } = useSelector((state) => state.transport.list);
+  const { status, nbPages, error } = useSelector((state) => state.transport.list);
 
 
   useEffect(() => {
@@ -44,7 +44,7 @@ const ListeCamion = () => {
           >
             {status == REQUEST_STATUS.loading && <EmptyUserCard title={<FormattedMessage id='loading' />} />}
             {status == REQUEST_STATUS.succeed && <TransportTable debut={startDate} fin={endDate}/>}
-            {status == REQUEST_STATUS.error && <EmptyUserCard title={<FormattedMessage id='error-network' />} />}
+            {status == REQUEST_STATUS.error && <EmptyUserCard title={<FormattedMessage id={error} />} />}
           </MainCard>
         </Grid>
 

@@ -5,7 +5,7 @@ import { Box, useMediaQuery } from '@mui/material';
 
 // project import
 import Search from './Search';
-import Profile from './Profile';
+import Profile from './Logout';
 import Localization from './Localization';
 import MobileSection from './MobileSection';
 

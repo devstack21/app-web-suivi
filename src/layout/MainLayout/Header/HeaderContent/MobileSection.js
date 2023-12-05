@@ -6,7 +6,7 @@ import { AppBar, Box, ClickAwayListener, Paper, Popper, Toolbar } from '@mui/mat
 
 // project import
 import Search from './Search';
-import Profile from './Profile';
+import Profile from './Logout';
 import Localization from './Localization';
 import IconButton from 'components/@extended/IconButton';
 import Transitions from 'components/@extended/Transitions';
