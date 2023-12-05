@@ -9,6 +9,7 @@ import { Box, Button, Grid, Stack, Typography } from '@mui/material';
 // assets
 import error404 from 'assets/images/maintenance/Error404.png';
 import TwoCone from 'assets/images/maintenance/TwoCone.png';
+import { FormattedMessage } from 'react-intl';
 
 // ==============================|| ERROR 404 - MAIN ||============================== //
 
@@ -39,12 +40,12 @@ function Error404() {
         </Grid>
         <Grid item xs={12}>
           <Stack spacing={2} justifyContent="center" alignItems="center">
-            <Typography variant="h1">Page Not Found</Typography>
+            <Typography variant="h1"><FormattedMessage id='page-not-found' /></Typography>
             <Typography color="textSecondary" align="center" sx={{ width: { xs: '73%', sm: '61%' } }}>
-              The page you are looking was moved, removed, renamed, or might never exist!
+              <FormattedMessage id='page-not-found-description' />
             </Typography>
             <Button component={Link} to={APP_DEFAULT_PATH} variant="contained">
-              Back To Home
+              <FormattedMessage id='back-home' />
             </Button>
           </Stack>
         </Grid>

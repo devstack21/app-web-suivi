@@ -6,8 +6,11 @@ import CommonLayout from 'layout/CommonLayout';
 import Loadable from 'components/Loadable';
 import AuthGuard from 'utils/route-guard/AuthGuard';
 
+
 // render - dashboard
 const DashboardAnalytics = Loadable(lazy(() => import('pages/dashboard/analytics')));
+
+const PageNotFound = Loadable(lazy(()=> import('pages/maintenance/404')))
 
 //Checkpoint
 const AppCheckpointCreate = Loadable(lazy(() => import('pages/apps/checkpoint/create')));
@@ -258,8 +261,8 @@ const MainRoutes = {
       ]
     },
     {
-      path: '/',
-      element: <CommonLayout layout="simple" />,
+      path: '*',
+      element: <PageNotFound  />,
     }
   ]
 };
