@@ -9,7 +9,9 @@ export const HORIZONTAL_MAX_ITEM = 6;
 export const DRAWER_WIDTH = 260;
 export const PAGE_ROWS = 10;
 
-export const BASE_URL = 'http://127.0.0.1:8000/ws/api/v1';
+//export const BASE_URL = 'http://127.0.0.1:8000/ws/api/v1';
+export const BASE_URL = 'https://minepia.iccsoft.cm:8443/ws/api/v1';
+
 
 
 

@@ -27,7 +27,7 @@ const Create = () => {
 
 
   const [selectedModule, setSelectedModule] = useState([])
-  const { listStatus, moduleTab , listError} = useSelector((state) => state.role.module)
+  const { listStatus, moduleTab, listError } = useSelector((state) => state.role.module)
   const { createStatus } = useSelector((state) => state.role.create)
   const { editStatus } = useSelector((state) => state.role.edit)
   const { detailStatus, role, detailError } = useSelector((state) => state.role.detail)
@@ -41,7 +41,7 @@ const Create = () => {
     dispatch(initDetailRole())
   }, []);
 
-  useEffect(() => { if (id) {dispatch( getDetailRole({ pk: id })) } }, [id])
+  useEffect(() => { if (id) { dispatch(getDetailRole({ pk: id })) } }, [id])
 
 
   useEffect(() => {
@@ -137,7 +137,6 @@ const Create = () => {
 
   };
 
-
   const handleToggle = (field, formik) => () => {
     formik.setFieldValue(field, !formik.values[field]);
   };
@@ -146,7 +145,7 @@ const Create = () => {
     initialValues: {
       name: role?.libelle,
       code: role?.code_role,
-      modules: null,
+      modules: role?.module,
       active: role?.active
     },
     onSubmit: onSubmit,
@@ -295,18 +294,17 @@ const Create = () => {
                   <Grid item xs={4}>
                     <InputLabel htmlFor="modules"><FormattedMessage id='modules' /></InputLabel>
                   </Grid>
-
-                  <Grid item xs={12} >
+                  <Grid item xs={12}>
                     <Autocomplete
                       id="module"
                       value={formik.values.modules}
                       options={moduleTab}
                       getOptionLabel={(option) => option.libelle}
-                      getOptionSelected={(option, value) => option.id === value.id} // Use camelCase
+                      getOptionSelected={(option, value) => value.id && option.id === value.id}
                       renderInput={(params) => (
                         <TextField
                           {...params}
-                          placeholder="Select Module"
+                          placeholder={formik.values.modules?.length === 0 ? 'Select Module' : ''}
                           sx={{ '& .MuiAutocomplete-input.Mui-disabled': { WebkitTextFillColor: theme.palette.text.primary } }}
                         />
                       )}
@@ -315,6 +313,7 @@ const Create = () => {
                       }}
                     />
                   </Grid>
+
                 </Stack>
               </Grid>
               <Grid item xs={12} md={5}>
