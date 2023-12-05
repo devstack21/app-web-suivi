@@ -6,7 +6,7 @@ import { Button, FormHelperText, Grid, InputLabel, OutlinedInput, Stack, Typogra
 // third party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 
 // project import
@@ -25,6 +25,7 @@ import { REQUEST_STATUS } from 'utils/apiConfig';
 const EffectComponent = ({ setStatus, setSubmitting, setErrors }) => {
   const { resetError, resetStatus, initResetPassword } = useAuth();
   const navigate = useNavigate();
+
 
 
   useEffect(() => {
@@ -60,6 +61,7 @@ const EffectComponent = ({ setStatus, setSubmitting, setErrors }) => {
 
 const AuthForgotPassword = () => {
   const scriptedRef = useScriptRef();
+  const intl = useIntl();
 
   const { resetPassword } = useAuth();
 
@@ -101,7 +103,7 @@ const AuthForgotPassword = () => {
                     name="phone"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    placeholder= {<FormattedMessage id="enter-phone" />}
+                    placeholder= {intl.formatMessage({id : 'enter-phone'})} 
                     fullWidth
                     error={Boolean(touched.phone && errors.phone)}
                   />

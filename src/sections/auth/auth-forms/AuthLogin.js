@@ -18,13 +18,13 @@ import {
 // third party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-import { FormattedMessage } from 'react-intl';
 
 // project import
 import useAuth from 'hooks/useAuth';
 import useScriptRef from 'hooks/useScriptRef';
 import IconButton from 'components/@extended/IconButton';
 import AnimateButton from 'components/@extended/AnimateButton';
+import { FormattedMessage, useIntl } from 'react-intl';
 
 // assets
 import { EyeOutlined, EyeInvisibleOutlined } from '@ant-design/icons';
@@ -57,6 +57,7 @@ const EffectComponent = ({ setStatus, setSubmitting, setErrors, pwd }) => {
 
 const AuthLogin = () => {
 
+  const intl = useIntl();
   const { login } = useAuth();
   const scriptedRef = useScriptRef();
 
@@ -116,7 +117,7 @@ const AuthLogin = () => {
                     name="phone"
                     onBlur={handleBlur}
                     onChange={handleChange}
-                    placeholder= {<FormattedMessage id="enter-phone" />}
+                    placeholder= {intl.formatMessage({id : 'enter-phone'})} 
                     fullWidth
                     error={Boolean(touched.phone && errors.phone)}
                   />
@@ -133,11 +134,12 @@ const AuthLogin = () => {
                   <OutlinedInput
                     fullWidth
                     error={Boolean(touched.password && errors.password)}
-                    id="-password-login"
+                    id="password-login"
                     type={showPassword ? 'text' : 'password'}
                     value={values.password}
                     name="password"
                     onBlur={handleBlur}
+                    placeholder={intl.formatMessage({id : 'enter-password'})}
                     onChange={handleChange}
                     endAdornment={
                       <InputAdornment position="end">
@@ -152,7 +154,6 @@ const AuthLogin = () => {
                         </IconButton>
                       </InputAdornment>
                     }
-                    placeholder={<FormattedMessage id="enter-password" />}
                   />
                   {touched.password && errors.password && (
                     <FormHelperText error id="standard-weight-helper-text-password-login">

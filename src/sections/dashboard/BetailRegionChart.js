@@ -24,7 +24,7 @@ const columnChartOptions = {
   },
   plotOptions: {
     bar: {
-      columnWidth: '30%',
+      columnWidth: '50%',
       borderRadius: 4
     }
   },
