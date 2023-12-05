@@ -35,15 +35,6 @@ const RoleCreate = Loadable(lazy(() => import('pages/apps/users/roles/create')))
 
 const UserAccounts = Loadable(lazy(() => import('pages/apps/users/accounts/list')));
 
-
-// view user profile
-const Profile = Loadable(lazy(() => import('pages/apps/profiles/user')));
-const ProfileTabPersonal = Loadable(lazy(() => import('sections/apps/profiles/me/TabPersonal')));
-const ProfileTabUserHabilitations = Loadable(lazy(() => import('sections/apps/profiles/me/TabHabilitations')));
-const ProfileTabPassword = Loadable(lazy(() => import('sections/apps/profiles/me/TabPassword')));
-
-
-
 // pages routing
 const AuthLogin = Loadable(lazy(() => import('pages/auth/login')));
 const AuthForgotPassword = Loadable(lazy(() => import('pages/auth/forgot-password')));
@@ -184,29 +175,7 @@ const MainRoutes = {
               ]
             },
             
-            {
-              path: 'profiles',
-              children: [
-                {
-                  path: 'user',
-                  element: <Profile />,
-                  children: [
-                    {
-                      path: 'personal',
-                      element: <ProfileTabPersonal />
-                    },
-                    {
-                      path: 'habilitations',
-                      element: <ProfileTabUserHabilitations />
-                    },
-                    {
-                      path: 'password',
-                      element: <ProfileTabPassword />
-                    },
-                  ]
-                }
-              ]
-            },
+           
             {
               path: 'users',
               children: [
