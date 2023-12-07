@@ -28,22 +28,28 @@ const verifyToken = (serviceToken) => {
   if (!serviceToken) {
     return false;
   }
-  // const decoded = jwtDecode(serviceToken);
-  /**
-   * Property 'exp' does not exist on type '<T = unknown>(token: string, options?: JwtDecodeOptions | undefined) => T'.
-   */
-  // return decoded.exp > Date.now() / 1000;
   return true
 };
 
 const setSession = (serviceToken) => {
+  const csrfToken = getCookie('csrftoken');
+
   if (serviceToken) {
     localStorage.setItem('serviceToken', serviceToken);
     axios.defaults.headers.common.Authorization = `Token ${serviceToken}`;
+    axios.defaults.headers.common['X-CSRFToken'] = csrfToken;
   } else {
     localStorage.removeItem('serviceToken');
     delete axios.defaults.headers.common.Authorization;
+    delete axios.defaults.headers.common['X-CSRFToken'];
   }
+};
+
+// Function to get the value of a cookie by name
+const getCookie = (name) => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(';').shift();
 };
 
 // ==============================|| JWT CONTEXT & PROVIDER ||============================== //
