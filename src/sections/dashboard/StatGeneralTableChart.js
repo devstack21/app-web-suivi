@@ -1,9 +1,9 @@
 import React from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Grid } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@mui/material';
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
 import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
-import { formatDateRange } from 'utils/function';
+import { formatDate } from 'utils/function';
 import { EmptyTable } from 'components/third-party/ReactTable';
 
 const TypeAnimalTable = ({ type }) => {
@@ -13,15 +13,14 @@ const TypeAnimalTable = ({ type }) => {
 
 
   return (
-    <Grid item xs={7} md={6}  >
 
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
               <TableCell><FormattedMessage id={type} /></TableCell>
-              <TableCell> {formatDateRange(result.date.prev)} </TableCell>
-              <TableCell>{formatDateRange(result.date.now)}</TableCell>
+              <TableCell> {formatDate(result.date.prev.debut)} - {formatDate(result.date.prev.fin)} </TableCell>
+              <TableCell>{formatDate(result.date.now.debut)} - {formatDate(result.date.now.fin)}</TableCell>
               <TableCell><FormattedMessage id='variation' /></TableCell>
             </TableRow>
           </TableHead>
@@ -54,7 +53,6 @@ const TypeAnimalTable = ({ type }) => {
         </Table>
       </TableContainer>
 
-    </Grid>
   );
 };
 

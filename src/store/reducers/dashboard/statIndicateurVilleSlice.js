@@ -38,7 +38,7 @@ const indicateurVilleSlice = createSlice({
                 const { success, results, errors } = action.payload;
                 if (success) {
                     state.status = REQUEST_STATUS.succeed
-                    state.result = results
+                    state.result = results[0]
                     state.error = ''
                 } else {
                     state.result = []

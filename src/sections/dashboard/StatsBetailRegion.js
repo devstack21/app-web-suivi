@@ -51,7 +51,7 @@ const StatApproBetailRegion = ({ type, setType, start, end }) => {
 
   return (
 
-    <Grid item xs={5} md={6}>
+    <Grid item xs={12} sm={6} md={6}>
       <Grid container alignItems="center" justifyContent="space-between">
 
         <Typography variant="h5"> {type?.name} / {type?.name_english} : <FormattedMessage id='statistics-supply' /></Typography>

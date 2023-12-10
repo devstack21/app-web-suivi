@@ -10,6 +10,23 @@ export const formatDateToYYYYMMDD = (today = new Date()) => {
   return formattedDate;
 }
 
+export function formatDate(inputDate) {
+  // Parse the input date as a Date object
+  const dateObj = new Date(inputDate);
+
+  // Extract year, month, and day
+  const year = dateObj.getFullYear();
+  const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+  const day = String(dateObj.getDate()).padStart(2, '0');
+
+  // Create the formatted date string
+  const formattedDate = `${day}/${month}/${year}`;
+
+  return formattedDate;
+}
+
+
+
 // Function to get the start date of the current week
 export function getStartOfWeek() {
   const now = new Date();

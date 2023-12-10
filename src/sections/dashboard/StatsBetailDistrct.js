@@ -54,7 +54,7 @@ const StatApproDistricRegion = ({ type }) => {
 
   return (
 
-    <Grid item xs={5} md={6}>
+    <Grid item xs={12} sm={6} md={6}>
       <Grid container alignItems="center" justifyContent="space-between">
       <Grid item></Grid>
 

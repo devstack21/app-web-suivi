@@ -23,9 +23,9 @@ const StatIndicator = () => {
         </TableHead>
         <TableBody>
           {
-            result.length > 0 ?
+            result.alerts?.length > 0 ?
               <>
-                {result.map((item, index) => (
+                {result.alerts?.map((item, index) => (
                   <TableRow key={index}>
                     <TableCell>{item.ville_name}</TableCell>
                     <TableCell>{item.animal_name}</TableCell>

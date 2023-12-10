@@ -6,14 +6,27 @@ import { SpinnLoader } from 'components/cards/SpinnLoader';
 import { REQUEST_STATUS } from 'utils/apiConfig';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import StatGenralChart from './StatGeneralChart';
-import StatGeneralTables from './StatGeneralTable';
 import { FormattedMessage } from 'react-intl';
+import StatGeneralPieChart from './StatGeneralPieChart';
+import TypeAnimalTable from './StatGeneralTableChart';
+
+const StatGeneralItem = ({ type }) => {
+  return (
+    <Grid container item xs={12} justifyContent="center" alignItems="center">
+      <Grid item xs={12} sm={6} md={6}>
+        <StatGeneralPieChart type={type} />
+      </Grid>
+      <Grid item xs={12} sm={6} md={6}>
+        <TypeAnimalTable type={type} />
+      </Grid>
+    </Grid>
+  )
+}
 
 const StatGeneral = ({ start, end }) => {
   const dispatch = useDispatch();
 
-  const { status , result, error} = useSelector((state) => state.dashboard.type);
+  const { status, result, error } = useSelector((state) => state.dashboard.type);
 
 
   useEffect(() => {
@@ -31,22 +44,23 @@ const StatGeneral = ({ start, end }) => {
 
   return (
     <Grid container item xs={12}>
-      
+
       {status === REQUEST_STATUS.loading && <SpinnLoader title="loading-chart" />}
       {status === REQUEST_STATUS.succeed && result.result.transport?.length > 0 && (
         <>
-          <StatGenralChart />
-          <StatGeneralTables />
+          <StatGeneralItem type="animals" />
+          <StatGeneralItem type="transports" />
+
         </>
 
       )}
-      {status === REQUEST_STATUS.error && 
+      {status === REQUEST_STATUS.error &&
 
-       <>
-           <Typography style={{ textAlign: 'center', padding: 10 }} variant="h6">
-               <FormattedMessage id={error} />
-           </Typography>
-       </>
+        <>
+          <Typography style={{ textAlign: 'center', padding: 10 }} variant="h6">
+            <FormattedMessage id={error} />
+          </Typography>
+        </>
       }
 
     </Grid>

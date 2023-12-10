@@ -71,12 +71,15 @@ const columnChartOptions = {
     {
       breakpoint: 600,
       options: {
-        yaxis: {
-          show: false
-        }
-      }
-    }
-  ]
+        chart: {
+          width: '100%', // Adjust the width for smaller screens
+        },
+        legend: {
+          position: 'bottom', // Move the legend to the bottom on smaller screens
+        },
+      },
+    },
+  ],
 };
 
 
@@ -137,7 +140,7 @@ const StatGeneralPieChart = ({ type }) => {
     }));
   }, [mode, primary, secondary, line, warning, primaryMain, successDark, fontFamily, labels]);
   return (
-    <Grid item xs={5} md={6} >
+    <>
 
       <Grid container alignItems={type == 'animals' ? 'right' : 'left'} justifyContent="space-between">
 
@@ -148,7 +151,7 @@ const StatGeneralPieChart = ({ type }) => {
       <Box id="chart" sx={{ bgcolor: 'transparent' }}>
         <ReactApexChart options={options} series={series} type="donut" height={250} />
       </Box>
-    </Grid>
+    </>
 
   );
 };

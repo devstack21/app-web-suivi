@@ -37,8 +37,8 @@ const columnChartOptions = {
     colors: ['transparent']
   },
   xaxis: {
-    categories: ['Adamaou', 'Centre', 'Est', 'Extrême-Nord',
-      'Littoral', 'Nord', 'Nord-Ouest', 'Ouest', 'Sud', 'Sud-Ouest']
+    categories: ['Adamaou', 'Centre', 'Est/East', 'Extrême-Nord/Far North ',
+      'Littoral', 'Nord/North', 'Nord-Ouest/Northwest ', 'Ouest/West', 'Sud/South', 'Sud-Ouest/Southwest']
   },
   yaxis: {
     title: {
