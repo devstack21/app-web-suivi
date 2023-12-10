@@ -12,7 +12,7 @@ import TypeAnimalTable from './StatGeneralTableChart';
 
 const StatGeneralItem = ({ type }) => {
   return (
-    <Grid container item xs={12} justifyContent="center" alignItems="center">
+    <Grid container item xs={12} justifyContent="center" alignItems="center" marginBottom={5}>
       <Grid item xs={12} sm={6} md={6}>
         <StatGeneralPieChart type={type} />
       </Grid>

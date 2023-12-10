@@ -1,9 +1,7 @@
-import { PAGE_ROWS } from "config";
 import { useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 import { useDispatch, useSelector } from "react-redux";
 import { openSnackbar } from "store/reducers/snackbar";
-import { getListValidatePassword_req } from "store/reducers/validatePassword/listeValidatePasswordSlice";
 import { initValidatePassword } from "store/reducers/validatePassword/validatePasswordSlice";
 import { REQUEST_STATUS } from "utils/apiConfig";
 
@@ -12,16 +10,16 @@ import { REQUEST_STATUS } from "utils/apiConfig";
 
 const EffectComponentValideResetPwd = () => {
 
-    const { resetStatus, restError } = useSelector((state) => state.validatePassword.reset);
+  const { resetStatus, restError } = useSelector((state) => state.validatePassword.reset);
 
-    const dispatch = useDispatch()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (resetStatus == REQUEST_STATUS.succeed) {
       dispatch(
         openSnackbar({
           open: true,
-          message: <FormattedMessage id='add-alert-succeed' />,
+          message: <FormattedMessage id='reset-pwd-succeed' />,
           variant: 'alert',
           alert: {
             color: 'success'
@@ -29,8 +27,6 @@ const EffectComponentValideResetPwd = () => {
           close: false
         })
       );
-      dispatch(getListValidatePassword_req({ page: 1, nbre_ligne: PAGE_ROWS }))
-      dispatch(initValidatePassword())
     }
     if (resetStatus == REQUEST_STATUS.error) {
       dispatch(
@@ -38,9 +34,7 @@ const EffectComponentValideResetPwd = () => {
           open: true,
           message: <FormattedMessage id={restError} />,
           variant: 'alert',
-          alert: {
-            color: 'error'
-          },
+          alert: {color: 'error'},
           close: false
         })
       );
@@ -48,9 +42,7 @@ const EffectComponentValideResetPwd = () => {
     }
   }, [resetStatus])
 
-
-
-  return null; // No need to render anything for this example
+  return null; 
 };
 
 export default EffectComponentValideResetPwd

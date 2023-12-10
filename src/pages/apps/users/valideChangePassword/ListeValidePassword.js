@@ -9,17 +9,15 @@ import IconButton from 'components/@extended/IconButton';
 // assets
 import { PlayCircleFilled } from '@ant-design/icons';
 import { useSelector, useDispatch } from 'react-redux';
-import {  REQUEST_STATUS } from 'utils/apiConfig';
+import { REQUEST_STATUS } from 'utils/apiConfig';
 import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
 import { FormattedMessage } from 'react-intl';
 import { PAGE_ROWS } from 'config';
 import { getListValidatePassword_req } from 'store/reducers/validatePassword/listeValidatePasswordSlice';
-import { validatePassword_req } from 'store/reducers/validatePassword/validatePasswordSlice';
 import AlertConfirmeActive from 'pages/apps/alerte/AlertConfirmeActive';
 import EffectComponentValideResetPwd from 'sections/auth/EffectComponentValideResetPwd';
 import { PatternFormat } from 'react-number-format';
 import { format } from 'date-fns';
-
 
 
 
@@ -31,16 +29,14 @@ export default function ListAlerte() {
 
 
   const { ListVP, status, nbPages } = useSelector((state) => state.validatePassword.list);
-  const { resetStatus, restError } = useSelector((state) => state.validatePassword.reset);
+  const { restError } = useSelector((state) => state.validatePassword.reset);
   const [currentPage, setCurrentPage] = useState(1);
 
 
-  useEffect(() => { dispatch(getListValidatePassword_req({ page: currentPage, nbre_ligne: PAGE_ROWS})) },
-   [currentPage])
+  useEffect(() => { dispatch(getListValidatePassword_req({ page: currentPage, nbre_ligne: PAGE_ROWS })) },
+    [currentPage])
 
-  const handleCloseValidate = (e) => {
-    if (e) dispatch(
-      validatePassword_req({ 'phone': userChangepassword.phone})); 
+  const handleCloseValidate = () => {
     setOpenActive(!openActive);
   };
 
@@ -48,17 +44,13 @@ export default function ListAlerte() {
   const handleValidate = async (row) => {
     setUserChangepassword(row)
     setOpenActive(!openActive);
-
   };
 
 
-  const handleChangePage = (event, newPage) => {setCurrentPage(newPage);};
+  const handleChangePage = (event, newPage) => { setCurrentPage(newPage); };
 
-  if (status == REQUEST_STATUS.loading || resetStatus == REQUEST_STATUS.loading) { 
-    return (
-      <EmptyUserCard title={<FormattedMessage id='loading' />} />
-      // <SpinnLoader title={<FormattedMessage id='loading' />} />
-    )
+  if (status == REQUEST_STATUS.loading ) {
+    return (<EmptyUserCard title={<FormattedMessage id='loading' />} />)
   }
 
   if (restError == REQUEST_STATUS.error) {
@@ -91,9 +83,9 @@ export default function ListAlerte() {
                 <TableCell sx={{ pl: 3 }}>{row.name}</TableCell>
                 <TableCell>{row.email}</TableCell>
                 <TableCell>
-                <TableCell>
-                  <PatternFormat displayType="text" format="+237 # ## ## ## ##" mask="_" defaultValue={row.phone} />
-                </TableCell>
+                  <TableCell>
+                    <PatternFormat displayType="text" format="+237 # ## ## ## ##" mask="_" defaultValue={row.phone} />
+                  </TableCell>
                 </TableCell>
                 <TableCell>
                   <Typography variant="subtitle1">{format(new Date(row.date), 'dd/MM/yyyy')}</Typography>
@@ -103,22 +95,22 @@ export default function ListAlerte() {
                 </TableCell>
                 <TableCell>
                   {/* {row.status} */}
-                  { row.status == "VALIDER" && <Chip color={'success'} label={<FormattedMessage id='validated' />} size="small" /> }
-                  { row.status == "REJETER" && <Chip color={'danger'} label={"REJETE"} size="small" /> }
-                  { row.status == "BROUILLON" && <Chip color={'warning'} label={<FormattedMessage id='pending' />} size="small" /> }
+                  {row.status == "VALIDER" && <Chip color={'success'} label={<FormattedMessage id='validated' />} size="small" />}
+                  {row.status == "REJETER" && <Chip color={'danger'} label={<FormattedMessage id='rejected' />} size="small" />}
+                  {row.status == "BROUILLON" && <Chip color={'warning'} label={<FormattedMessage id='pending' />} size="small" />}
                 </TableCell>
                 <TableCell align="center" sx={{ pr: 3 }}>
-                  { row.status == "BROUILLON"
-                  ?
+                  {row.status == "BROUILLON"
+                    ?
                     <Stack direction="row" justifyContent="center" alignItems="center">
-                    <IconButton color="primary" size="large" onClick={() => handleValidate(row)}>
-                      <PlayCircleFilled />
-                    </IconButton>
+                      <IconButton color="primary" size="large" onClick={() => handleValidate(row)}>
+                        <PlayCircleFilled />
+                      </IconButton>
                     </Stack>
-                  :
+                    :
                     null
                   }
-                  
+
                 </TableCell>
               </TableRow>
             ))}
@@ -126,21 +118,25 @@ export default function ListAlerte() {
         </Table>
       </TableContainer>
 
-      <AlertConfirmeActive title={<FormattedMessage id='resetPwd-confirm-active' />} open={openActive} handleClose={handleCloseValidate} />
-      
+      <AlertConfirmeActive
+        open={openActive}
+        handleClose={handleCloseValidate}
+        user={userChangepassword}
+      />
+
 
       <Grid item sx={{ mt: { xs: 2, sm: 0 } }}>
-          <Pagination
-            count={nbPages}
-            page={currentPage}
-            onChange={handleChangePage}
-            color="primary"
-            variant="combined"
-          />
-        </Grid>
+        <Pagination
+          count={nbPages}
+          page={currentPage}
+          onChange={handleChangePage}
+          color="primary"
+          variant="combined"
+        />
+      </Grid>
 
-        <EffectComponentValideResetPwd />
-     
+      <EffectComponentValideResetPwd />
+
     </MainCard>
 
   );

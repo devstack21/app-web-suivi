@@ -1,5 +1,3 @@
-import PropTypes from 'prop-types';
-
 // material-ui
 import { Button, Dialog, DialogContent, Stack, Typography } from '@mui/material';
 
@@ -8,12 +6,33 @@ import Avatar from 'components/@extended/Avatar';
 import { PopupTransition } from 'components/@extended/Transitions';
 
 // assets
-import { CheckCircleFilled  } from '@ant-design/icons';
+import { CheckCircleFilled } from '@ant-design/icons';
 import { FormattedMessage } from 'react-intl';
+import { useDispatch, useSelector } from 'react-redux';
+import { initValidatePassword, validatePassword_req } from 'store/reducers/validatePassword/validatePasswordSlice';
+import { REQUEST_STATUS } from 'utils/apiConfig';
+import { SpinnLoader } from 'components/cards/SpinnLoader';
+import { getListValidatePassword_req } from 'store/reducers/validatePassword/listeValidatePasswordSlice';
+import { PAGE_ROWS } from 'config';
 
 // ==============================|| CUSTOMER - DELETE ||============================== //
 
-export default function AlertConfirmeActive({ title, open, handleClose, act }) {
+export default function AlertConfirmeActive({ open, handleClose, user }) {
+
+  const dispatch = useDispatch();
+
+  const { resetStatus, result } = useSelector((state) => state.validatePassword.reset);
+
+  const resetPwd = () => { dispatch(validatePassword_req({ 'phone': user.phone })); }
+
+  const closePopPup = () => {
+    dispatch(initValidatePassword())
+    dispatch(getListValidatePassword_req({ page: 1, nbre_ligne: PAGE_ROWS }))
+    handleClose(true)
+  }
+
+
+
   return (
     <Dialog
       open={open}
@@ -26,28 +45,37 @@ export default function AlertConfirmeActive({ title, open, handleClose, act }) {
     >
       <DialogContent sx={{ mt: 2, my: 1 }}>
         <Stack alignItems="center" spacing={3.5}>
-          <Avatar color={act? 'success': 'warning'} sx={{ width: 72, height: 72, fontSize: '1.75rem' }}>
+
+
+          <Avatar color={result.password ? 'success' : 'warning'} sx={{ width: 72, height: 72, fontSize: '1.75rem' }}>
             <CheckCircleFilled />
           </Avatar>
           <Stack spacing={2}>
-            {/* <Typography variant="h4" align="center">
-              <FormattedMessage id='confirm-delete' />
-            </Typography> */}
             <Typography align="center">
-              {/* <FormattedMessage id='by-delete' /> */}
-              <Typography variant="subtitle1" component="span">
-                {' '}
-                &quot;{title}&quot;{' '}
-              </Typography>
-              {/* <FormattedMessage id='by-delete-description' /> */}
+              {
+                result.password ?
+                  <Typography variant="subtitle1" component="span">
+                    {<FormattedMessage id='new-password-user' />} {user.name} : {result.password}
+                  </Typography>
+                  :
+                  <Typography variant="subtitle1" component="span">
+                    {' '}&quot;{<FormattedMessage id='resetPwd-confirm-active' />}&quot;{' '}
+                  </Typography>
+              }
             </Typography>
           </Stack>
+
+          {resetStatus == REQUEST_STATUS.loading && <SpinnLoader title="loading" />}
+
 
           <Stack direction="row" spacing={2} sx={{ width: 1 }}>
             <Button fullWidth onClick={() => handleClose(false)} color="secondary" variant="outlined">
               <FormattedMessage id='cancel' />
             </Button>
-            <Button fullWidth color={act? 'success': 'warning'} variant="contained" onClick={() => handleClose(true)} autoFocus>
+            <Button fullWidth
+              color={result.password ? 'success' : 'warning'}
+              variant="contained"
+              onClick={resetStatus == REQUEST_STATUS.succeed ? closePopPup : resetPwd} autoFocus>
               <FormattedMessage id='detailrapport-valider' />
             </Button>
           </Stack>
@@ -56,9 +84,3 @@ export default function AlertConfirmeActive({ title, open, handleClose, act }) {
     </Dialog>
   );
 }
-
-AlertConfirmeActive.propTypes = {
-  title: PropTypes.string,
-  open: PropTypes.bool,
-  handleClose: PropTypes.func
-};
