@@ -5,8 +5,8 @@ import { useSelector } from 'react-redux';
 import { FormattedMessage } from 'react-intl';
 import { EmptyTable } from 'components/third-party/ReactTable';
 
-const StatIndicator = () => {
-  const { result } = useSelector((state) => state.dashboard.indicator);
+const StatIndicator = ({visitor}) => {
+  const { result } = useSelector((state) => visitor ?  state.visitor.indicator : state.dashboard.indicator);
 
   return (
 

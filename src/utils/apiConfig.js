@@ -34,6 +34,7 @@ export const API_URL = {
 
 	ListVilles: '/list/villes/',
 	Login: '/login/',
+	LoginVisitor: '/code/',
 	ResetPassword: '/reset/password/',
 	StatApproTypeBetail: '/stat/approvisionement/betail/region/',
 	statCkeckpoint: '/stat/checkpoint',
@@ -42,6 +43,14 @@ export const API_URL = {
 	StatGeneral: '/stat/general/',
 	UpdatePassword: '/change/password/',
 	UpdateRole: '/role/update/',
+	
+
+	VisitorStatApproTypeBetail: '/stat/visitor/approvisionement/betail/region/',
+	VisitotStatIndicateur: '/stat/visitor/indicateur/',
+	VisitorStatGeneral: '/stat/visitor/general/',
+
+
+
 	TransportItinary: '/transport/itinary',
 
 

@@ -33,10 +33,10 @@ const StatItem = ({ item, type, total}) => (
 )
 
 
-const StatDistrictDelivery = ({ type, data }) => {
+const StatDistrictDelivery = ({ type, data, visitor }) => {
 
 
-  const {  result } = useSelector((state) => state.dashboard.supply);
+  const {  result } = useSelector((state) => visitor ? state.visitor.supply : state.dashboard.supply);
 
   const appro = result?.approvisionement?.total_effectif_embarque ?? 0
 

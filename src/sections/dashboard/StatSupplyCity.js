@@ -47,10 +47,10 @@ const StatItem = ({ item }) => (
 )
 
 
-const StatSupplyCity = () => {
+const StatSupplyCity = ({visitor = false}) => {
 
 
-    const { status, result } = useSelector((state) => state.dashboard.indicator);
+    const { status, result } = useSelector((state) => visitor ? state.visitor.indicator : state.dashboard.indicator);
 
     const [data, setData] = useState([])
     const [city, setCity] = useState({})

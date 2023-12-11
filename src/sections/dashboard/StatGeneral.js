@@ -9,38 +9,49 @@ import { useEffect } from 'react';
 import { FormattedMessage } from 'react-intl';
 import StatGeneralPieChart from './StatGeneralPieChart';
 import TypeAnimalTable from './StatGeneralTableChart';
+import { getVisitorStatGeneral } from 'store/reducers/visitor/statTypeBetailSlice';
 
-const StatGeneralItem = ({ type }) => {
+const StatGeneralItem = ({ type,  visitor}) => {
   return (
     <Grid container item xs={12} justifyContent="center" alignItems="center" marginBottom={5}>
       <Grid item xs={12} sm={6} md={6}>
-        <StatGeneralPieChart type={type} />
+        <StatGeneralPieChart type={type}  visitor={visitor} />
       </Grid>
       <Grid item xs={12} sm={6} md={6}>
-        <TypeAnimalTable type={type} />
+        <TypeAnimalTable type={type}  visitor={visitor}/>
       </Grid>
     </Grid>
   )
 }
 
-const StatGeneral = ({ start, end }) => {
+const StatGeneral = ({ start, end, visitor = false }) => {
   const dispatch = useDispatch();
 
-  const { status, result, error } = useSelector((state) => state.dashboard.type);
+  const { status, result, error } = useSelector((state) => visitor ? state.visitor.type : state.dashboard.type);
 
 
   useEffect(() => {
     if (start && end) {
-      dispatch(
-        getStatGeneral({
-          debut: start,
-          end: end,
-        })
-      );
+      if (visitor) {
+        dispatch(
+          getVisitorStatGeneral({
+            debut: start,
+            end: end,
+          })
+        );
+      } else {
+        dispatch(
+          getStatGeneral({
+            debut: start,
+            end: end,
+          })
+        );
+      }
     } else {
       console.log('Not entering condition');
     }
   }, [start, end]);
+
 
   return (
     <Grid container item xs={12}>
@@ -48,8 +59,8 @@ const StatGeneral = ({ start, end }) => {
       {status === REQUEST_STATUS.loading && <SpinnLoader title="loading-chart" />}
       {status === REQUEST_STATUS.succeed && result.result.transport?.length > 0 && (
         <>
-          <StatGeneralItem type="animals" />
-          <StatGeneralItem type="transports" />
+          <StatGeneralItem type="animals" visitor={visitor}/>
+          <StatGeneralItem type="transports" visitor={visitor}/>
 
         </>
 

@@ -11,6 +11,7 @@ const AuthForgotPassword = Loadable(lazy(() => import('pages/auth/forgot-passwor
 const AuthCheckMail = Loadable(lazy(() => import('pages/auth/check-mail')));
 const AuthResetPassword = Loadable(lazy(() => import('pages/auth/reset-password')));
 
+
 // ==============================|| AUTH ROUTING ||============================== //
 
 const LoginRoutes = {
@@ -20,7 +21,7 @@ const LoginRoutes = {
       path: '/',
       element: (
         <GuestGuard>
-          <CommonLayout />
+          <CommonLayout layout='blank' />
         </GuestGuard>
       ),
       children: [
@@ -28,6 +29,7 @@ const LoginRoutes = {
           path: '/',
           element: <AuthLogin />
         },
+
         {
           path: 'login',
           element: <AuthLogin />
@@ -43,7 +45,16 @@ const LoginRoutes = {
         {
           path: 'reset-password',
           element: <AuthResetPassword />
+        },
+        {
+          path: 'visitors', // Move 'visitors' outside of the '/' route
+          element: (
+            <GuestGuard>
+              <CommonLayout />
+            </GuestGuard>
+          ),
         }
+
       ]
     }
   ]

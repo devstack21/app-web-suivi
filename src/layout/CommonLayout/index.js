@@ -1,18 +1,14 @@
 import PropTypes from 'prop-types';
 import { lazy, Suspense } from 'react';
-import { Outlet } from 'react-router-dom';
 
-// material-ui
-import { Container, Toolbar } from '@mui/material';
 
-// project import
-import ComponentLayout from './ComponentLayout';
-import { dispatch, useSelector } from 'store';
-import { openComponentDrawer } from 'store/reducers/menu';
 
 // material-ui
 import { styled } from '@mui/material/styles';
 import LinearProgress from '@mui/material/LinearProgress';
+import VisitorDashboardAnalytics from 'pages/visitors/analytics';
+import { Outlet } from 'react-router';
+import { Box } from '@mui/system';
 
 const Header = lazy(() => import('./Header'));
 
@@ -37,29 +33,16 @@ const Loader = () => (
 
 // ==============================|| MINIMAL LAYOUT ||============================== //
 
-const CommonLayout = ({ layout = 'blank' }) => {
-  const menu = useSelector((state) => state.menu);
-  const { componentDrawerOpen } = menu;
-
-  const handleDrawerOpen = () => {
-    dispatch(openComponentDrawer({ componentDrawerOpen: !componentDrawerOpen }));
-  };
+const CommonLayout = ({ layout = 'landing' }) => {
 
   return (
     <>
       {(layout === 'landing' || layout === 'simple') && (
         <Suspense fallback={<Loader />}>
           <Header layout={layout} />
-          <Outlet />
-        </Suspense>
-      )}
-      {layout === 'component' && (
-        <Suspense fallback={<Loader />}>
-          <Container maxWidth="lg" sx={{ px: { xs: 0, sm: 2 } }}>
-            <Header handleDrawerOpen={handleDrawerOpen} layout="component" />
-            <Toolbar sx={{ my: 2 }} />
-            <ComponentLayout handleDrawerOpen={handleDrawerOpen} componentDrawerOpen={componentDrawerOpen} />
-          </Container>
+          <Box sx={{ padding: 15 }}> {/* Add some space to avoid overlapping with the header */}
+            <VisitorDashboardAnalytics/>
+          </Box>
         </Suspense>
       )}
       {layout === 'blank' && <Outlet />}
@@ -72,3 +55,4 @@ CommonLayout.propTypes = {
 };
 
 export default CommonLayout;
+//          <FooterBlock isFull={layout === 'landing'} />

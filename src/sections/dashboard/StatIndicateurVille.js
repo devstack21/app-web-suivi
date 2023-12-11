@@ -13,23 +13,34 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getIndicateurVilles } from 'store/reducers/dashboard/statIndicateurVilleSlice';
 import StatIndicator from './StatIndicatorTable';
 import { REQUEST_STATUS } from 'utils/apiConfig';
+import { getVisitorIndicateurVilles } from 'store/reducers/visitor/statIndicateurVilleSlice';
 
 
-const StatIndicateurVille = ({ start, end }) => {
+const StatIndicateurVille = ({ start, end, visitor = false }) => {
 
     const dispatch = useDispatch();
 
 
-    const { status, error } = useSelector((state) => state.dashboard.indicator);
+    const { status, error } = useSelector((state) => visitor ? state.visitor.indicator : state.dashboard.indicator);
 
     useEffect(() => {
         if (start && end) {
-            dispatch(
-                getIndicateurVilles({
-                    debut: start,
-                    end: end,
-                })
-            );
+            if (visitor) {
+                dispatch(
+                    getVisitorIndicateurVilles({
+                        debut: start,
+                        end: end,
+                    })
+                );
+            } else {
+                dispatch(
+                    getIndicateurVilles({
+                        debut: start,
+                        end: end,
+                    })
+                );
+            }
+            
         } else {
             console.log('Not entering condition');
         }
@@ -57,7 +68,7 @@ const StatIndicateurVille = ({ start, end }) => {
                     </>
                 </>
                 }
-            {status === REQUEST_STATUS.succeed && (<StatIndicator />)}
+            {status === REQUEST_STATUS.succeed && (<StatIndicator visitor={visitor} />)}
         </Grid>
     );
 };

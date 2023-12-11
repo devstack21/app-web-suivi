@@ -6,8 +6,8 @@ import { FormattedMessage } from 'react-intl';
 import { formatDate } from 'utils/function';
 import { EmptyTable } from 'components/third-party/ReactTable';
 
-const TypeAnimalTable = ({ type }) => {
-  const { result } = useSelector((state) => state.dashboard.type);
+const TypeAnimalTable = ({ type, visitor }) => {
+  const { result } = useSelector((state) => visitor ? state.visitor.type : state.dashboard.type);
 
   const tab = type == 'animals' ? result.result.animals : result.result.transport
 

@@ -84,7 +84,7 @@ const columnChartOptions = {
 
 
 
-const StatGeneralPieChart = ({ type }) => {
+const StatGeneralPieChart = ({ type, visitor }) => {
   const theme = useTheme();
   const { mode, fontFamily } = useConfig();
 
@@ -95,7 +95,7 @@ const StatGeneralPieChart = ({ type }) => {
   const primaryMain = theme.palette.primary.main;
   const successDark = theme.palette.success.dark;
 
-  const { result } = useSelector((state) => state.dashboard.type);
+  const { result } = useSelector((state) => visitor ? state.visitor.type : state.dashboard.type);
 
 
   const [options, setOptions] = useState(columnChartOptions);

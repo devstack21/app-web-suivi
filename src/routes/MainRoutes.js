@@ -2,13 +2,15 @@ import { lazy } from 'react';
 
 // project import
 import MainLayout from 'layout/MainLayout';
-import CommonLayout from 'layout/CommonLayout';
 import Loadable from 'components/Loadable';
 import AuthGuard from 'utils/route-guard/AuthGuard';
 
 
 // render - dashboard
 const DashboardAnalytics = Loadable(lazy(() => import('pages/dashboard/analytics')));
+
+
+// render - visitor
 
 const PageNotFound = Loadable(lazy(()=> import('pages/maintenance/404')))
 
@@ -76,7 +78,8 @@ const MainRoutes = {
             }
           ]
         },
-     
+
+        
      
         {
           path: 'apps',
@@ -209,7 +212,6 @@ const MainRoutes = {
     },
     {
       path: '/auth',
-      element: <CommonLayout />,
       children: [
         {
           path: 'login',
@@ -229,6 +231,7 @@ const MainRoutes = {
         },
       ]
     },
+    
     {
       path: '*',
       element: <PageNotFound  />,

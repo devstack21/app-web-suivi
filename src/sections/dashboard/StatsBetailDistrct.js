@@ -28,10 +28,10 @@ import StatDistrictDelivery from './BetailDistrictTable';
 
 // ==============================|| DASHBOARD - ANALYTICS ||============================== //
 
-const StatApproDistricRegion = ({ type }) => {
+const StatApproDistricRegion = ({ type, visitor = false }) => {
 
 
-  const { status, result } = useSelector((state) => state.dashboard.supply);
+  const { status, result } = useSelector((state) => visitor ? state.visitor.supply : state.dashboard.supply);
   const { regionTab } = useSelector((state) => state.location.region);
 
 
@@ -90,7 +90,7 @@ const StatApproDistricRegion = ({ type }) => {
         </Grid>
         <Box sx={{ pt: 1 }}>
           {status === REQUEST_STATUS.loading && <SpinnLoader title="loading-chart" />}
-          {status === REQUEST_STATUS.succeed && result && <StatDistrictDelivery type={type} data={data.ville_destination} />}
+          {status === REQUEST_STATUS.succeed && result && <StatDistrictDelivery type={type} data={data.ville_destination} visitor={visitor}  />}
           {status === REQUEST_STATUS.succeed && result == undefined &&
             <>
               <Typography style={{ textAlign: 'center', padding: 10 }} variant="h6">

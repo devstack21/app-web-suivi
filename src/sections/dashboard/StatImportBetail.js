@@ -50,9 +50,9 @@ const StatItem = ({ item, type, isLocal, percentage }) => (
 )
 
 
-const StatImportBetail = ({ type, isLocal }) => {
+const StatImportBetail = ({ type, isLocal, visitor = false }) => {
 
-    const { status, result } = useSelector((state) => state.dashboard.supply);
+    const { status, result } = useSelector((state) => visitor ? state.visitor.supply : state.dashboard.supply);
 
     const appro = result?.approvisionement?.total_effectif_embarque ?? 0
     const importation = result?.import?.total_effectif_embarque ?? 0

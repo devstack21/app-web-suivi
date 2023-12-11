@@ -106,7 +106,7 @@ function generateResult(regions, tab_values) {
 
 // ==============================|| SALES COLUMN CHART ||============================== //
 
-const ApproBetailRegionChart = () => {
+const ApproBetailRegionChart = ({visitor}) => {
   const theme = useTheme();
   const { mode, fontFamily } = useConfig();
 
@@ -117,7 +117,7 @@ const ApproBetailRegionChart = () => {
   const primaryMain = theme.palette.primary.main;
   const successDark = theme.palette.success.dark;
 
-  const { result } = useSelector((state) => state.dashboard.supply);
+  const { result } = useSelector((state) => visitor ? state.visitor.supply : state.dashboard.supply);
   const { regionTab, status } = useSelector((state) => state.location.region);
 
 

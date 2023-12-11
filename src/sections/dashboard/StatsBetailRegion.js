@@ -22,26 +22,36 @@ import ApproBetailRegionChart from './BetailRegionChart';
 import { SpinnLoader } from 'components/cards/SpinnLoader';
 import { getStatApproTypeBetail } from 'store/reducers/dashboard/statApproTypeBetailSlice';
 import EmptyUserCard from 'components/cards/skeleton/EmptyUserCard';
+import { getVisitorStatApproTypeBetail } from 'store/reducers/visitor/statApproTypeBetailSlice';
 
 
 
 // ==============================|| DASHBOARD - ANALYTICS ||============================== //
 
-const StatApproBetailRegion = ({ type, setType, start, end }) => {
+const StatApproBetailRegion = ({ type, setType, start, end, visitor = false }) => {
 
   const dispatch = useDispatch()
 
-  const { status, result } = useSelector((state) => state.dashboard.supply);
+  const { status, result } = useSelector((state) => visitor ? state.visitor.supply : state.dashboard.supply);
 
 
   useEffect(() => {
     if (type?.id && start && end) {
+      if (visitor) {
+        dispatch(getVisitorStatApproTypeBetail({
+          debut: start,
+          end: end,
+          betail: type.id,
+        }));
+      } else {
+        dispatch(getStatApproTypeBetail({
+          debut: start,
+          end: end,
+          betail: type.id,
+        }));
+      }
 
-      dispatch(getStatApproTypeBetail({
-        debut: start,
-        end: end,
-        betail: type.id,
-      }));
+     
     } else {
       console.log('Not entering condition');
     }
@@ -76,7 +86,7 @@ const StatApproBetailRegion = ({ type, setType, start, end }) => {
         </Grid>
         <Box sx={{ pt: 1 }}>
           {status === REQUEST_STATUS.loading && <SpinnLoader title="loading-chart" />}
-          {status === REQUEST_STATUS.succeed && result && result.approvisionement.tendance_generale && <ApproBetailRegionChart />}
+          {status === REQUEST_STATUS.succeed && result && result.approvisionement.tendance_generale && <ApproBetailRegionChart visitor={visitor} />}
           {status === REQUEST_STATUS.succeed && result == undefined &&
             <>
               <Typography style={{ textAlign: 'center', padding: 10 }} variant="h6">

@@ -24,6 +24,7 @@ import rapportPdfReducer from './rapports/rapportPdfSlice';
 import transportReducer from './itineraire/transportReducer';
 import validatePasswordReducer from './validatePassword/validatePasswordReducer';
 import axeparcoursReducer from './axeparcours/axeparcoursReducer';
+import visitorReducer from './visitor/visitorReducer';
 
 // ==============================|| COMBINE REDUCERS ||============================== //
 
@@ -59,6 +60,13 @@ const reducers = combineReducers({
       storage
     },
     dashboardReducer
+  ),
+  visitor: persistReducer(
+    {
+      key: 'visitor',
+      storage
+    },
+    visitorReducer
   ),
   location: persistReducer(
     {
